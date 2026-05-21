@@ -1,18 +1,11 @@
 from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
-from flask_mysqldb import MySQL
+import config
 
 app = Flask(__name__)
-app.secret_key = "ecotrack_secret_key"
+app.secret_key = config.SECRET_KEY
 
-# MySQL Configuration
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '123hijorati2.0'
-app.config['MYSQL_DB'] = 'ecotrack'
-
-mysql = MySQL(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.login_view = "auth.login"
