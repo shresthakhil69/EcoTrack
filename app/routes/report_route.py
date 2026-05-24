@@ -33,9 +33,9 @@ def submit_report():
         image.save(filepath)
         imagename = image.filename
 
-    print(f"Location: {location}")
-    print(f"Waste Type: {waste_type}")
-    print(f"Description: {description}")
+    print(f"Location: {location}") # later, save this info to database
+    print(f"Waste Type: {waste_type}") # later, save this info to database
+    print(f"Description: {description}") # later, save this info to database
 
     return render_template("user/report_success.html", filename=imagename)
 
