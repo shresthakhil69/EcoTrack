@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, current_app, send_from_directory, url_for
+from flask import Blueprint, render_template, request, current_app, send_from_directory, url_for, redirect
 import os
 import json
 from datetime import datetime
@@ -76,4 +76,7 @@ def uploaded_file(filename):
         os.path.join(current_app.root_path, "static", "uploads"),
         filename
     )
+
+
+
 

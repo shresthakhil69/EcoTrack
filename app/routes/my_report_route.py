@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, current_app, url_for
+from flask import Blueprint, render_template, current_app, url_for, request, redirect, jsonify
 import os
 import json
 
@@ -17,6 +17,49 @@ def _load_reports():
             return json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
         return []
+
+
+def _save_reports(reports):
+    path = _reports_data_path()
+    # ensure data dir exists
+    data_dir = os.path.dirname(path)
+    os.makedirs(data_dir, exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(reports, f, ensure_ascii=False, indent=2)
+
+
+@my_report.route('/delete_report', methods=['POST'])
+def delete_report():
+    """Delete a report by index and return JSON for AJAX or redirect back."""
+    idx_val = request.form.get('index')
+    try:
+        idx = int(idx_val)
+    except (TypeError, ValueError):
+        return redirect(url_for('my_report.reports'))
+
+    reports_list = _load_reports()
+    if idx < 0 or idx >= len(reports_list):
+        return redirect(url_for('my_report.reports'))
+
+    report = reports_list.pop(idx)
+
+    # delete image file if present
+    img = report.get('image')
+    if img:
+        img_path = os.path.join(current_app.root_path, 'static', 'uploads', img)
+        try:
+            if os.path.exists(img_path):
+                os.remove(img_path)
+        except OSError:
+            pass
+
+    _save_reports(reports_list)
+
+    # If AJAX request return JSON; otherwise redirect back
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return jsonify({"success": True})
+
+    return redirect(url_for('my_report.reports'))
 
 
 @my_report.route("/my-reports")

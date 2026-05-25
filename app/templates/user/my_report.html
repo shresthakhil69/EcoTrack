@@ -310,6 +310,7 @@ body{
                 {# Render each saved report as a card; reuse the layout by repeating the left/right sections #}
                 {%- for rep in reports -%}
 
+                <div class="report-card">
                 <!-- LEFT -->
                 <div class="image-section">
                     {%- if rep.image -%}
@@ -356,8 +357,12 @@ body{
 
                     <div class="buttons">
                         <button class="btn edit">Edit Report</button>
-                        <button class="btn delete">Delete Report</button>
+                        <form method="post" action="/delete_report" style="display:inline; margin:0;">
+                            <input type="hidden" name="index" value="{{ loop.index0 }}">
+                            <button class="btn delete" type="submit">Delete Report</button>
+                        </form>
                     </div>
+                </div>
                 </div>
 
                 {%- endfor -%}
@@ -373,5 +378,48 @@ body{
 
 </div>
 
-</body>
-</html>
+        <script>
+        // Handle delete via fetch to avoid full page navigation
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.report-card').forEach((card, idx) => {
+                const form = card.querySelector('form');
+                if (!form) return;
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const index = form.querySelector('input[name="index"]').value;
+                    fetch(form.action, {
+                        method: 'POST',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: `index=${encodeURIComponent(index)}`
+                    }).then(r => r.json())
+                    .then(data => {
+                        if (data && data.success) {
+                            // remove the card from DOM
+                            card.remove();
+
+                            // if no report-cards remain, show the fallback message
+                            const remaining = document.querySelectorAll('.report-card');
+                            if (!remaining || remaining.length === 0) {
+                                const layout = document.querySelector('.report-layout');
+                                if (layout) {
+                                    const noDiv = document.createElement('div');
+                                    noDiv.style.padding = '40px';
+                                    noDiv.textContent = 'No reports submitted yet.';
+                                    layout.appendChild(noDiv);
+                                }
+                            }
+                        } else {
+                            // fallback: reload
+                            window.location.reload();
+                        }
+                    }).catch(() => window.location.reload());
+                });
+            });
+        });
+        </script>
+
+        </body>
+        </html>
