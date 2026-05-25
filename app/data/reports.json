@@ -1,0 +1,16 @@
+[
+  {
+    "location": "parking lot",
+    "waste_type": "Organic",
+    "description": "this is the test test\r\n",
+    "image": "trash-parking-lot.jpg",
+    "reported_on": "2026-05-25T13:28:27.311956Z"
+  },
+  {
+    "location": "parking lot",
+    "waste_type": "Recyclable waste",
+    "description": "sdfsdfsdfsdfsdfdsfsd",
+    "image": "trash-parking-lot.jpg",
+    "reported_on": "2026-05-25T13:38:54.062153Z"
+  }
+]
