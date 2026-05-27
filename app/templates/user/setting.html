@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings Page UI</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f4f5f3;
+    padding:40px;
+    color:#173b2e;
+}
+
+
+
+/* Settings Layout */
+
+.settings-layout{
+    display:flex;
+    gap:30px;
+}
+
+/* Left Menu */
+
+.settings-menu{
+    width:260px;
+    background:white;
+    border-radius:22px;
+    padding:15px 0;
+    box-shadow:0 3px 8px rgba(0,0,0,0.05);
+    height:fit-content;
+}
+
+.menu-item{
+    padding:22px 28px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    font-size:18px;
+    color:#444;
+    cursor:pointer;
+}
+
+.menu-item.active{
+    background:#eef3ef;
+    border-left:4px solid #2f6f4f;
+    color:#173b2e;
+    font-weight:bold;
+}
+
+.menu-item.danger{
+    color:#ff4b3e;
+}
+
+/* Main Box */
+
+.main-box{
+    flex:1;
+    background:white;
+    border-radius:25px;
+    padding:45px;
+    box-shadow:0 3px 8px rgba(0,0,0,0.05);
+    min-height:520px;
+}
+
+.main-box h2{
+    font-size:34px;
+    margin-bottom:10px;
+}
+
+.main-box p{
+    color:#888;
+    font-size:17px;
+}
+
+.placeholder{
+    margin-top:80px;
+    width:100%;
+    height:250px;
+    border-radius:20px;
+    background:#f4f5f3;
+    border:2px dashed #d7d7d7;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#aaa;
+    font-size:22px;
+}
+
+</style>
+</head>
+<body>
+
+
+<!-- Settings Layout -->
+
+<div class="settings-layout">
+
+    <!-- Left Menu -->
+
+    <div class="settings-menu">
+
+        <div class="menu-item active">
+            <i class="fa-regular fa-user"></i>
+            Profile
+        </div>
+
+        <div class="menu-item">
+            <i class="fa-solid fa-lock"></i>
+            Account & Password
+        </div>
+
+        <div class="menu-item">
+            <i class="fa-regular fa-bell"></i>
+            Notifications
+        </div>
+
+        <div class="menu-item">
+            <i class="fa-regular fa-sun"></i>
+            Appearance
+        </div>
+
+        <div class="menu-item danger">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            Danger Zone
+        </div>
+
+
+</div>
+
+</body>
+</html>
