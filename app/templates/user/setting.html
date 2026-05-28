@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Settings Page UI</title>
+<title>Settings Page</title>
 
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
@@ -23,93 +23,184 @@ body{
     color:#173b2e;
 }
 
-
-
-/* Settings Layout */
+/* Layout */
 
 .settings-layout{
     display:flex;
     gap:30px;
+    max-width:1400px;
+    margin:auto;
 }
 
-/* Left Menu */
+/* Sidebar */
 
 .settings-menu{
-    width:260px;
-    background:white;
-    border-radius:22px;
-    padding:15px 0;
-    box-shadow:0 3px 8px rgba(0,0,0,0.05);
-    height:fit-content;
+    width:280px;
+    background:#fff;
+    border-radius:24px;
+    overflow:hidden;
+    box-shadow:0 4px 12px rgba(0,0,0,0.05);
 }
 
 .menu-item{
-    padding:22px 28px;
     display:flex;
     align-items:center;
     gap:16px;
-    font-size:18px;
-    color:#444;
+    padding:22px 28px;
+    font-size:17px;
+    color:#555;
     cursor:pointer;
+    transition:0.3s;
+}
+
+.menu-item:hover{
+    background:#f5f7f6;
 }
 
 .menu-item.active{
-    background:#eef3ef;
-    border-left:4px solid #2f6f4f;
+    background:#eef5f0;
+    border-left:5px solid #2f6f4f;
     color:#173b2e;
-    font-weight:bold;
+    font-weight:600;
+}
+
+.menu-item i{
+    width:22px;
+    text-align:center;
 }
 
 .menu-item.danger{
-    color:#ff4b3e;
+    color:#e74c3c;
 }
 
-/* Main Box */
+/* Main Content */
 
 .main-box{
     flex:1;
-    background:white;
-    border-radius:25px;
-    padding:45px;
-    box-shadow:0 3px 8px rgba(0,0,0,0.05);
-    min-height:520px;
+    background:#fff;
+    border-radius:24px;
+    padding:40px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.05);
 }
 
-.main-box h2{
+.main-box h1{
     font-size:34px;
     margin-bottom:10px;
 }
 
 .main-box p{
-    color:#888;
-    font-size:17px;
+    color:#777;
+    margin-bottom:40px;
 }
 
-.placeholder{
-    margin-top:80px;
-    width:100%;
-    height:250px;
-    border-radius:20px;
-    background:#f4f5f3;
-    border:2px dashed #d7d7d7;
+/* Profile Form */
+
+.profile-section{
+    display:flex;
+    align-items:center;
+    gap:25px;
+    margin-bottom:40px;
+}
+
+.avatar{
+    width:100px;
+    height:100px;
+    border-radius:50%;
+    background:#dfe8e2;
     display:flex;
     align-items:center;
     justify-content:center;
-    color:#aaa;
-    font-size:22px;
+    font-size:40px;
+    color:#2f6f4f;
+}
+
+.btn{
+    border:none;
+    padding:12px 22px;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:15px;
+}
+
+.btn-primary{
+    background:#2f6f4f;
+    color:white;
+}
+
+.btn-secondary{
+    background:#eef3ef;
+    color:#173b2e;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:25px;
+}
+
+.input-group{
+    display:flex;
+    flex-direction:column;
+}
+
+.input-group label{
+    margin-bottom:8px;
+    font-weight:600;
+}
+
+.input-group input{
+    padding:14px;
+    border:1px solid #ddd;
+    border-radius:12px;
+    outline:none;
+}
+
+.input-group input:focus{
+    border-color:#2f6f4f;
+}
+
+.save-btn{
+    margin-top:35px;
+    background:#2f6f4f;
+    color:white;
+    border:none;
+    padding:14px 28px;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+@media(max-width:900px){
+
+    .settings-layout{
+        flex-direction:column;
+    }
+
+    .settings-menu{
+        width:100%;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+    .danger-zone{
+    border:1.5px solid #ffd6d6;
+    border-radius:18px;
+    padding:30px;
+    background:#fff8f8;
+}
+
+   
+
 }
 
 </style>
 </head>
 <body>
 
-
-<!-- Settings Layout -->
-
 <div class="settings-layout">
 
-    <!-- Left Menu -->
-
+    <!-- Sidebar -->
     <div class="settings-menu">
 
         <div class="menu-item active">
@@ -132,11 +223,68 @@ body{
             Appearance
         </div>
 
-        <div class="menu-item danger">`
+        <div class="menu-item danger">
             <i class="fa-solid fa-triangle-exclamation"></i>
             Danger Zone
         </div>
 
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-box">
+
+        <h1>Profile Settings</h1>
+        <p>Manage your account information and profile details.</p>
+
+        <div class="profile-section">
+
+            <div class="avatar">
+                <i class="fa-solid fa-user"></i>
+            </div>
+
+            <div>
+                <button class="btn btn-primary">
+                    Upload Photo
+                </button>
+
+                <button class="btn btn-secondary">
+                    Remove
+                </button>
+            </div>
+
+        </div>
+
+        <div class="form-grid">
+
+            <div class="input-group">
+                <label>First Name</label>
+                <input type="text" placeholder="John">
+            </div>
+
+            <div class="input-group">
+                <label>Last Name</label>
+                <input type="text" placeholder="Doe">
+            </div>
+
+            <div class="input-group">
+                <label>Email Address</label>
+                <input type="email" placeholder="john@example.com">
+            </div>
+
+            <div class="input-group">
+                <label>Phone Number</label>
+                <input type="text" placeholder="+977 98XXXXXXXX">
+            </div>
+
+        </div>
+
+        <button class="save-btn">
+            Save Changes
+        </button>
+        <div class="main-box">
+
+        
+    </div>
 
 </div>
 
