@@ -1,0 +1,36 @@
+<div class="cards">
+      <div class="card">
+        <p>Total Reports</p>
+        <h2>2</h2>
+      </div>
+      <div class="card">
+        <p>Pending Reports</p>
+        <h2>1</h2>
+      </div>
+      <div class="card">
+        <p>Resolved Reports</p>
+        <h2>1</h2>
+      </div>
+      <div class="card">
+        <p>My Reports</p>
+        <h2>2</h2>
+      </div>
+    </div>
+
+/* CARDS */
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:20px;
+      margin-bottom:30px;
+    }
+    .card{
+      background:white;
+      padding:20px;
+      border-radius:15px;
+      box-shadow:0 2px 8px rgba(0,0,0,0.1);
+    }
+    .card h2{
+      margin-top:10px;
+      font-size:35px;
+    }
