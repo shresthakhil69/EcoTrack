@@ -376,93 +376,71 @@ input:checked + .slider::before{ transform:translateX(22px); }
             <button class="save-btn">Save Changes</button>
 
         </div>
-<!-- ── ACCOUNT & PASSWORD PANEL ── -->
-<div class="panel" id="panel-account">
+        <!-- ── ACCOUNT & PASSWORD PANEL ── -->
+        <div class="panel" id="panel-account">
 
-    <h1>Account & Password</h1>
+        <h1>Account & Password</h1>
 
-    <p class="subtitle">
-        Change and secure your account password.
-    </p>
+        <p class="subtitle">
+            Change and secure your account password.
+        </p>
 
-    <!-- Password Section -->
-    <div class="section-header">
-        <h2>Change Password</h2>
-        <p>Choose a strong password to secure your account.</p>
-    </div>
-
-    <div class="form-grid">
-
-        <!-- Current Password -->
-        <div class="input-group">
-            <label>Current Password</label>
-            <input type="password"
-                   placeholder="Enter current password">
+        <!-- Password Section -->
+        <div class="section-header">
+            <h2>Change Password</h2>
+            <p>Choose a strong password to secure your account.</p>
         </div>
 
-        <!-- New Password -->
-        <div class="input-group">
-            <label>New Password</label>
-            <input type="password"
-                   placeholder="Enter new password">
+        <div class="form-grid">
+
+            <!-- Current Password -->
+            <div class="input-group">
+                <label>Current Password</label>
+                <input type="password"
+                    placeholder="Enter current password">
+            </div>
+
+            <!-- New Password -->
+            <div class="input-group">
+                <label>New Password</label>
+                <input type="password"
+                    placeholder="Enter new password">
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="input-group">
+                <label>Confirm Password</label>
+                <input type="password"
+                    placeholder="Confirm new password">
+            </div>
+
         </div>
 
-        <!-- Confirm Password -->
-        <div class="input-group">
-            <label>Confirm Password</label>
-            <input type="password"
-                   placeholder="Confirm new password">
+        <button class="save-btn">
+            Update Password
+        </button>
+
         </div>
+        
 
-    </div>
+        <!-- ── NOTIFICATIONS PANEL ── -->
+        <div class="panel" id="panel-notifications">
+            <h1>Notifications</h1>
+            <p class="subtitle">
+                Manage how you receive notifications and updates.
+            </p>
 
-    <button class="save-btn">
-        Update Password
-    </button>
+            <div class="toggle-row">
+                <div class="toggle-info">
+                    <div class="t-label">Email Notifications</div>
+                    <div class="t-desc">Receive updates through email.</div>
+                </div>
+                <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+            </div>
 
-</div>
-
-<!-- ── NOTIFICATIONS PANEL ── -->
-<div class="panel" id="panel-notifications">
-    <h1>Notifications</h1>
-    <p class="subtitle">
-        Manage how you receive notifications and updates.
-    </p>
-</div>
-
-<div class="toggle-row">
-    <div class="toggle-info">
-        <div class="t-label">Email Notifications</div>
-        <div class="t-desc">Receive updates through email.</div>
-    </div>
-
-    <label class="switch">
-        <input type="checkbox" checked>
-        <span class="slider"></span>
-    </label>
-</div>
-<div class="toggle-row">
-    <div class="toggle-info">
-        <div class="t-label">Report Status Updates</div>
-        <div class="t-desc">Get notified when your reports are updated.</div>
-    </div>
-
-    <label class="switch">
-        <input type="checkbox" checked>
-        <span class="slider"></span>
-    </label>
-</div>
-<div class="toggle-row">
-    <div class="toggle-info">
-        <div class="t-label">Community Alerts</div>
-        <div class="t-desc">Receive alerts from nearby communities.</div>
-    </div>
-
-    <label class="switch">
-        <input type="checkbox">
-        <span class="slider"></span>
-    </label>
-</div>
+        
+        </div>
+        
         <!-- ── DANGER ZONE PANEL ── -->
         <div class="panel" id="panel-danger">
 
