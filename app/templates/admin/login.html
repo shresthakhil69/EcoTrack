@@ -92,7 +92,60 @@
     .stat-num { font-size: 26px; font-weight: 600; color: var(--green-400); line-height: 1; }
     .stat-lbl { font-size: 12px; color: rgba(255,255,255,.4); margin-top: 4px; }
 
-   
+    /* ── Right panel ── */
+    .right {
+      background: var(--gray-700);
+      display: flex; align-items: center; justify-content: center;
+      padding: 48px 40px;
+    }
+    .form-card { width: 100%; max-width: 360px; }
+    .form-title { font-size: 22px; font-weight: 600; color: var(--white); margin-bottom: 6px; }
+    .form-sub   { font-size: 13px; color: var(--gray-300); margin-bottom: 32px; }
+
+    /* fields */
+    .field { margin-bottom: 18px; }
+    .field label {
+      display: block; font-size: 12px; font-weight: 500;
+      color: var(--gray-300); margin-bottom: 7px;
+      letter-spacing: .03em; text-transform: uppercase;
+    }
+    .input-wrap input {
+      width: 100%;
+      background: var(--gray-900);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 8px;
+      padding: 11px 14px;
+      font-family: var(--font); font-size: 14px; color: var(--white);
+      outline: none; transition: border-color .2s;
+    }
+    .input-wrap input::placeholder { color: var(--gray-500); }
+    .input-wrap input:focus { border-color: var(--green-600); }
+
+    /* remember row */
+    .row-between {
+      display: flex; align-items: center;
+      justify-content: space-between; margin-bottom: 24px;
+    }
+    .check-label {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; color: var(--gray-300); cursor: pointer;
+    }
+    .check-label input[type="checkbox"] {
+      width: 15px; height: 15px;
+      accent-color: var(--green-600); cursor: pointer;
+    }
+
+    /* button */
+    .btn-login {
+      width: 100%; padding: 13px;
+      background: var(--green-600); border: none; border-radius: 8px;
+      font-family: var(--font); font-size: 14px; font-weight: 600;
+      color: var(--white); cursor: pointer; transition: background .2s, transform .1s;
+    }
+    .btn-login:hover  { background: var(--green-700); }
+    .btn-login:active { transform: scale(.98); }
+
+
     /* footer */
     .form-footer {
       margin-top: 28px; text-align: center;
@@ -129,21 +182,62 @@
 
       <div class="left-stats">
         <div class="stat-item">
-          <div class="stat-num">1</div>
+          <div class="stat-num">128</div>
           <div class="stat-lbl">Total reports</div>
         </div>
         <div class="stat-item">
-          <div class="stat-num">1</div>
+          <div class="stat-num">45</div>
           <div class="stat-lbl">Pending</div>
         </div>
         <div class="stat-item">
-          <div class="stat-num">1</div>
+          <div class="stat-num">83</div>
           <div class="stat-lbl">Resolved</div>
         </div>
       </div>
     </div>
 
-   
+    <!-- Right: login form -->
+    <div class="right">
+      <div class="form-card">
+
+        <div class="form-title">Admin login</div>
+        <div class="form-sub">Sign in to your admin account</div>
+
+              <form id="loginForm" novalidate>
+
+          <div class="field">
+            <label for="email">Email address</label>
+            <div class="input-wrap">
+              <input type="email" id="email" name="email"
+                     placeholder="admin@ecotrack.com" autocomplete="email"/>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="password">Password</label>
+            <div class="input-wrap">
+              <input type="password" id="password" name="password"
+                     placeholder="••••••••" autocomplete="current-password"/>
+            </div>
+          </div>
+
+          <div class="row-between">
+            <label class="check-label">
+              <input type="checkbox" name="remember"/> Remember me
+            </label>
+          </div>
+
+          <button type="submit" class="btn-login">Login</button>
+
+        </form>
+
+        <div class="form-footer">
+          EcoTrack Admin &nbsp;·&nbsp; v1.0 &nbsp;·&nbsp; © 2025
+        </div>
+
+      </div>
+    </div>
+
   </div>
 
 </body>
