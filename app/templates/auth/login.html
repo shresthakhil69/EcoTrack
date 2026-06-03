@@ -6,6 +6,16 @@
   <title>EcoTrack – Login</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
   <style>
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 22px;
+      font-size: 13px;
+    }
+
+    .row label { margin: 0; display: flex; align-items: center; gap: 6px; cursor: pointer; }
+    .row a { color: var(--green-mid); text-decoration: none; font-weight: 500; }
     .right h1 {
       font-family: 'Playfair Display', serif;
       font-size: 28px;
@@ -31,6 +41,7 @@
       position: relative;
       margin-bottom: 18px;
     }
+    
 
     .input-wrap svg {
       position: absolute;
@@ -40,7 +51,6 @@
       width: 16px; height: 16px;
       pointer-events: none;
     }
-
     input[type="email"],
     input[type="password"] {
       width: 100%;
@@ -212,6 +222,10 @@
         <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
       </svg>
       <input type="password" id="password" placeholder="••••••••"/>
+    </div>
+    <div class="row">
+      <label><input type="checkbox"/> Remember me</label>
+      <a href="#">Forgot Password?</a>
     </div>
   </div>
 
