@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
-from database import Database
+from app.models.database import Database
 from flask_bcrypt import Bcrypt
 
 bcrypt = Bcrypt()
@@ -16,7 +16,7 @@ def register():
 
         db = Database()
         cursor = db.get_cursor()
-        cursor.execute("INSERT INTO users (name, email, password) VALUES (%s, %s, %s)",
+        cursor.execute("INSERT INTO users (name, email, password) V-ALUES (%s, %s, %s)",
                       (name, email, hashed_password))
         db.commit()
         db.close()
