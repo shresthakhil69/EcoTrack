@@ -6,6 +6,36 @@
   <title>EcoTrack – Smart Waste Management</title>
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet">
   <style>
+    /* SERVICES */
+    .services {
+      background: linear-gradient(180deg,#040f07 0%,#061a10 100%);
+      padding: 90px 60px; position: relative;
+    }
+    .services::before {
+      content: ""; position: absolute; inset: 0;
+      background: repeating-linear-gradient(90deg,rgba(57,231,95,0.02) 0px,rgba(57,231,95,0.02) 1px,transparent 1px,transparent 60px);
+      pointer-events: none;
+    }
+    .section-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 3px; color: var(--green); text-transform: uppercase; margin-bottom: 10px; }
+    .section-title { font-family: "Barlow Condensed", sans-serif; font-size: 46px; font-weight: 900; color: var(--white); margin-bottom: 48px; }
+    .section-title span { color: var(--green); }
+    .services-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+    .svc-card {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(57,231,95,0.12);
+      border-radius: 12px; padding: 32px 28px;
+      transition: border-color 0.3s, transform 0.3s, background 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .svc-card::before {
+      content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg,var(--green3),var(--green));
+      transform: scaleX(0); transform-origin: left; transition: transform 0.3s;
+    }
+    .svc-card:hover { border-color: rgba(57,231,95,0.4); background: rgba(57,231,95,0.05); transform: translateY(-4px); }
+    .svc-card:hover::before { transform: scaleX(1); }
+    .svc-icon { font-size: 36px; margin-bottom: 16px; display: block; }
+    .svc-title { font-size: 18px; font-weight: 700; color: var(--white); margin-bottom: 10px; }
+    .svc-desc { font-size: 14px; color: var(--gray); line-height: 1.65; }
     /* HERO */
     .hero {
       min-height: 100vh;
@@ -178,6 +208,33 @@
     </p>
     <div class="hero-btns">
       <a href="/login" class="hero-btn">Login</a>
+    </div>
+  </div>
+</section>
+<!-- SERVICES -->
+<section class="services" id="services">
+  <p class="section-eyebrow">What We Offer</p>
+  <h2 class="section-title">Our <span>Services</span></h2>
+  <div class="services-grid">
+    <div class="svc-card">
+      <span class="svc-icon">🗑️</span>
+      <div class="svc-title">Smart Waste Reporting</div>
+      <p class="svc-desc">Users can quickly report garbage issues (overflowing bins, illegal dumping, missed pickup) using photos and location.</p>
+    </div>
+    <div class="svc-card">
+      <span class="svc-icon">📍</span>
+      <div class="svc-title">Real-Time Waste Collection Tracking</div>
+      <p class="svc-desc">Show live status of garbage trucks and collection routes so users know when waste will be picked up.</p>
+    </div>
+    <div class="svc-card">
+      <span class="svc-icon">🗺️</span>
+      <div class="svc-title">Smart Bin Locator</div>
+      <p class="svc-desc">Help users find nearest recycling bins, segregation points, and public waste stations on a map.</p>
+    </div>
+    <div class="svc-card">
+      <span class="svc-icon">🎁</span>
+      <div class="svc-title">Reward & Incentive System</div>
+      <p class="svc-desc">Users earn points or rewards for proper waste disposal, recycling, and reporting issues.</p>
     </div>
   </div>
 </section>
