@@ -1,14 +1,37 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EcoTrack – Register</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-{% block title %}Register - EcoTrack{% endblock %}
+    :root {
+      --green-dark:  #1a5c35;
+      --green-mid:   #2e8b57;
+      --green-light: #e8f5ee;
+      --text:        #1a1a1a;
+      --muted:       #6b7280;
+      --border:      #d1d5db;
+    }
 
-{% block content %}
-    <h1>Register 🌱</h1>
-    <form method="POST">
-        <input type="text" placeholder="Full Name" name="name"><br><br>
-        <input type="email" placeholder="Email" name="email"><br><br>
-        <input type="password" placeholder="Password" name="password"><br><br>
-        <button type="submit">Register</button>
-    </form>
-    <p>Already have an account? <a href="/login">Login</a></p>
-{% endblock %}
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f0f4f1;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .card {
+      display: flex;
+      width: min(880px, 96vw);
+      min-height: 580px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,.13);
+      background: #fff;
+    }
