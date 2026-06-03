@@ -6,6 +6,17 @@
   <title>EcoTrack – Register</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
   <style>
+    .brand-logo {
+  width: 40px;   /* adjust size */
+  height: 40px;
+  object-fit: contain;
+}
+
+.brand-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
@@ -203,7 +214,9 @@
   <div class="left">
     <div class="left-content">
       <a href="/" class="brand">
-        <div class="brand-icon">🌿</div>
+        <div class="brand-icon">
+  <img src="/static/images/logo.png" alt="EcoTrack Logo" class="brand-logo">
+</div>
         <span class="brand-name">EcoTrack</span>
       </a>
       <div class="left-caption">
