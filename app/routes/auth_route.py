@@ -53,3 +53,8 @@ def login():
 def logout():
     session.clear()
     return redirect(url_for("auth.login"))
+
+
+@auth.route('/admin/login')
+def admin_login():
+      return render_template('admin/login.html')
