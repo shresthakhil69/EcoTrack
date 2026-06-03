@@ -6,6 +6,17 @@
   <title>EcoTrack – Login</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
   <style>
+    .brand-logo {
+  width: 40px;   /* adjust size */
+  height: 40px;
+  object-fit: contain;
+}
+
+.brand-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
     .register {
       text-align: center;
       font-size: 13px;
@@ -241,18 +252,21 @@
 <div class="card">
 
   <!-- LEFT -->
-  <div class="left"> 
-      <div class="left-content">
-      <a href="/" class="brand">
-        <div class="brand-icon">🌿</div>
-        <span class="brand-name">EcoTrack</span>
-      </a>
-      <div class="left-caption">
-        <h2>Keep Your City Clean</h2>
-        <p>Smart recycling, smarter cities.<br/>Every action counts.</p>
+<div class="left">
+  <div class="left-content">
+    <a href="/" class="brand">
+      <div class="brand-icon">
+        <img src="/static/images/logo.png" alt="EcoTrack Logo" class="brand-logo">
       </div>
+      <span class="brand-name">EcoTrack</span>
+    </a>
+
+    <div class="left-caption">
+      <h2>Keep Your City Clean</h2>
+      <p>Smart recycling, smarter cities.<br>Every action counts.</p>
     </div>
   </div>
+</div>
 
   <!-- RIGHT (empty for now) -->
   <div class="right">
