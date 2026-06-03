@@ -20,8 +20,62 @@
     * { margin:0; padding:0; box-sizing:border-box; }
     html { scroll-behavior: smooth; }
     body { background: #040f07; font-family: "Barlow", sans-serif; }
+
+    /* PRELOADER */
+    #preloader {
+      position: fixed; inset: 0; width: 100%; height: 100vh;
+      background: radial-gradient(circle at top right, rgba(57,231,95,0.15), transparent 40%),
+        linear-gradient(160deg,#040f07 0%,#061a10 35%,#082010 60%,#040e07 100%);
+      display: flex; justify-content: center; align-items: center;
+      z-index: 999999; transition: opacity 0.6s ease;
+    }
+    .preloader-content { text-align: center; }
+    .loader-ring {
+      width: 120px; height: 120px;
+      border: 4px solid rgba(57,231,95,0.15);
+      border-top: 4px solid #39e75f;
+      border-radius: 50%;
+      animation: spin 1.5s linear infinite;
+      margin: auto; position: relative;
+    }
+    .loader-ring::before {
+      content: "♻"; position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 52px; color: #39e75f;
+    }
+    .loader-text {
+      margin-top: 28px; font-size: 34px; font-weight: 900;
+      letter-spacing: 4px; color: white;
+      font-family: "Barlow Condensed", sans-serif;
+    }
+    .loader-sub { margin-top: 10px; color: #8ba89a; letter-spacing: 2px; font-size: 13px; text-transform: uppercase; }
+    .loading-bar { width: 240px; height: 5px; background: rgba(255,255,255,0.08); border-radius: 10px; margin: 24px auto 0; overflow: hidden; }
+    .loading-progress { width: 0%; height: 100%; background: linear-gradient(90deg,#39e75f,#2db84a); animation: loading 2s linear forwards; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+    @keyframes loading { 100% { width: 100%; } }
   </style>
 </head>
 <body>
+
+<!-- PRELOADER -->
+<div id="preloader">
+  <div class="preloader-content">
+    <div class="loader-ring"></div>
+    <div class="loader-text">ECOTRACK</div>
+    <div class="loader-sub">Smart Waste Management System</div>
+    <div class="loading-bar"><div class="loading-progress"></div></div>
+  </div>
+</div>
+
+<script>
+  window.addEventListener("load", function(){
+    setTimeout(function(){
+      const preloader = document.getElementById("preloader");
+      preloader.style.opacity = "0";
+      setTimeout(function(){ preloader.style.display = "none"; }, 600);
+    }, 2000);
+  });
+</script>
+
 </body>
 </html>
