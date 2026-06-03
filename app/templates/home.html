@@ -6,6 +6,57 @@
   <title>EcoTrack – Smart Waste Management</title>
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet">
   <style>
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      padding-top: var(--nav-height);
+      position: relative; overflow: hidden;
+      display: flex; align-items: center;
+    }
+    .hero-bg-img {
+      position: absolute; inset: 0;
+      background-image: url("your-hero-image.jpg");
+      background-size: cover;
+      background-position: center 40%;
+      background-repeat: no-repeat;
+      z-index: 0;
+    }
+    .hero-bg-overlay {
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(90deg, rgba(4,15,7,0.88) 0%, rgba(4,15,7,0.65) 50%, rgba(4,15,7,0.3) 100%),
+        linear-gradient(180deg, rgba(4,15,7,0.35) 0%, transparent 50%, rgba(4,15,7,0.6) 100%);
+      z-index: 1;
+    }
+    .hero-content {
+      position: relative; z-index: 2; padding: 0 64px; max-width: 600px;
+      animation: fadeInLeft 0.9s ease both;
+    }
+    @keyframes fadeInLeft { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: translateX(0); } }
+    .hero-eyebrow { font-size: 14px; color: var(--gray); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px; }
+    .hero-title {
+      font-family: "Barlow Condensed", sans-serif;
+      font-size: clamp(50px,7vw,80px); font-weight: 900; line-height: 1;
+      color: var(--white); margin-bottom: 24px; text-transform: uppercase;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+    }
+    .hero-title .g { color: var(--green); }
+    .hero-subtitle {
+      font-size: 17px; color: #c0d8c5; margin-bottom: 44px; line-height: 1.6; max-width: 440px;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.6);
+    }
+    .hero-subtitle .highlight { color: var(--green); font-weight: 700; }
+    .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+    .hero-btn {
+      display: inline-block; padding: 15px 44px;
+      background: linear-gradient(135deg,var(--green2),var(--green3));
+      border: none; border-radius: 4px;
+      font-size: 16px; font-weight: 700; letter-spacing: 1px;
+      cursor: pointer; text-decoration: none; font-family: "Barlow", sans-serif;
+      color: white; box-shadow: 0 4px 24px rgba(45,184,74,0.4);
+      transition: opacity 0.25s;
+    }
+    .hero-btn:hover { opacity: 0.88; }
     /* NAVBAR */
     nav {
       position: fixed; top: 0; left: 0; right: 0;
@@ -115,7 +166,21 @@
   </ul>
   <button class="nav-cta">Admin</button>
 </nav>
-
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-img"></div>
+  <div class="hero-bg-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">We Provide</p>
+    <h1 class="hero-title">Smart <span class="g">Waste</span><br>Management<br>Solutions</h1>
+    <p class="hero-subtitle">
+      You've got <span class="highlight">WASTE</span>, we've got <span class="highlight">SOLUTIONS</span>!
+    </p>
+    <div class="hero-btns">
+      <a href="/login" class="hero-btn">Login</a>
+    </div>
+  </div>
+</section>
 <script>
   window.addEventListener("load", function(){
     setTimeout(function(){
