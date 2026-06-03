@@ -64,6 +64,19 @@
       width: 36px; height: 36px;
       background: var(--green-600);
       border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .left-logo-icon svg { width: 20px; height: 20px; fill: var(--white); }
+
+    /* field icons */
+    .input-wrap { position: relative; }
+    .input-wrap svg {
+      position: absolute; left: 14px; top: 50%;
+      transform: translateY(-50%);
+      width: 16px; height: 16px;
+      stroke: var(--gray-500); fill: none;
+      stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+      pointer-events: none;
     }
     .left-logo-name { font-size: 18px; font-weight: 600; color: var(--white); }
 
@@ -114,7 +127,7 @@
       background: var(--gray-900);
       border: 1px solid rgba(255,255,255,.08);
       border-radius: 8px;
-      padding: 11px 14px;
+      padding: 11px 14px 11px 40px;
       font-family: var(--font); font-size: 14px; color: var(--white);
       outline: none; transition: border-color .2s;
     }
@@ -176,7 +189,11 @@
     <!-- Left: branding panel -->
     <div class="left">
       <div class="left-logo">
-        <div class="left-logo-icon"></div>
+        <div class="left-logo-icon">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 3C21 3 13 3 8 8C3 13 3 21 3 21C3 21 7 17 10 15C10 15 9 19 12 21C12 21 14 14 21 3Z"/>
+        </svg>
+      </div>
         <span class="left-logo-name">EcoTrack</span>
       </div>
 
@@ -191,15 +208,15 @@
 
       <div class="left-stats">
         <div class="stat-item">
-          <div class="stat-num">1</div>
+          <div class="stat-num">128</div>
           <div class="stat-lbl">Total reports</div>
         </div>
         <div class="stat-item">
-          <div class="stat-num">1</div>
+          <div class="stat-num">45</div>
           <div class="stat-lbl">Pending</div>
         </div>
         <div class="stat-item">
-          <div class="stat-num">1</div>
+          <div class="stat-num">83</div>
           <div class="stat-lbl">Resolved</div>
         </div>
       </div>
@@ -221,6 +238,7 @@
           <div class="field">
             <label for="email">Email address</label>
             <div class="input-wrap">
+              <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
               <input type="email" id="email" name="email"
                      placeholder="admin@ecotrack.com" autocomplete="email"/>
             </div>
@@ -229,6 +247,7 @@
           <div class="field">
             <label for="password">Password</label>
             <div class="input-wrap">
+              <svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
               <input type="password" id="password" name="password"
                      placeholder="••••••••" autocomplete="current-password"/>
             </div>
