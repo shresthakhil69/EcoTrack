@@ -6,6 +6,38 @@
   <title>EcoTrack – Smart Waste Management</title>
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet">
   <style>
+    /* ABOUT */
+    .about { background: linear-gradient(135deg,#f0f7f0 0%,#e8f5e8 100%); color: #111; padding: 90px 80px 70px; }
+    .about-top { display: flex; align-items: center; gap: 70px; margin-bottom: 60px; }
+    .about-leaf { flex-shrink: 0; width: 300px; height: 300px; }
+    .leaf-shape {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg,#4caf50 30%,#81c784 100%);
+      border-radius: 0% 100% 0% 100% / 0% 100% 0% 100%;
+      position: relative; overflow: hidden;
+    }
+    .about-text { flex: 1; }
+    .about-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #888; margin-bottom: 12px; }
+    .about-title { font-family: "Barlow Condensed", sans-serif; font-size: 50px; font-weight: 900; color: #111; margin-bottom: 24px; line-height: 1; }
+    .about-title span { color: #2db84a; }
+    .about-para { font-size: 16px; color: #444; line-height: 1.7; margin-bottom: 14px; max-width: 560px; }
+    .about-btn {
+      display: inline-block; margin-top: 20px; padding: 15px 50px;
+      background: #0a1628; color: white; border: none; border-radius: 6px;
+      font-size: 15px; font-weight: 700; cursor: pointer; text-decoration: none;
+      font-family: "Barlow", sans-serif; transition: background 0.2s;
+    }
+    .about-btn:hover { background: #1a3050; }
+    .about-divider { border: none; border-top: 1.5px solid #ddd; margin-bottom: 55px; }
+    .about-bottom { display: flex; gap: 50px; }
+    .about-card { flex: 1; display: flex; gap: 20px; align-items: flex-start; }
+    .card-icon {
+      flex-shrink: 0; width: 68px; height: 68px;
+      border: 2px solid #2db84a; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center; font-size: 28px; color: #2db84a;
+    }
+    .card-body h3 { font-size: 21px; font-weight: 700; color: #111; margin-bottom: 10px; }
+    .card-body p { font-size: 14px; color: #555; line-height: 1.65; }
     /* SERVICES */
     .services {
       background: linear-gradient(180deg,#040f07 0%,#061a10 100%);
@@ -208,6 +240,36 @@
     </p>
     <div class="hero-btns">
       <a href="/login" class="hero-btn">Login</a>
+    </div>
+  </div>
+</section>
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-top">
+    <div class="about-leaf">
+      <div class="leaf-shape"></div>
+    </div>
+    <div class="about-text">
+      <p class="about-eyebrow">About Us</p>
+      <h2 class="about-title">The Minds Behind <span>EcoTrack</span></h2>
+      <p class="about-para">We are a team of five tech students from Softwarica College of IT and E-commerce who looked at traditional waste management systems and saw an opportunity for innovation. Driven by a shared vision of environmental sustainability and digital transformation, we engineered EcoTrack.</p>
+      <p class="about-para">Our platform isn't just about collecting garbage—it's about optimizing routes, tracking live bin data, reducing carbon footprints, and giving municipalities and businesses the data they need to keep our spaces vibrant and clean.</p>
+      <a href="#" class="about-btn">Read More</a>
+    </div>
+  </div>
+  <hr class="about-divider"/>
+  <div class="about-bottom">
+    <div class="about-card">
+      <div class="card-icon">🏆</div>
+      <div class="card-body"><h3>Our Vision</h3><p>A future where waste transforms into smart solutions, driving digital transformation for cleaner communities and a more vibrant urban landscape across the globe.</p></div>
+    </div>
+    <div class="about-card">
+      <div class="card-icon">📈</div>
+      <div class="card-body"><h3>Our Mission</h3><p>Revolutionizing waste management with smart solutions, fostering digital transformation and sustainability — empowering communities for cleaner, vibrant urban spaces.</p></div>
+    </div>
+    <div class="about-card">
+      <div class="card-icon">🌍</div>
+      <div class="card-body"><h3>Projected Impact</h3><p>EcoTrack's IoT infrastructure is capable of boosting local collection efficiency up to 98% and reducing traditional fleet management overhead significantly.</p></div>
     </div>
   </div>
 </section>
