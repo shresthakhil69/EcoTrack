@@ -145,6 +145,15 @@
     .btn-login:hover  { background: var(--green-700); }
     .btn-login:active { transform: scale(.98); }
 
+    /* error */
+    .error-msg {
+      display: none;
+      background: rgba(226,75,74,.12);
+      border: 1px solid rgba(226,75,74,.3);
+      border-radius: 6px; padding: 10px 14px;
+      font-size: 13px; color: #F09595; margin-bottom: 18px;
+    }
+    .error-msg.show { display: block; }
 
     /* footer */
     .form-footer {
@@ -182,15 +191,15 @@
 
       <div class="left-stats">
         <div class="stat-item">
-          <div class="stat-num">128</div>
+          <div class="stat-num">1</div>
           <div class="stat-lbl">Total reports</div>
         </div>
         <div class="stat-item">
-          <div class="stat-num">45</div>
+          <div class="stat-num">1</div>
           <div class="stat-lbl">Pending</div>
         </div>
         <div class="stat-item">
-          <div class="stat-num">83</div>
+          <div class="stat-num">1</div>
           <div class="stat-lbl">Resolved</div>
         </div>
       </div>
@@ -203,7 +212,11 @@
         <div class="form-title">Admin login</div>
         <div class="form-sub">Sign in to your admin account</div>
 
-              <form id="loginForm" novalidate>
+        <div class="error-msg" id="errorMsg">
+          Invalid email or password. Please try again.
+        </div>
+
+        <form id="loginForm" novalidate>
 
           <div class="field">
             <label for="email">Email address</label>
