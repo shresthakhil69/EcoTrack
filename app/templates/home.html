@@ -1,10 +1,397 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EcoTrack – Smart Waste Management</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    .logo-icon-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-{% block title %}Home - EcoTrack{% endblock %}
+.logo-image {
+  width: 40px;   /* adjust as needed */
+  height: 40px;  /* adjust as needed */
+  object-fit: contain;
+}
+    /* CONTACT */
+    .contact {
+      padding: 90px 60px;
+      background: linear-gradient(180deg, #061a10 0%, #041008 100%);
+      border-top: 1px solid rgba(57,231,95,0.1);
+    }
+    .contact-container { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; margin-top: 40px; }
+    .contact-info { display: flex; flex-direction: column; gap: 25px; }
+    .contact-box {
+      display: flex; gap: 20px; align-items: flex-start;
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(57,231,95,0.1);
+      padding: 24px; border-radius: 12px; transition: border-color 0.3s, background 0.3s;
+    }
+    .contact-box:hover { border-color: rgba(57,231,95,0.35); background: rgba(57,231,95,0.04); }
+    .contact-icon {
+      width: 60px; height: 60px; border-radius: 10px;
+      background: rgba(57,231,95,0.08);
+      display: flex; align-items: center; justify-content: center; font-size: 26px; flex-shrink: 0;
+    }
+    .contact-box h3 { margin-bottom: 8px; color: var(--white); font-size: 16px; font-weight: 700; }
+    .contact-box p { color: var(--gray); font-size: 14px; }
 
-{% block content %}
-    <h1>Welcome to EcoTrack 🌱</h1>
-    <p>Smart Waste Management System for Kathmandu</p>
-    <a href="/register">Get Started</a> | 
-    <a href="/login">Login</a>
-{% endblock %}
+    /* FOOTER */
+    footer {
+      background: #020b05; border-top: 1px solid rgba(57,231,95,0.12);
+      padding: 40px 60px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-logo { font-family: "Barlow Condensed", sans-serif; font-size: 22px; font-weight: 900; color: var(--white); letter-spacing: 2px; }
+    .footer-logo span { color: var(--green); }
+    .footer-tagline { font-size: 13px; color: var(--gray); margin-top: 4px; }
+    .footer-links { display: flex; gap: 28px; list-style: none; }
+    .footer-links a { color: var(--gray); text-decoration: none; font-size: 14px; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--green); }
+    .footer-copy { font-size: 13px; color: #445544; }
+    /* ABOUT */
+    .about { background: linear-gradient(135deg,#f0f7f0 0%,#e8f5e8 100%); color: #111; padding: 90px 80px 70px; }
+    .about-top { display: flex; align-items: center; gap: 70px; margin-bottom: 60px; }
+    .about-leaf { flex-shrink: 0; width: 300px; height: 300px; }
+    .leaf-shape {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg,#4caf50 30%,#81c784 100%);
+      border-radius: 0% 100% 0% 100% / 0% 100% 0% 100%;
+      position: relative; overflow: hidden;
+    }
+    .about-text { flex: 1; }
+    .about-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #888; margin-bottom: 12px; }
+    .about-title { font-family: "Barlow Condensed", sans-serif; font-size: 50px; font-weight: 900; color: #111; margin-bottom: 24px; line-height: 1; }
+    .about-title span { color: #2db84a; }
+    .about-para { font-size: 16px; color: #444; line-height: 1.7; margin-bottom: 14px; max-width: 560px; }
+    .about-btn {
+      display: inline-block; margin-top: 20px; padding: 15px 50px;
+      background: #0a1628; color: white; border: none; border-radius: 6px;
+      font-size: 15px; font-weight: 700; cursor: pointer; text-decoration: none;
+      font-family: "Barlow", sans-serif; transition: background 0.2s;
+    }
+    .about-btn:hover { background: #1a3050; }
+    .about-divider { border: none; border-top: 1.5px solid #ddd; margin-bottom: 55px; }
+    .about-bottom { display: flex; gap: 50px; }
+    .about-card { flex: 1; display: flex; gap: 20px; align-items: flex-start; }
+    .card-icon {
+      flex-shrink: 0; width: 68px; height: 68px;
+      border: 2px solid #2db84a; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center; font-size: 28px; color: #2db84a;
+    }
+    .card-body h3 { font-size: 21px; font-weight: 700; color: #111; margin-bottom: 10px; }
+    .card-body p { font-size: 14px; color: #555; line-height: 1.65; }
+    /* SERVICES */
+    .services {
+      background: linear-gradient(180deg,#040f07 0%,#061a10 100%);
+      padding: 90px 60px; position: relative;
+    }
+    .services::before {
+      content: ""; position: absolute; inset: 0;
+      background: repeating-linear-gradient(90deg,rgba(57,231,95,0.02) 0px,rgba(57,231,95,0.02) 1px,transparent 1px,transparent 60px);
+      pointer-events: none;
+    }
+    .section-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 3px; color: var(--green); text-transform: uppercase; margin-bottom: 10px; }
+    .section-title { font-family: "Barlow Condensed", sans-serif; font-size: 46px; font-weight: 900; color: var(--white); margin-bottom: 48px; }
+    .section-title span { color: var(--green); }
+    .services-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+    .svc-card {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(57,231,95,0.12);
+      border-radius: 12px; padding: 32px 28px;
+      transition: border-color 0.3s, transform 0.3s, background 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .svc-card::before {
+      content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg,var(--green3),var(--green));
+      transform: scaleX(0); transform-origin: left; transition: transform 0.3s;
+    }
+    .svc-card:hover { border-color: rgba(57,231,95,0.4); background: rgba(57,231,95,0.05); transform: translateY(-4px); }
+    .svc-card:hover::before { transform: scaleX(1); }
+    .svc-icon { font-size: 36px; margin-bottom: 16px; display: block; }
+    .svc-title { font-size: 18px; font-weight: 700; color: var(--white); margin-bottom: 10px; }
+    .svc-desc { font-size: 14px; color: var(--gray); line-height: 1.65; }
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      padding-top: var(--nav-height);
+      position: relative; overflow: hidden;
+      display: flex; align-items: center;
+    }
+    .hero-bg-img {
+      position: absolute; inset: 0;
+      background-image: url("/static/images/homepage.png");      background-size: cover;
+      background-position: center 40%;
+      background-repeat: no-repeat;
+      z-index: 0;
+    }
+    .hero-bg-overlay {
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(90deg, rgba(4,15,7,0.88) 0%, rgba(4,15,7,0.65) 50%, rgba(4,15,7,0.3) 100%),
+        linear-gradient(180deg, rgba(4,15,7,0.35) 0%, transparent 50%, rgba(4,15,7,0.6) 100%);
+      z-index: 1;
+    }
+    .hero-content {
+      position: relative; z-index: 2; padding: 0 64px; max-width: 600px;
+      animation: fadeInLeft 0.9s ease both;
+    }
+    @keyframes fadeInLeft { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: translateX(0); } }
+    .hero-eyebrow { font-size: 14px; color: var(--gray); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px; }
+    .hero-title {
+      font-family: "Barlow Condensed", sans-serif;
+      font-size: clamp(50px,7vw,80px); font-weight: 900; line-height: 1;
+      color: var(--white); margin-bottom: 24px; text-transform: uppercase;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+    }
+    .hero-title .g { color: var(--green); }
+    .hero-subtitle {
+      font-size: 17px; color: #c0d8c5; margin-bottom: 44px; line-height: 1.6; max-width: 440px;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.6);
+    }
+    .hero-subtitle .highlight { color: var(--green); font-weight: 700; }
+    .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+    .hero-btn {
+      display: inline-block; padding: 15px 44px;
+      background: linear-gradient(135deg,var(--green2),var(--green3));
+      border: none; border-radius: 4px;
+      font-size: 16px; font-weight: 700; letter-spacing: 1px;
+      cursor: pointer; text-decoration: none; font-family: "Barlow", sans-serif;
+      color: white; box-shadow: 0 4px 24px rgba(45,184,74,0.4);
+      transition: opacity 0.25s;
+    }
+    .hero-btn:hover { opacity: 0.88; }
+    /* NAVBAR */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--nav-height);
+      background: rgba(6,26,16,0.92);
+      backdrop-filter: blur(14px);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px; z-index: 200;
+      border-bottom: 1px solid rgba(57,231,95,0.15);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-icon-box {
+      width: 38px; height: 38px;
+      background: linear-gradient(135deg,var(--green2),var(--dark3));
+      border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px;
+    }
+    .logo-text { display: flex; flex-direction: column; line-height: 1; }
+    .logo-name { font-size: 20px; font-weight: 900; color: var(--white); letter-spacing: 2px; font-family: "Barlow Condensed", sans-serif; }
+    .logo-tagline { font-size: 9px; color: var(--gray); letter-spacing: 1.5px; text-transform: uppercase; }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a { text-decoration: none; font-size: 15px; font-weight: 600; color: #ccd8cc; letter-spacing: 0.3px; transition: color 0.2s; }
+    .nav-links a.active { color: var(--green); }
+    .nav-links a:hover { color: var(--green); }
+    .nav-cta {
+      background: linear-gradient(135deg,var(--green2),var(--green3));
+      color: white; border: none; padding: 12px 24px; border-radius: 6px;
+      font-size: 14px; font-weight: 700; cursor: pointer; letter-spacing: 0.5px;
+      transition: opacity 0.2s; font-family: "Barlow", sans-serif;
+    }
+    .nav-cta:hover { opacity: 0.85; }
+    :root {
+      --dark:       #061a10;
+      --dark2:      #0b2a18;
+      --dark3:      #0e3320;
+      --green:      #39e75f;
+      --green2:     #2db84a;
+      --green3:     #1a8c32;
+      --white:      #ffffff;
+      --gray:       #8ba89a;
+      --nav-height: 72px;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: #040f07; font-family: "Barlow", sans-serif; }
+
+    /* PRELOADER */
+    #preloader {
+      position: fixed; inset: 0; width: 100%; height: 100vh;
+      background: radial-gradient(circle at top right, rgba(57,231,95,0.15), transparent 40%),
+        linear-gradient(160deg,#040f07 0%,#061a10 35%,#082010 60%,#040e07 100%);
+      display: flex; justify-content: center; align-items: center;
+      z-index: 999999; transition: opacity 0.6s ease;
+    }
+    .preloader-content { text-align: center; }
+    .loader-ring {
+      width: 120px; height: 120px;
+      border: 4px solid rgba(57,231,95,0.15);
+      border-top: 4px solid #39e75f;
+      border-radius: 50%;
+      animation: spin 1.5s linear infinite;
+      margin: auto; position: relative;
+    }
+    .loader-ring::before {
+      content: "♻"; position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 52px; color: #39e75f;
+    }
+    .loader-text {
+      margin-top: 28px; font-size: 34px; font-weight: 900;
+      letter-spacing: 4px; color: white;
+      font-family: "Barlow Condensed", sans-serif;
+    }
+    .loader-sub { margin-top: 10px; color: #8ba89a; letter-spacing: 2px; font-size: 13px; text-transform: uppercase; }
+    .loading-bar { width: 240px; height: 5px; background: rgba(255,255,255,0.08); border-radius: 10px; margin: 24px auto 0; overflow: hidden; }
+    .loading-progress { width: 0%; height: 100%; background: linear-gradient(90deg,#39e75f,#2db84a); animation: loading 2s linear forwards; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+    @keyframes loading { 100% { width: 100%; } }
+  </style>
+</head>
+<body>
+
+<!-- PRELOADER -->
+<div id="preloader">
+
+  <div class="preloader-content">
+    <div class="loader-ring"></div>
+    <div class="loader-text">ECOTRACK</div>
+    <div class="loader-sub">Smart Waste Management System</div>
+    <div class="loading-bar"><div class="loading-progress"></div></div>
+    
+  </div>
+</div>
+<!-- NAVBAR -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="logo-icon-box">
+      <img src="/static/images/logo.png" alt="EcoTrack Logo" class="logo-image">
+    </div>
+    <div class="logo-text">
+      <span class="logo-name">EcoTrack</span>
+      <span class="logo-tagline">Smart Waste Management</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#" class="active">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+
+  <a href="{{ url_for('auth.admin_login') }}" class="nav-cta">Admin</a>
+</nav>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-img"></div>
+  <div class="hero-bg-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">We Provide</p>
+    <h1 class="hero-title">Smart <span class="g">Waste</span><br>Management<br>Solutions</h1>
+    <p class="hero-subtitle">
+      You've got <span class="highlight">WASTE</span>, we've got <span class="highlight">SOLUTIONS</span>!
+    </p>
+    <div class="hero-btns">
+      <a href="/login" class="hero-btn">Login</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-top">
+    <div class="about-leaf">
+      <div class="leaf-shape"></div>
+    </div>
+    <div class="about-text">
+      <p class="about-eyebrow">About Us</p>
+      <h2 class="about-title">The Minds Behind <span>EcoTrack</span></h2>
+      <p class="about-para">We are a team of five tech students from Softwarica College of IT and E-commerce who looked at traditional waste management systems and saw an opportunity for innovation. Driven by a shared vision of environmental sustainability and digital transformation, we engineered EcoTrack.</p>
+      <p class="about-para">Our platform isn't just about collecting garbage—it's about optimizing routes, tracking live bin data, reducing carbon footprints, and giving municipalities and businesses the data they need to keep our spaces vibrant and clean.</p>
+      <a href="#" class="about-btn">Read More</a>
+    </div>
+  </div>
+  <hr class="about-divider"/>
+  <div class="about-bottom">
+    <div class="about-card">
+      <div class="card-icon">🏆</div>
+      <div class="card-body"><h3>Our Vision</h3><p>A future where waste transforms into smart solutions, driving digital transformation for cleaner communities and a more vibrant urban landscape across the globe.</p></div>
+    </div>
+    <div class="about-card">
+      <div class="card-icon">📈</div>
+      <div class="card-body"><h3>Our Mission</h3><p>Revolutionizing waste management with smart solutions, fostering digital transformation and sustainability — empowering communities for cleaner, vibrant urban spaces.</p></div>
+    </div>
+    <div class="about-card">
+      <div class="card-icon">🌍</div>
+      <div class="card-body"><h3>Projected Impact</h3><p>EcoTrack's IoT infrastructure is capable of boosting local collection efficiency up to 98% and reducing traditional fleet management overhead significantly.</p></div>
+    </div>
+  </div>
+</section>
+<!-- SERVICES -->
+<section class="services" id="services">
+  <p class="section-eyebrow">What We Offer</p>
+  <h2 class="section-title">Our <span>Services</span></h2>
+  <div class="services-grid">
+    <div class="svc-card">
+      <span class="svc-icon">🗑️</span>
+      <div class="svc-title">Smart Waste Reporting</div>
+      <p class="svc-desc">Users can quickly report garbage issues (overflowing bins, illegal dumping, missed pickup) using photos and location.</p>
+    </div>
+    <div class="svc-card">
+      <span class="svc-icon">📍</span>
+      <div class="svc-title">Real-Time Waste Collection Tracking</div>
+      <p class="svc-desc">Show live status of garbage trucks and collection routes so users know when waste will be picked up.</p>
+    </div>
+    <div class="svc-card">
+      <span class="svc-icon">🗺️</span>
+      <div class="svc-title">Smart Bin Locator</div>
+      <p class="svc-desc">Help users find nearest recycling bins, segregation points, and public waste stations on a map.</p>
+    </div>
+    <div class="svc-card">
+      <span class="svc-icon">🎁</span>
+      <div class="svc-title">Reward & Incentive System</div>
+      <p class="svc-desc">Users earn points or rewards for proper waste disposal, recycling, and reporting issues.</p>
+    </div>
+  </div>
+</section>
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <p class="section-eyebrow">Get In Touch</p>
+  <h2 class="section-title">Contact <span>EcoTrack</span></h2>
+  <div class="contact-container">
+    <div class="contact-info">
+      <div class="contact-box">
+        <div class="contact-icon">📍</div>
+        <div><h3>Address</h3><p>Kathmandu, Nepal</p></div>
+      </div>
+      <div class="contact-box">
+        <div class="contact-icon">📞</div>
+        <div><h3>Phone</h3><p>+977 9863477386</p></div>
+      </div>
+      <div class="contact-box">
+        <div class="contact-icon">📧</div>
+        <div><h3>Email</h3><p>akhilhero223@gmail.com</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo">ECO<span>TRACK</span></div>
+    <div class="footer-tagline">Smart Environmental Solutions</div>
+  </div>
+  <ul class="footer-links">
+    <li><a href="#">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 EcoTrack. All rights reserved.</div>
+</footer>
+<script>
+  window.addEventListener("load", function(){
+    setTimeout(function(){
+      const preloader = document.getElementById("preloader");
+      preloader.style.opacity = "0";
+      setTimeout(function(){ preloader.style.display = "none"; }, 600);
+    }, 2000);
+  });
+</script>
+
+</body>
+</html>
