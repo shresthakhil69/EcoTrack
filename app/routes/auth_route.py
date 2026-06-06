@@ -128,3 +128,12 @@ def verify_token():
         return jsonify({"success": False, "message": "Invalid token"}), 401
     except Exception as e:
         return jsonify({"success": False, "message": f"Server error: {str(e)}"}), 500
+@auth.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("auth.login"))
+
+
+@auth.route('/admin/login')
+def admin_login():
+      return render_template('admin/login.html')
