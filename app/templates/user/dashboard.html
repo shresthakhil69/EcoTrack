@@ -155,9 +155,7 @@
       </ul>
     </div>
 
-    <div class="logout-btn">
-      Logout
-    </div>
+    <div class="logout-btn" onclick="handleLogout()">Logout</div>
   </div>
 
   <div class="main">
@@ -215,6 +213,12 @@
       </table>
     </div>
   </div>
-
+<script>
+    function handleLogout() {
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('user');
+        window.location.href = '/login';
+    }
+</script>
 </body>
 </html>
