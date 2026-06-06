@@ -10,16 +10,16 @@
       
     <!-- NAVBAR -->
     <nav>
-        <a href="/">🌱 EcoTrack</a>
-        {% if session["user_id"] %}
-            <a href="/dashboard">Dashboard</a>
-            <a href="/logout">Logout</a>
-        {% else %}
-            <a href="/login">Login</a>
-            <a href="/register">Register</a>
-        {% endif %}
-    </nav>
+    <a href="/"> EcoTrack</a>
 
+    {% if session.get("user_id") %}
+        <a href="/dashboard">Dashboard</a>
+        <a href="/logout">Logout</a>
+    {% else %}
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+    {% endif %}
+</nav>
     <!-- FLASH MESSAGES -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}

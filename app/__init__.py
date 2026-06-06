@@ -14,6 +14,10 @@ from app.routes.auth_route import auth_bp
 app.register_blueprint(auth_bp)
 
 # HTML Routes
+@app.route("/")
+def home():
+    return render_template("home.html") 
+
 @app.route('/')
 def index():
     return render_template('base.html')
