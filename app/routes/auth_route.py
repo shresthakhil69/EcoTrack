@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify,session
 import jwt
 from datetime import datetime, timedelta
 import config
@@ -78,6 +78,10 @@ def login():
         
         if result['success']:
             # Generate JWT token
+            session["user_id"] = result["user_id"]
+            session["username"] = result["username"]
+            session["fullname"] = result.get("fullname")
+            
             token = jwt.encode({
                 'user_id': result['user_id'],
                 'username': result['username'],

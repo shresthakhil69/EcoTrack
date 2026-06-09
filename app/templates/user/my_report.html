@@ -1,0 +1,303 @@
+{% extends "base.html" %}
+
+{% block title %}My Reports | EcoTrack{% endblock %}
+
+{% block extra_styles %}
+<style>
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 25px;
+  }
+
+  .page-header h1 {
+    font-size: 34px;
+  }
+
+  .add-report-link {
+    background: #15803d;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 10px;
+    text-decoration: none;
+  }
+
+  .report-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+
+  .report-card {
+    display: flex;
+    gap: 30px;
+    background: white;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  }
+
+  .image-section {
+    flex: 1 1 320px;
+  }
+
+  .main-image,
+  .no-image-box {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 14px;
+  }
+
+  .no-image-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e5e7eb;
+    color: #555;
+    font-weight: bold;
+  }
+
+  .thumb-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .thumb,
+  .thumb-placeholder {
+    width: 70px;
+    height: 70px;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+
+  .thumb-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e5e7eb;
+    color: #555;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .details {
+    flex: 1 1 380px;
+  }
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+  }
+
+  .title {
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .status {
+    background: #fef3c7;
+    color: #b45309;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+    white-space: nowrap;
+  }
+
+  .status.resolved {
+    background: #dcfce7;
+    color: #166534;
+  }
+
+  .info-item {
+    margin-bottom: 20px;
+  }
+
+  .label {
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+
+  .value {
+    font-size: 16px;
+    color: #111;
+  }
+
+  .description {
+    line-height: 1.6;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    border: none;
+    padding: 14px 24px;
+    border-radius: 10px;
+    cursor: pointer;
+    color: white;
+    font-size: 15px;
+  }
+
+  .edit {
+    background: #15803d;
+  }
+
+  .delete {
+    background: #dc2626;
+  }
+
+  .empty-state {
+    background: white;
+    border-radius: 15px;
+    padding: 40px;
+    text-align: center;
+    color: #555;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  }
+
+  @media (max-width: 900px) {
+    .report-card {
+      flex-direction: column;
+    }
+
+    .page-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>My Reports</h1>
+  <a href="{{ url_for('report.reports') }}" class="add-report-link">Submit New Report</a>
+</div>
+
+<div class="report-layout">
+  {% if reports and reports|length > 0 %}
+    {% for rep in reports %}
+    <div class="report-card">
+      <div class="image-section">
+        {% if rep.image %}
+          <img src="{{ url_for('static', filename='uploads/' ~ rep.image) }}" class="main-image" alt="Report image">
+        {% else %}
+          <div class="no-image-box">No Image</div>
+        {% endif %}
+
+        <div class="thumb-row">
+          {% if rep.image %}
+            <img src="{{ url_for('static', filename='uploads/' ~ rep.image) }}" class="thumb" alt="Thumbnail">
+          {% else %}
+            <div class="thumb-placeholder">No Image</div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="details">
+        <div class="top">
+          <div class="title">{{ rep.waste_type or 'Report' }}</div>
+          <div class="status {{ 'resolved' if rep.status == 'Resolved' else '' }}">{{ rep.status or 'Pending' }}</div>
+        </div>
+
+        <div class="info-item">
+          <div class="label">Location</div>
+          <div class="value">{{ rep.location or 'Unknown' }}</div>
+        </div>
+
+        <div class="info-item">
+          <div class="label">Type</div>
+          <div class="value">{{ rep.waste_type or 'Unknown' }}</div>
+        </div>
+
+        <div class="info-item">
+          <div class="label">Reported on</div>
+          <div class="value">{{ rep.reported_on }}</div>
+        </div>
+
+        <div class="info-item">
+          <div class="label">Description</div>
+          <div class="value description">{{ rep.description or 'No description added.' }}</div>
+        </div>
+
+        <div class="buttons">
+          <button class="btn edit" type="button">Edit Report</button>
+          <form method="post" action="{{ url_for('my_report.delete_report') }}" style="display:inline; margin:0;">
+            <input type="hidden" name="report_id" value="{{ rep.id }}">
+            <button class="btn delete" type="submit">Delete Report</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <div class="empty-state">
+      <h2>No reports submitted yet.</h2>
+      <p>You can submit your first waste report from the Submit Report page.</p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.report-card').forEach((card) => {
+      const form = card.querySelector('form');
+      if (!form) return;
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        if (!confirm('Are you sure you want to delete this report?')) {
+          return;
+        }
+
+        const reportId = form.querySelector('input[name="report_id"]').value;
+
+        fetch(form.action, {
+          method: 'POST',
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: `report_id=${encodeURIComponent(reportId)}`
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data && data.success) {
+            card.remove();
+
+            const remaining = document.querySelectorAll('.report-card');
+            if (remaining.length === 0) {
+              const layout = document.querySelector('.report-layout');
+              layout.innerHTML = `
+                <div class="empty-state">
+                  <h2>No reports submitted yet.</h2>
+                  <p>You can submit your first waste report from the Submit Report page.</p>
+                </div>
+              `;
+            }
+          } else {
+            window.location.reload();
+          }
+        })
+        .catch(() => window.location.reload());
+      });
+    });
+  });
+</script>
+{% endblock %}

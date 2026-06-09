@@ -2,4 +2,4 @@ flask
 pymysql
 flask-bcrypt
 flask-login
-jwt
+PyJWT

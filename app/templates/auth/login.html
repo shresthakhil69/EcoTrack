@@ -550,9 +550,7 @@ async function handleLogin() {
 
 document.addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
 
-window.addEventListener('load', () => {
-    if (localStorage.getItem('authToken')) window.location.href = '/dashboard';
-});
+
 </script>
 </body>
 </html>

@@ -1,1 +1,1 @@
-from app.routes import auth_route, home_route
+# This file makes the routes folder a Python package.
