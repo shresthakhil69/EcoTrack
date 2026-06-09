@@ -1,5 +1,5 @@
 from flask import Flask, render_template, session, redirect, url_for
-from app.database import Database
+from app.models.database import Database
 import config
 
 app = Flask(__name__)
