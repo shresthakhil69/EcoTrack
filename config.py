@@ -1,4 +1,4 @@
-SECRET_KEY = "ecotrack-secret-key"
+SECRET_KEY = "random-secret-key"
 MYSQL_HOST = "localhost"
 MYSQL_USER = "root"
 MYSQL_PASSWORD = "123hijorati2.0"
