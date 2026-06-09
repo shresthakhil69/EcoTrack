@@ -4,8 +4,215 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>EcoTrack — Manage Reports</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/reports.css') }}"/>
+
 </head>
+<style>
+/* ── Variables ── */
+:root {
+  --green-900: #04342C;
+  --green-700: #0F6E56;
+  --green-600: #1D9E75;
+  --green-400: #5DCAA5;
+  --amber-bg:  #FAEEDA; --amber-tx: #854F0B;
+  --blue-bg:   #E6F1FB; --blue-tx:  #185FA5;
+  --red-bg:    #FCEBEB; --red-tx:   #A32D2D;
+  --purple-bg: #EEEDFE; --purple-tx:#3C3489;
+  --gr-bg:     #EAF3DE; --gr-tx:    #3B6D11;
+  --gray-900:  #1A1A18;
+  --gray-800:  #2C2C2A;
+  --gray-700:  #3A3A38;
+  --gray-500:  #5F5E5A;
+  --gray-300:  #B4B2A9;
+  --white:     #FFFFFF;
+  --font: 'DM Sans', sans-serif;
+  --mono: 'DM Mono', monospace;
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; font-family: var(--font); background: var(--gray-900); color: var(--white); }
+
+/* ── App shell ── */
+.app { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+
+/* ── Sidebar ── */
+.sidebar {
+  background: var(--green-900);
+  display: flex; flex-direction: column;
+  position: sticky; top: 0; height: 100vh;
+}
+.sidebar-logo {
+  padding: 24px 20px 20px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.logo-name { font-size: 16px; font-weight: 600; color: var(--white); }
+.logo-sub  { font-size: 10px; color: rgba(255,255,255,.4); font-family: var(--mono); margin-top: 2px; }
+
+.nav { padding: 16px 0; flex: 1; }
+.nav-section {
+  font-size: 10px; font-weight: 500; letter-spacing: .08em;
+  color: rgba(255,255,255,.3); text-transform: uppercase;
+  padding: 0 20px; margin-bottom: 6px;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 20px; font-size: 13px;
+  color: rgba(255,255,255,.55);
+  border-left: 3px solid transparent;
+  text-decoration: none; transition: all .15s;
+}
+.nav-item:hover { color: rgba(255,255,255,.85); background: rgba(255,255,255,.06); }
+.nav-item.active { color: var(--white); background: rgba(255,255,255,.1); border-left-color: var(--green-400); }
+
+.sidebar-footer { padding: 16px 20px; border-top: 1px solid rgba(255,255,255,.08); }
+.admin-row { display: flex; align-items: center; gap: 10px; }
+.admin-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(255,255,255,.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 600; color: var(--white); flex-shrink: 0;
+}
+.admin-name { font-size: 13px; color: rgba(255,255,255,.8); font-weight: 500; }
+.admin-role { font-size: 11px; color: rgba(255,255,255,.35); }
+.logout-btn {
+  margin-left: auto; background: none; border: none; cursor: pointer;
+  color: rgba(255,255,255,.35); font-family: var(--font);
+  font-size: 12px; text-decoration: none;
+  padding: 4px 8px; border-radius: 6px; transition: all .15s;
+}
+.logout-btn:hover { color: var(--white); background: rgba(255,255,255,.08); }
+
+/* ── Main ── */
+.main { display: flex; flex-direction: column; background: var(--gray-900); }
+
+/* Topbar */
+.topbar {
+  background: var(--gray-800);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  padding: 0 28px; height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 10;
+}
+.topbar-title { font-size: 15px; font-weight: 600; color: var(--white); }
+.export-btn {
+  padding: 7px 14px; font-family: var(--font);
+  font-size: 12px; font-weight: 500; color: var(--gray-300);
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 7px; cursor: pointer; transition: all .15s;
+}
+.export-btn:hover { background: rgba(255,255,255,.1); color: var(--white); }
+
+/* Content */
+.content { padding: 28px; flex: 1; }
+
+/* ── Stat cards ── */
+.stats-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 24px; }
+.stat-card {
+  background: var(--gray-800);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 12px; padding: 18px 20px;
+}
+.stat-label { font-size: 11px; color: var(--gray-500); margin-bottom: 8px; text-transform: uppercase; letter-spacing: .05em; }
+.stat-val   { font-size: 28px; font-weight: 600; line-height: 1; }
+.stat-val.total    { color: var(--green-400); }
+.stat-val.pending  { color: #EF9F27; }
+.stat-val.resolved { color: #378ADD; }
+.stat-sub { font-size: 11px; color: var(--gray-500); margin-top: 6px; }
+
+/* ── Table card ── */
+.table-card {
+  background: var(--gray-800);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 12px; overflow: hidden;
+}
+.table-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; flex-wrap: wrap;
+}
+.table-title { font-size: 14px; font-weight: 600; color: var(--white); }
+.filters { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.filters input, .filters select {
+  font-family: var(--font); font-size: 12px;
+  padding: 6px 10px;
+  background: var(--gray-700);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 7px; color: var(--white); outline: none;
+}
+.filters input::placeholder { color: var(--gray-500); }
+.filters input:focus, .filters select:focus { border-color: var(--green-600); }
+
+/* ── Table ── */
+.rtable { width: 100%; border-collapse: collapse; }
+.rtable th {
+  text-align: left; padding: 11px 16px;
+  font-size: 11px; font-weight: 500; color: var(--gray-500);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  text-transform: uppercase; letter-spacing: .05em;
+}
+.rtable td {
+  padding: 13px 16px; font-size: 13px; color: var(--white);
+  border-bottom: 1px solid rgba(255,255,255,.04);
+  vertical-align: middle;
+}
+.rtable tbody tr:last-child td { border-bottom: none; }
+.rtable tbody tr { transition: background .12s; cursor: pointer; }
+.rtable tbody tr:hover td { background: rgba(255,255,255,.03); }
+
+/* ── Badges ── */
+.badge { display: inline-block; padding: 3px 9px; border-radius: 5px; font-size: 11px; font-weight: 500; }
+.b-pending      { background: var(--amber-bg);  color: var(--amber-tx); }
+.b-progress     { background: var(--blue-bg);   color: var(--blue-tx); }
+.b-resolved     { background: var(--gr-bg);     color: var(--gr-tx); }
+.b-plastic      { background: var(--purple-bg); color: var(--purple-tx); }
+.b-mixed        { background: var(--amber-bg);  color: var(--amber-tx); }
+.b-organic      { background: var(--gr-bg);     color: var(--gr-tx); }
+.b-construction { background: var(--red-bg);    color: var(--red-tx); }
+.row-id { font-family: var(--mono); font-size: 11px; color: var(--gray-500); }
+
+/* ── Action buttons ── */
+.actions { display: flex; gap: 4px; }
+.act-btn {
+  width: 30px; height: 30px; border-radius: 6px;
+  border: none; background: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gray-500); transition: all .15s;
+}
+.act-btn svg {
+  width: 15px; height: 15px; stroke: currentColor; fill: none;
+  stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+}
+.act-btn:hover        { background: rgba(255,255,255,.08); color: var(--white); }
+.act-btn.danger:hover { background: rgba(226,75,74,.15); color: #F09595; }
+
+/* ── Empty state ── */
+.empty { padding: 48px; text-align: center; color: var(--gray-500); font-size: 14px; display: none; }
+
+/* ── Pagination ── */
+.pagination {
+  padding: 14px 20px;
+  border-top: 1px solid rgba(255,255,255,.06);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.page-info { font-size: 12px; color: var(--gray-500); }
+.page-btns { display: flex; gap: 4px; }
+.page-btn {
+  width: 30px; height: 30px; border-radius: 6px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: none; cursor: pointer; font-family: var(--font);
+  font-size: 12px; color: var(--gray-300);
+  display: flex; align-items: center; justify-content: center;
+  transition: all .15s;
+}
+.page-btn:hover  { background: rgba(255,255,255,.08); color: var(--white); }
+.page-btn.active { background: var(--green-600); color: var(--white); border-color: var(--green-600); }
+.page-btn svg {
+  width: 13px; height: 13px; stroke: currentColor; fill: none;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+</style>
 <body>
 
   <div class="app">
@@ -31,7 +238,7 @@
             <div class="admin-name">Admin</div>
             <div class="admin-role">Super admin</div>
           </div>
-          <a class="logout-btn" href="{{ url_for('admin.logout') }}">Logout</a>
+          <a class="logout-btn" href="home.html">Logout</a>
         </div>
       </div>
     </aside>
