@@ -13,13 +13,21 @@
     <!-- Sidebar -->
     <aside class="sidebar">
       <div class="sidebar-logo">
-        <div class="logo-name">EcoTrack</div>
-        <div class="logo-sub">Admin Panel</div>
+        <div class="logo-row">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24"><path d="M21 3C21 3 13 3 8 8C3 13 3 21 3 21C3 21 7 17 10 15C10 15 9 19 12 21C12 21 14 14 21 3Z"/></svg>
+          </div>
+          <div>
+            <div class="logo-name">EcoTrack</div>
+            <div class="logo-sub">Admin Panel</div>
+          </div>
+        </div>
       </div>
 
       <nav class="nav">
         <div class="nav-section">Main</div>
         <a class="nav-item active" href="{{ url_for('admin.reports') }}">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
           Reports
         </a>
       </nav>
