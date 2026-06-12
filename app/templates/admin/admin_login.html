@@ -233,14 +233,18 @@
           Invalid email or password. Please try again.
         </div>
 
-        <form id="loginForm" novalidate>
+        <form method="POST" action="{{ url_for('admin_auth.admin_login') }}" id="loginForm" novalidate>
 
           <div class="field">
             <label for="email">Email address</label>
             <div class="input-wrap">
               <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
-              <input type="email" id="email" name="email"
-                     placeholder="admin@ecotrack.com" autocomplete="email"/>
+              <input type="email"
+                     id="email"
+                     name="email"
+                     placeholder="admin@ecotrack.com" 
+                     autocomplete="email"
+              />
             </div>
           </div>
 
@@ -248,8 +252,12 @@
             <label for="password">Password</label>
             <div class="input-wrap">
               <svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-              <input type="password" id="password" name="password"
-                     placeholder="••••••••" autocomplete="current-password"/>
+              <input type="password" 
+                     id="password" 
+                     name="password"
+                     placeholder="••••••••" 
+                     autocomplete="current-password"
+              />
             </div>
           </div>
 
@@ -271,53 +279,5 @@
     </div>
 
   </div>
-
-
-<script>
-  const form     = document.getElementById('loginForm');
-  const errorMsg = document.getElementById('errorMsg');
-
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    const email    = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value;
-
-    /* 1. empty field check */
-    if (!email || !password) {
-      showError('Please fill in both fields.');
-      return;
-    }
-
-    /* 2. basic email format check */
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      showError('Please enter a valid email address.');
-      return;
-    }
-
-    /* 3. password length check */
-    if (password.length < 6) {
-      showError('Password must be at least 6 characters.');
-      return;
-    }
-
-    /* placeholder — will be replaced by Flask fetch in a later commit */
-    showError('Invalid email or password. Please try again.');
-  });
-
-  /* hide error when user starts typing */
-  ['email', 'password'].forEach(id => {
-    document.getElementById(id).addEventListener('input', () => {
-      errorMsg.classList.remove('show');
-    });
-  });
-
-  function showError(msg) {
-    errorMsg.textContent = msg;
-    errorMsg.classList.add('show');
-  }
-</script>
-
 </body>
 </html>
