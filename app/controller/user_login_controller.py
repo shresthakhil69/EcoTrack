@@ -23,4 +23,35 @@ def register_controller():
 
     user = User()
 
-    
+    # Check if email already exists
+    existing = user.get_by_email(email)
+    if existing:
+        flash('An account with this email already exists.', 'error')
+        return redirect(url_for('user_auth.register'))
+
+    # Create the user
+    new_user = User(name=name, email=email, password=password, role='user')
+    new_user.create_user()
+
+    flash('Account created successfully! Please log in.', 'success')
+    return redirect(url_for('user_auth.login'))
+
+
+def login_controller():
+    email = request.form.get('email', '').strip()
+    password = request.form.get('password', '')
+
+    if not email or not password:
+        flash('Email and password are required.', 'error')
+        return redirect(url_for('user_auth.login'))
+
+    user = User()
+    user_data = user.get_by_email(email)
+
+    if not user_data:
+        flash('No account found with that email.', 'error')
+        return redirect(url_for('user_auth.login'))
+
+    if not user.check_password(user_data['password'], password):
+        flash('Incorrect password. Please try again.', 'error')
+        return redirect(url_for('user_auth.login'))
