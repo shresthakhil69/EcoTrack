@@ -467,15 +467,20 @@
             <p>Login to continue and keep your city clean.</p>
         </div>
 
-        <div id="message" class="message"></div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% for category, message in messages %}
+            <div class="message {{ category }}">{{ message }}</div>
+          {% endfor %}
+        {% endwith %}
 
+        <form method="POST" action="{{ url_for('user_auth.login') }}">
         <div class="form-group">
-    <label for="username">Username</label>
+    <label for="email">Email</label>
     <div class="input-wrap">
         <svg class="field-icon" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
     <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
 </svg>
-        <input type="text" id="username" name="username" placeholder="Enter your username" required>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
     </div>
 </div>
 
@@ -485,7 +490,7 @@
                 <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                 </svg>
-                <input type="password" id="password" placeholder="••••••••" required>
+                <input type="password" id="password" name="password" placeholder="••••••••" required>
             </div>
         </div>
 
@@ -496,61 +501,17 @@
             <a href="#" class="forgot">Forgot Password?</a>
         </div>
 
-        <button class="btn-login" id="loginBtn" onclick="handleLogin()">Login</button>
+        <button class="btn-login" type="submit">Login</button>
+        </form>
 
         <div class="divider">or</div>
 
-
-
         <div class="register-link">
-            Don't have an account? <a href="/register">Register here</a>
+            Don't have an account? <a href="{{ url_for('user_auth.register') }}">Register here</a>
         </div>
     </div>
 </div>
 
-<script>
 
-    function showMessage(msg, type) {
-    const el = document.getElementById('message');
-    el.textContent = msg;
-    el.className = 'message ' + type;
-}
-
-async function handleLogin() {
-    const username = document.getElementById('username').value;  // fix: was 'email'
-    const password = document.getElementById('password').value;
-    if (!username || !password) { showMessage('Please fill in all fields.', 'error'); return; }
-
-    const btn = document.getElementById('loginBtn');
-    btn.textContent = 'Signing in…';
-    btn.disabled = true;
-
-    try {
-        const res = await fetch('/api/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })  // fix: was { email, password }
-        });
-        const data = await res.json();
-        if (data.success) {
-            localStorage.setItem('authToken', data.token);
-            localStorage.setItem('user', JSON.stringify(data.user));
-            showMessage('Login successful! Redirecting…', 'success');
-            setTimeout(() => window.location.href = '/dashboard', 1800);
-        } else {
-            showMessage(data.message || 'Invalid credentials.', 'error');
-        }
-    } catch(e) {
-        showMessage('Could not connect to server.', 'error');
-    } finally {
-        btn.textContent = 'Login';
-        btn.disabled = false;
-    }
-}
-
-document.addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
-
-
-</script>
 </body>
 </html>
