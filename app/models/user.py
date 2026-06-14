@@ -1,90 +1,100 @@
-import bcrypt
-from datetime import datetime
+from app.model.database import Database
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 class User:
-    def __init__(self, database):
-        self.db = database
-        self.create_table()
-    
-    def create_table(self):
-        """Create users table if it doesn't exist"""
-        cursor = self.db.get_cursor()
-        try:
-            cursor.execute("""
-                CREATE TABLE IF NOT EXISTS users (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    username VARCHAR(50) UNIQUE NOT NULL,
-                    email VARCHAR(100) UNIQUE NOT NULL,
-                    password VARCHAR(255) NOT NULL,
-                    fullname VARCHAR(100),
-                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                )
-            """)
-            self.db.commit()
-            print("Users table created/verified successfully!")
-        except Exception as e:
-            print(f"Error creating users table: {e}")
-    
-    def hash_password(self, password):
-        """Hash password using bcrypt"""
-        salt = bcrypt.gensalt(rounds=10)
-        hashed = bcrypt.hashpw(password.encode('utf-8'), salt)
-        return hashed.decode('utf-8')
-    
-    def verify_password(self, password, hashed_password):
-        """Verify password against hash"""
-        return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))
-    
-    def register_user(self, username, email, password, fullname):
-        """Register a new user"""
-        cursor = self.db.get_cursor()
-        try:
-            # Check if user already exists
-            cursor.execute("SELECT * FROM users WHERE username = %s OR email = %s", (username, email))
-            if cursor.fetchone():
-                return {"success": False, "message": "Username or email already exists"}
-            
-            # Hash password and insert user
-            hashed_password = self.hash_password(password)
-            cursor.execute(
-                "INSERT INTO users (username, email, password, fullname) VALUES (%s, %s, %s, %s)",
-                (username, email, hashed_password, fullname)
-            )
-            self.db.commit()
-            return {"success": True, "message": "User registered successfully!"}
-        except Exception as e:
-            return {"success": False, "message": f"Registration error: {str(e)}"}
-    
-    def login_user(self, username, password):
-        """Login user and return user data if credentials match"""
-        cursor = self.db.get_cursor()
-        try:
-            cursor.execute("SELECT * FROM users WHERE username = %s", (username,))
-            user = cursor.fetchone()
-            
-            if not user:
-                return {"success": False, "message": "User not found"}
-            
-            if self.verify_password(password, user['password']):
-                return {
-                    "success": True,
-                    "message": "Login successful!",
-                    "user_id": user['id'],
-                    "username": user['username'],
-                    "email": user['email'],
-                    "fullname": user['fullname']
-                }
-            else:
-                return {"success": False, "message": "Invalid password"}
-        except Exception as e:
-            return {"success": False, "message": f"Login error: {str(e)}"}
-    
-    def get_user_by_id(self, user_id):
-        """Get user by ID"""
-        cursor = self.db.get_cursor()
-        try:
-            cursor.execute("SELECT * FROM users WHERE id = %s", (user_id,))
-            return cursor.fetchone()
-        except Exception as e:
-            print(f"Error fetching user: {e}")
-            return None
+
+    def __init__(self, name=None, email=None, password=None, role="user"):
+        self.name = name
+        self.email = email
+        self.password = password
+        self.role = role
+
+    # -------------------------
+    # REGISTER USER
+    # -------------------------
+    def create_user(self):
+        db = Database()
+
+        hashed_password = generate_password_hash(self.password)
+
+        db.execute(
+            """
+            INSERT INTO users (name, email, password, role)
+            VALUES (%s, %s, %s, %s)
+            """,
+            (self.name, self.email, hashed_password, self.role)
+        )
+
+        db.close()
+
+    # -------------------------
+    # FIND USER BY EMAIL (LOGIN)
+    # -------------------------
+    def get_by_email(self, email):
+        db = Database()
+
+        user = db.fetch_one(
+            "SELECT * FROM users WHERE email=%s",
+            (email,)
+        )
+
+        db.close()
+        return user
+
+    # -------------------------
+    # CHECK PASSWORD
+    # -------------------------
+    def check_password(self, hashed_password, plain_password):
+        return check_password_hash(hashed_password, plain_password)
+
+    # -------------------------
+    # GET USER BY ID
+    # -------------------------
+    def get_by_id(self, user_id):
+        db = Database()
+
+        user = db.fetch_one(
+            "SELECT * FROM users WHERE id=%s",
+            (user_id,)
+        )
+
+        db.close()
+        return user
+
+    # -------------------------
+    # UPDATE PROFILE
+    # -------------------------
+    def update_profile(self, user_id, name, email):
+        db = Database()
+        db.execute(
+            """
+            UPDATE users SET name=%s, email=%s
+            WHERE id=%s
+            """,
+            (name, email, user_id)
+        )
+        db.close()
+
+    # -------------------------
+    # UPDATE PASSWORD
+    # -------------------------
+    def update_password(self, user_id, new_password):
+        db = Database()
+        hashed = generate_password_hash(new_password)
+        db.execute(
+            """
+            UPDATE users SET password=%s
+            WHERE id=%s
+            """,
+            (hashed, user_id)
+        )
+        db.close()
+
+    # -------------------------
+    # DELETE USER ACCOUNT
+    # -------------------------
+    def delete_account(self, user_id):
+        db = Database()
+        db.execute("DELETE FROM users WHERE id=%s", (user_id,))
+        db.close()
