@@ -55,3 +55,19 @@ def login_controller():
     if not user.check_password(user_data['password'], password):
         flash('Incorrect password. Please try again.', 'error')
         return redirect(url_for('user_auth.login'))
+    
+   
+
+    # Set session
+    session['user_id'] = user_data['id']
+    session['user_name'] = user_data['name']
+    session['user_email'] = user_data['email']
+    session['user_role'] = user_data['role']
+
+    return redirect(url_for('dashboard.dashboard'))
+
+
+def logout_controller():
+    session.clear()
+    flash('You have been logged out.', 'success')
+    return redirect(url_for('user_auth.login'))
