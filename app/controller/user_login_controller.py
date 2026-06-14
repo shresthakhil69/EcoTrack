@@ -1,5 +1,5 @@
 from flask import request, session, redirect, url_for, flash
-from app.model.user import User
+from app.models.user import User
 
 
 def register_controller():
