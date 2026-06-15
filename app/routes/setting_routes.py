@@ -35,3 +35,31 @@ def setting():
             session['user_email'] = email
 
             flash('Profile updated successfully.', 'success')
+
+
+         # ── Password Change ─────────────────────────
+        elif form_type == 'password':
+            current_password = request.form.get('current_password', '')
+            new_password = request.form.get('new_password', '')
+            confirm_password = request.form.get('confirm_password', '')
+
+            if not current_password or not new_password or not confirm_password:
+                flash('All password fields are required.', 'error')
+                return redirect(url_for('setting.setting'))
+
+            if new_password != confirm_password:
+                flash('New passwords do not match.', 'error')
+                return redirect(url_for('setting.setting'))
+
+            if len(new_password) < 6:
+                flash('New password must be at least 6 characters.', 'error')
+                return redirect(url_for('setting.setting'))
+
+            # Verify current password
+            user_data = user.get_by_id(user_id)
+            if not user.check_password(user_data['password'], current_password):
+                flash('Current password is incorrect.', 'error')
+                return redirect(url_for('setting.setting'))
+
+            user.update_password(user_id, new_password)
+            flash('Password updated successfully.', 'success')
