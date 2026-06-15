@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}EcoTrack Admin{% endblock %}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+
+    body { min-height: 100vh; display: flex; background: #f5f5f5; }
+
+    .sidebar {
+      width: 250px; min-height: 100vh;
+      background: linear-gradient(to bottom, #04342C, #0F6E56);
+      color: white; padding: 20px;
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+      position: fixed; left: 0; top: 0;
+    }
+
+    .logo { font-size: 22px; font-weight: bold; margin-bottom: 8px; }
+    .logo-sub { font-size: 12px; color: #5DCAA5; margin-bottom: 40px; letter-spacing: 1px; text-transform: uppercase; }
+
+    .menu { list-style: none; }
+    .menu li { margin: 8px 0; }
+    .menu a {
+      display: block; padding: 13px 15px;
+      border-radius: 10px; color: white;
+      text-decoration: none; transition: 0.2s ease;
+    }
+    .menu a:hover { background: #1D9E75; }
+
+    .logout-btn {
+      display: block; padding: 13px 15px;
+      border-radius: 10px; color: white;
+      text-align: center; text-decoration: none;
+      background: rgba(255,255,255,0.1); transition: 0.2s ease;
+    }
+    .logout-btn:hover { background: #b22222; }
+
+    .main-content {
+      margin-left: 250px;
+      width: calc(100% - 250px);
+      min-height: 100vh;
+      padding: 30px;
+    }
+
+    {% block extra_styles %}{% endblock %}
+  </style>
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div>
+      <div class="logo">EcoTrack</div>
+      <div class="logo-sub">Admin Panel</div>
+      <ul class="menu">
+        <li><a href="{{ url_for('admin_dashboard.dashboard') }}">Dashboard</a></li>
+        <li><a href="{{ url_for('admin_dashboard.users') }}">Users</a></li>
+      </ul>
+    </div>
+    <a href="{{ url_for('admin_auth.admin_logout') }}" class="logout-btn">Logout</a>
+  </aside>
+
+  <main class="main-content">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <div style="padding:10px 16px; margin-bottom:16px; border-radius:8px;
+          background:{% if category == 'success' %}#eafaf1{% else %}#fdecea{% endif %};
+          color:{% if category == 'success' %}#1e7e45{% else %}#b71c1c{% endif %};">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  {% block extra_scripts %}{% endblock %}
+
+</body>
+</html>

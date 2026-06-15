@@ -1,425 +1,303 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Reports</title>
+{% extends "base.html" %}
 
+{% block title %}My Reports | EcoTrack{% endblock %}
+
+{% block extra_styles %}
 <style>
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 25px;
+  }
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,sans-serif;
-}
+  .page-header h1 {
+    font-size: 34px;
+  }
 
-body{
-    background:#f2f2f2;
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:20px;
-}
+  .add-report-link {
+    background: #15803d;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 10px;
+    text-decoration: none;
+  }
 
-/* MAIN */
+  .report-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
 
-.container{
-    width:100%;
-    max-width:1200px;
-    min-height:90vh;
-    display:flex;
-    flex-wrap:wrap;
-    background:white;
-    border-radius:15px;
-    overflow:hidden;
-    box-shadow:0 4px 20px rgba(0,0,0,.1);
-}
+  .report-card {
+    display: flex;
+    gap: 30px;
+    background: white;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  }
 
-/* SIDEBAR */
+  .image-section {
+    flex: 1 1 320px;
+  }
 
-.sidebar{
-    flex:1 1 250px;
-    background:linear-gradient(to bottom,#063b1e,#0a6b2f);
-    color:white;
-    padding:25px;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-}
+  .main-image,
+  .no-image-box {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 14px;
+  }
 
-.logo{
-    font-size:30px;
-    font-weight:bold;
-    margin-bottom:40px;
-}
+  .no-image-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e5e7eb;
+    color: #555;
+    font-weight: bold;
+  }
 
-.menu{
-    list-style:none;
-}
+  .thumb-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+  }
 
-.menu li{
-    padding:15px;
-    margin-bottom:12px;
-    border-radius:10px;
-    cursor:pointer;
-    transition:.3s;
-}
+  .thumb,
+  .thumb-placeholder {
+    width: 70px;
+    height: 70px;
+    border-radius: 10px;
+    object-fit: cover;
+  }
 
-.menu li:hover{
-    background:rgba(255,255,255,.15);
-}
+  .thumb-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e5e7eb;
+    color: #555;
+    font-size: 12px;
+    text-align: center;
+  }
 
-.menu li a{
-    color:white;
-    text-decoration:none;
-    display:block;
-    width:100%;
-    height:100%;
-}
+  .details {
+    flex: 1 1 380px;
+  }
 
-.active{
-    background:#16a34a;
-}
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+  }
 
-.dark-mode{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
+  .title {
+    font-size: 28px;
+    font-weight: bold;
+  }
 
-.toggle{
-    width:50px;
-    height:24px;
-    background:white;
-    border-radius:20px;
-    position:relative;
-}
+  .status {
+    background: #fef3c7;
+    color: #b45309;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+    white-space: nowrap;
+  }
 
-.toggle::before{
-    content:"";
-    width:20px;
-    height:20px;
-    background:#16a34a;
-    border-radius:50%;
-    position:absolute;
-    right:2px;
-    top:2px;
-}
+  .status.resolved {
+    background: #dcfce7;
+    color: #166534;
+  }
 
-/* CONTENT */
+  .info-item {
+    margin-bottom: 20px;
+  }
 
-.main{
-    flex:3 1 700px;
-    padding:40px;
-}
+  .label {
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
 
-.back{
-    font-size:14px;
-    margin-bottom:25px;
-    color:#444;
-    cursor:pointer;
-}
+  .value {
+    font-size: 16px;
+    color: #111;
+  }
 
-.report-layout{
-    display:flex;
-    flex-wrap:wrap;
-    gap:30px;
-}
+  .description {
+    line-height: 1.6;
+  }
 
-/* LEFT */
+  .buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+  }
 
-.image-section{
-    flex:1 1 350px;
-}
+  .btn {
+    border: none;
+    padding: 14px 24px;
+    border-radius: 10px;
+    cursor: pointer;
+    color: white;
+    font-size: 15px;
+  }
 
-.main-image{
-    width:100%;
-    height:320px;
-    object-fit:cover;
-    border-radius:14px;
-    margin-bottom:15px;
-}
+  .edit {
+    background: #15803d;
+  }
 
-.thumb-row{
-    display:flex;
-    gap:10px;
-}
+  .delete {
+    background: #dc2626;
+  }
 
-.thumb{
-    width:70px;
-    height:70px;
-    border-radius:10px;
-    object-fit:cover;
-}
+  .empty-state {
+    background: white;
+    border-radius: 15px;
+    padding: 40px;
+    text-align: center;
+    color: #555;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  }
 
-.more-thumb{
-    width:70px;
-    height:70px;
-    background:#1f2937;
-    color:white;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    border-radius:10px;
-    font-weight:bold;
-}
-
-/* RIGHT */
-
-.details{
-    flex:1 1 350px;
-}
-
-.top{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:25px;
-}
-
-.title{
-    font-size:30px;
-    font-weight:bold;
-}
-
-.status{
-    background:#fef3c7;
-    color:#b45309;
-    padding:8px 14px;
-    border-radius:20px;
-    font-size:13px;
-    font-weight:bold;
-}
-
-.info-item{
-    margin-bottom:22px;
-}
-
-.label{
-    color:#777;
-    font-size:14px;
-    margin-bottom:5px;
-}
-
-.value{
-    font-size:16px;
-    color:#111;
-}
-
-.description{
-    line-height:1.6;
-}
-
-.buttons{
-    display:flex;
-    gap:15px;
-    margin-top:35px;
-    flex-wrap:wrap;
-}
-
-.btn{
-    border:none;
-    padding:14px 26px;
-    border-radius:10px;
-    cursor:pointer;
-    color:white;
-    font-size:15px;
-}
-
-.edit{
-    background:#15803d;
-}
-
-.delete{
-    background:#dc2626;
-}
-
-.edit:hover{
-    background:#166534;
-}
-
-.delete:hover{
-    background:#b91c1c;
-}
-
-/* MOBILE */
-
-@media(max-width:768px){
-
-    .main{
-        padding:25px;
+  @media (max-width: 900px) {
+    .report-card {
+      flex-direction: column;
     }
 
-    .title{
-        font-size:24px;
+    .page-header {
+      flex-direction: column;
+      align-items: flex-start;
     }
-
-    .main-image{
-        height:250px;
-    }
-
-}
-
+  }
 </style>
-</head>
-<body>
+{% endblock %}
 
-<div class="container">
-
-    <!-- SIDEBAR -->
-
-    <div class="sidebar">
-
-        <div>
-
-            <div class="logo">
-                EcoTrack
-            </div>
-
-            <ul class="menu">
-                <li>Dashboard</li>
-                <li><a href="/reports">Submit Report</a></li>
-                <li class="active">My Reports</li>
-                <li>Notifications</li>
-                <li>Settings</li>
-            </ul>
-
-            
-        </div>
-
-        <div class="dark-mode">
-            <span>Dark Mode</span>
-            <div class="toggle"></div>
-        </div>
-
-    </div>
-
-    <!-- MAIN -->
-
-    <div class="main">
-
-        <div class="back">
-            ← Back
-        </div>
-
-        <div class="report-layout">
-
-            {%- if reports and reports|length > 0 -%}
-                {# Render each saved report as a card; reuse the layout by repeating the left/right sections #}
-                {%- for rep in reports -%}
-
-                <div class="report-card">
-                <!-- LEFT -->
-                <div class="image-section">
-                    {%- if rep.image -%}
-                        <img src="{{ url_for('static', filename='uploads/' ~ rep.image) }}" class="main-image" alt="Report image">
-                    {%- else -%}
-                        <img src="{{ url_for('static', filename='uploads/sample.jpg') }}" class="main-image" alt="Sample image">
-                    {%- endif -%}
-
-                    <div class="thumb-row">
-                        {%- if rep.image -%}
-                            <img src="{{ url_for('static', filename='uploads/' ~ rep.image) }}" class="thumb" alt="Thumbnail">
-                        {%- else -%}
-                            <img src="{{ url_for('static', filename='uploads/sample.jpg') }}" class="thumb" alt="sample">
-                        {%- endif -%}
-                    </div>
-                </div>
-
-                <!-- RIGHT -->
-                <div class="details">
-                    <div class="top">
-                        <div class="title">{{ rep.waste_type or 'Report' }}</div>
-                        <div class="status">Pending</div>
-                    </div>
-
-                    <div class="info-item">
-                        <div class="label">Location</div>
-                        <div class="value">{{ rep.location or 'Unknown' }}</div>
-                    </div>
-
-                    <div class="info-item">
-                        <div class="label">Type</div>
-                        <div class="value">{{ rep.waste_type or 'Unknown' }}</div>
-                    </div>
-
-                    <div class="info-item">
-                        <div class="label">Reported on</div>
-                        <div class="value">{{ rep.reported_on }}</div>
-                    </div>
-
-                    <div class="info-item">
-                        <div class="label">Description</div>
-                        <div class="value description">{{ rep.description or '' }}</div>
-                    </div>
-
-                    <div class="buttons">
-                        <button class="btn edit">Edit Report</button>
-                        <form method="post" action="/delete_report" style="display:inline; margin:0;">
-                            <input type="hidden" name="index" value="{{ loop.index0 }}">
-                            <button class="btn delete" type="submit">Delete Report</button>
-                        </form>
-                    </div>
-                </div>
-                </div>
-
-                {%- endfor -%}
-
-            {%- else -%}
-                <!-- No reports fallback -->
-                <div style="padding:40px;">No reports submitted yet.</div>
-            {%- endif -%}
-
-        </div>
-
-    </div>
-
+{% block content %}
+<div class="page-header">
+  <h1>My Reports</h1>
+  <a href="{{ url_for('report.reports') }}" class="add-report-link">Submit New Report</a>
 </div>
 
-        <script>
-        // Handle delete via fetch to avoid full page navigation
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.report-card').forEach((card, idx) => {
-                const form = card.querySelector('form');
-                if (!form) return;
-                form.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    const index = form.querySelector('input[name="index"]').value;
-                    fetch(form.action, {
-                        method: 'POST',
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest',
-                            'Content-Type': 'application/x-www-form-urlencoded'
-                        },
-                        body: `index=${encodeURIComponent(index)}`
-                    }).then(r => r.json())
-                    .then(data => {
-                        if (data && data.success) {
-                            // remove the card from DOM
-                            card.remove();
+<div class="report-layout">
+  {% if reports and reports|length > 0 %}
+    {% for rep in reports %}
+    <div class="report-card">
+      <div class="image-section">
+        {% if rep.image %}
+          <img src="{{ url_for('static', filename='uploads/' ~ rep.image) }}" class="main-image" alt="Report image">
+        {% else %}
+          <div class="no-image-box">No Image</div>
+        {% endif %}
 
-                            // if no report-cards remain, show the fallback message
-                            const remaining = document.querySelectorAll('.report-card');
-                            if (!remaining || remaining.length === 0) {
-                                const layout = document.querySelector('.report-layout');
-                                if (layout) {
-                                    const noDiv = document.createElement('div');
-                                    noDiv.style.padding = '40px';
-                                    noDiv.textContent = 'No reports submitted yet.';
-                                    layout.appendChild(noDiv);
-                                }
-                            }
-                        } else {
-                            // fallback: reload
-                            window.location.reload();
-                        }
-                    }).catch(() => window.location.reload());
-                });
-            });
-        });
-        </script>
+        <div class="thumb-row">
+          {% if rep.image %}
+            <img src="{{ url_for('static', filename='uploads/' ~ rep.image) }}" class="thumb" alt="Thumbnail">
+          {% else %}
+            <div class="thumb-placeholder">No Image</div>
+          {% endif %}
+        </div>
+      </div>
 
-        </body>
-        </html>
+      <div class="details">
+        <div class="top">
+          <div class="title">{{ rep.waste_type or 'Report' }}</div>
+          <div class="status {{ 'resolved' if rep.status == 'Resolved' else '' }}">{{ rep.status or 'Pending' }}</div>
+        </div>
+
+        <div class="info-item">
+          <div class="label">Location</div>
+          <div class="value">{{ rep.location or 'Unknown' }}</div>
+        </div>
+
+        <div class="info-item">
+          <div class="label">Type</div>
+          <div class="value">{{ rep.waste_type or 'Unknown' }}</div>
+        </div>
+
+        <div class="info-item">
+          <div class="label">Reported on</div>
+          <div class="value">{{ rep.reported_on }}</div>
+        </div>
+
+        <div class="info-item">
+          <div class="label">Description</div>
+          <div class="value description">{{ rep.description or 'No description added.' }}</div>
+        </div>
+
+        <div class="buttons">
+          <button class="btn edit" type="button">Edit Report</button>
+          <form method="post" action="{{ url_for('my_report.delete_report') }}" style="display:inline; margin:0;">
+            <input type="hidden" name="report_id" value="{{ rep.id }}">
+            <button class="btn delete" type="submit">Delete Report</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <div class="empty-state">
+      <h2>No reports submitted yet.</h2>
+      <p>You can submit your first waste report from the Submit Report page.</p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.report-card').forEach((card) => {
+      const form = card.querySelector('form');
+      if (!form) return;
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        if (!confirm('Are you sure you want to delete this report?')) {
+          return;
+        }
+
+        const reportId = form.querySelector('input[name="report_id"]').value;
+
+        fetch(form.action, {
+          method: 'POST',
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: `report_id=${encodeURIComponent(reportId)}`
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data && data.success) {
+            card.remove();
+
+            const remaining = document.querySelectorAll('.report-card');
+            if (remaining.length === 0) {
+              const layout = document.querySelector('.report-layout');
+              layout.innerHTML = `
+                <div class="empty-state">
+                  <h2>No reports submitted yet.</h2>
+                  <p>You can submit your first waste report from the Submit Report page.</p>
+                </div>
+              `;
+            }
+          } else {
+            window.location.reload();
+          }
+        })
+        .catch(() => window.location.reload());
+      });
+    });
+  });
+</script>
+{% endblock %}
