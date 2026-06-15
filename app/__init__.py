@@ -8,7 +8,7 @@ app.secret_key = config.SECRET_KEY
 # Database object
 db = Database()
 
-# Register blueprints
+
 from app.routes.auth_route import auth_bp
 from app.routes.report_route import report
 from app.routes.my_report_route import my_report
@@ -18,12 +18,12 @@ app.register_blueprint(report)
 app.register_blueprint(my_report)
 
 # Register admin blueprint safely
-try:
-    from app.routes.admin_auth_route import admin_bp
-    app.register_blueprint(admin_bp)
-except Exception:
-    pass
 
+from app.routes.admin_auth_route import admin_bp
+app.register_blueprint(admin_bp)
+
+from app.routes.admindashboardroute import admin_dashboardBP
+app.register_blueprint(admin_dashboardBP)
 
 @app.route("/")
 def home():
