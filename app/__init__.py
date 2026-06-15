@@ -18,5 +18,8 @@ def create_app():
     from app.routes.home_route import homeBP
     app.register_blueprint(homeBP)
 
+    from app.routes.setting_routes import settingBP
+    app.register_blueprint(settingBP)
+
 
     return app

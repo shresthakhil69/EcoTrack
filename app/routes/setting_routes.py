@@ -63,3 +63,5 @@ def setting():
 
             user.update_password(user_id, new_password)
             flash('Password updated successfully.', 'success')
+
+            
