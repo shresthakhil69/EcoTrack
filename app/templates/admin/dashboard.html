@@ -1,0 +1,142 @@
+{% extends "adminpage/base.html" %}
+
+{% block title %}Admin Dashboard | EcoTrack{% endblock %}
+
+{% block extra_styles %}
+<style>
+  .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
+  .topbar h1 { font-size: 30px; color: #111; }
+  .admin-tag { font-size: 13px; color: #888; }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px; margin-bottom: 30px;
+  }
+  .card {
+    background: white; padding: 22px;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  .card p { color: #6b7280; font-size: 14px; }
+  .card h2 { margin-top: 8px; font-size: 32px; color: #04342C; }
+
+  .table-container {
+    background: white; padding: 24px;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    overflow-x: auto;
+  }
+  .table-container h2 { margin-bottom: 18px; font-size: 20px; }
+
+  table { width: 100%; border-collapse: collapse; }
+  th, td { padding: 14px 12px; text-align: left; border-bottom: 1px solid #e5e7eb; font-size: 14px; }
+  th { color: #374151; font-weight: 600; background: #f9fafb; }
+
+  .badge {
+    display: inline-block; padding: 5px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: bold;
+  }
+  .badge.pending { background: #fef3c7; color: #92400e; }
+  .badge.in_progress { background: #dbeafe; color: #1e40af; }
+  .badge.resolved { background: #dcfce7; color: #166534; }
+
+  .status-form { display: flex; gap: 8px; align-items: center; }
+  .status-form select {
+    padding: 7px 10px; border: 1px solid #ddd;
+    border-radius: 8px; font-size: 13px; outline: none;
+  }
+  .btn-update {
+    padding: 7px 14px; background: #0F6E56;
+    color: white; border: none; border-radius: 8px;
+    font-size: 13px; cursor: pointer;
+  }
+  .btn-update:hover { background: #04342C; }
+
+  .btn-delete {
+    padding: 7px 14px; background: #dc2626;
+    color: white; border: none; border-radius: 8px;
+    font-size: 13px; cursor: pointer;
+  }
+  .btn-delete:hover { background: #b91c1c; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="topbar">
+  <h1>Admin Dashboard</h1>
+  <span class="admin-tag">Logged in as {{ session.get('admin_name', 'Admin') }}</span>
+</div>
+
+<div class="cards">
+  <div class="card">
+    <p>Total Users</p>
+    <h2>{{ summary.total_users }}</h2>
+  </div>
+  <div class="card">
+    <p>Total Reports</p>
+    <h2>{{ summary.total }}</h2>
+  </div>
+  <div class="card">
+    <p>Pending</p>
+    <h2>{{ summary.pending }}</h2>
+  </div>
+  <div class="card">
+    <p>Resolved</p>
+    <h2>{{ summary.resolved }}</h2>
+  </div>
+</div>
+
+<div class="table-container">
+  <h2>All Reports</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>User ID</th>
+        <th>Waste Type</th>
+        <th>Location</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Update Status</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for rep in reports %}
+      <tr>
+        <td>{{ rep.id }}</td>
+        <td>{{ rep.user_id }}</td>
+        <td>{{ rep.waste_type or '-' }}</td>
+        <td>{{ rep.location or '-' }}</td>
+        <td>{{ rep.description or '-' }}</td>
+        <td>
+          <span class="badge {{ rep.status }}">{{ rep.status }}</span>
+        </td>
+        <td>
+          <form method="POST" action="{{ url_for('admin_dashboard.update_status') }}" class="status-form">
+            <input type="hidden" name="report_id" value="{{ rep.id }}">
+            <select name="status">
+              <option value="pending" {% if rep.status == 'pending' %}selected{% endif %}>Pending</option>
+              <option value="in_progress" {% if rep.status == 'in_progress' %}selected{% endif %}>In Progress</option>
+              <option value="resolved" {% if rep.status == 'resolved' %}selected{% endif %}>Resolved</option>
+            </select>
+            <button class="btn-update" type="submit">Update</button>
+          </form>
+        </td>
+        <td>
+          <form method="POST" action="{{ url_for('admin_dashboard.delete_report') }}">
+            <input type="hidden" name="report_id" value="{{ rep.id }}">
+            <button class="btn-delete" type="submit">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="8" style="text-align:center; color:#888;">No reports yet.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
