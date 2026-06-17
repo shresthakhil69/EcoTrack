@@ -1,5 +1,5 @@
 SECRET_KEY = "random-secret-key"
 MYSQL_HOST = "localhost"
 MYSQL_USER = "root"
-MYSQL_PASSWORD = "2.0"
+MYSQL_PASSWORD = "root123"
 MYSQL_DATABASE = "ecotrack"
