@@ -6,7 +6,7 @@ auth_user = Blueprint("user_auth", __name__)
 @auth_user.route('/register', methods=['GET', 'POST'])
 def register():
     if 'user_id' in session:
-        return redirect(url_for('dashboard.dashboard'))
+        return redirect(url_for('home.home'))
 
     if request.method == 'POST':
         from app.controller.user_login_controller import register_controller
@@ -18,7 +18,7 @@ def register():
 @auth_user.route('/login', methods=['GET', 'POST'])
 def login():
     if 'user_id' in session:
-        return redirect(url_for('dashboard.dashboard'))
+        return redirect(url_for('home.home'))
 
     if request.method == 'POST':
         from app.controller.user_login_controller import login_controller
