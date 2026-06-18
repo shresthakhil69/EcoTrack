@@ -4,6 +4,7 @@
 
 {% block extra_styles %}
 <style>
+  /* TOP BAR & HEADING styling */
   .topbar {
     display: flex;
     justify-content: space-between;
@@ -14,6 +15,7 @@
 
   .topbar h1 {
     font-size: 32px;
+    color: #013220;
   }
 
   .search {
@@ -26,6 +28,7 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   }
 
+  /* CARDS GRID SYSTEM */
   .cards {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -42,14 +45,17 @@
 
   .card p {
     color: #6b7280;
+    margin: 0;
   }
 
   .card h2 {
     margin-top: 10px;
+    margin-bottom: 0;
     font-size: 35px;
     color: #013220;
   }
 
+  /* RECENT REPORTS TABLE */
   .table-container {
     background: white;
     padding: 20px;
@@ -60,6 +66,7 @@
 
   .table-container h2 {
     margin-bottom: 15px;
+    color: #013220;
   }
 
   table {
@@ -75,8 +82,10 @@
 
   th {
     color: #374151;
+    font-weight: 600;
   }
 
+  /* STATUS BADGES */
   .status-badge {
     display: inline-block;
     padding: 6px 12px;
@@ -95,6 +104,7 @@
     color: #166534;
   }
 
+  /* RESPONSIVE BREAKPOINTS */
   @media (max-width: 1000px) {
     .cards {
       grid-template-columns: repeat(2, 1fr);
@@ -116,59 +126,65 @@
 
 {% block content %}
 <div class="topbar">
-  <h1>Dashboard</h1>
+  <h1>Dashboard — Welcome, {{ name }}!</h1>
   <input type="text" class="search" placeholder="Search reports...">
 </div>
 
 <div class="cards">
   <div class="card">
     <p>Total Reports</p>
-    <h2>{{ summary.total }}</h2>
+    <h2>{{ summary.total if summary else 0 }}</h2>
   </div>
 
   <div class="card">
     <p>Pending Reports</p>
-    <h2>{{ summary.pending }}</h2>
+    <h2>{{ summary.pending if summary else 0 }}</h2>
   </div>
 
   <div class="card">
     <p>Resolved Reports</p>
-    <h2>{{ summary.resolved }}</h2>
+    <h2>{{ summary.resolved if summary else 0 }}</h2>
   </div>
 
   <div class="card">
     <p>My Reports</p>
-    <h2>{{ summary.total }}</h2>
+    <h2>{{ summary.total if summary else 0 }}</h2>
   </div>
 </div>
 
 <div class="table-container">
   <h2>Recent Reports</h2>
   <table>
-    <tr>
-      <th>Title</th>
-      <th>Location</th>
-      <th>Type</th>
-      <th>Status</th>
-      <th>Date</th>
-    </tr>
-    {% for rep in recent_reports %}
-    <tr>
-      <td>{{ rep.waste_type }}</td>
-      <td>{{ rep.location }}</td>
-      <td>{{ rep.waste_type }}</td>
-      <td>
-        <span class="status-badge {{ 'resolved' if rep.status == 'Resolved' else 'pending' }}">
-          {{ rep.status }}
-        </span>
-      </td>
-      <td>{{ rep.reported_on }}</td>
-    </tr>
-    {% else %}
-    <tr>
-      <td colspan="5">No reports submitted yet.</td>
-    </tr>
-    {% endfor %}
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Location</th>
+        <th>Type</th>
+        <th>Status</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for rep in recent_reports %}
+      <tr>
+        <td>{{ rep.waste_type }}</td>
+        <td>{{ rep.location }}</td>
+        <td>{{ rep.waste_type }}</td>
+        <td>
+          <span class="status-badge {{ 'resolved' if rep.get('status') == 'Resolved' else 'pending' }}">
+            {{ rep.get('status', 'Pending') }}
+          </span>
+        </td>
+        <td>{{ rep.reported_on[:10] }}</td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="5" style="text-align: center; color: #6b7280; padding: 30px;">
+          No reports submitted yet.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
   </table>
 </div>
 {% endblock %}

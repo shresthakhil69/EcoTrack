@@ -55,8 +55,6 @@ def login_controller():
     if not user.check_password(user_data['password'], password):
         flash('Incorrect password. Please try again.', 'error')
         return redirect(url_for('user_auth.login'))
-    
-   
 
     # Set session
     session['user_id'] = user_data['id']
@@ -64,7 +62,7 @@ def login_controller():
     session['user_email'] = user_data['email']
     session['user_role'] = user_data['role']
 
-    return redirect(url_for('dashboard.dashboard'))
+    return redirect(url_for('setting.setting'))
 
 
 def logout_controller():
