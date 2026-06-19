@@ -47,4 +47,14 @@ class BaseModel(ABC):
         db.close()
         return result
 
- 
+    def find_by(self, column, value):
+        """Find a single record by any column. Example: find_by('email', 'a@b.com')"""
+        db = Database()
+        result = db.fetch_one(
+            f"SELECT * FROM {self.table} WHERE {column} = %s", (value,)
+        )
+        db.close()
+        return result
+
+
+    
