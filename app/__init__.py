@@ -8,7 +8,7 @@ def create_app():
 
     Database.create_tables()
 
-    # Register Admin Auth Blueprint
+
     from app.routes.admin_auth_route import auth_admin
     app.register_blueprint(auth_admin)
 
@@ -19,23 +19,22 @@ def create_app():
     app.register_blueprint(notificationBP)
 
 
-    # Register User Auth Blueprint
+
     from app.routes.auth_route import auth_user
     app.register_blueprint(auth_user)
 
-    # Register Home Blueprint
+    
+
     from app.routes.home_route import homeBP
     app.register_blueprint(homeBP)
 
-    # Register Setting Blueprint
     from app.routes.setting_routes import settingBP
     app.register_blueprint(settingBP)
 
-    # Register Report Blueprint
     from app.routes.report_route import report
     app.register_blueprint(report)
 
-    # Register My Report Blueprint (FIXED NAME HERE)
+
     from app.routes.my_report_route import my_report
     app.register_blueprint(my_report)
 
