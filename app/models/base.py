@@ -131,4 +131,8 @@ class BaseModel(ABC):
         db.close()
         return result["total"]
 
-
+    def delete_by_id(self, record_id):
+        """Delete a record by its ID."""
+        db = Database()
+        db.execute(f"DELETE FROM {self.table} WHERE id = %s", (record_id,))
+        db.close()
