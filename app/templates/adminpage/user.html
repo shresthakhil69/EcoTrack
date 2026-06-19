@@ -1,0 +1,45 @@
+{% extends "adminpage/base.html" %}
+
+{% block title %}Users | EcoTrack Admin{% endblock %}
+
+{% block extra_styles %}
+<style>
+  .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
+  .topbar h1 { font-size: 30px; color: #111; }
+
+  .table-container {
+    background: white; padding: 24px;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    overflow-x: auto;
+  }
+  .table-container h2 { margin-bottom: 18px; font-size: 20px; }
+
+  table { width: 100%; border-collapse: collapse; }
+  th, td { padding: 14px 12px; text-align: left; border-bottom: 1px solid #e5e7eb; font-size: 14px; }
+  th { color: #374151; font-weight: 600; background: #f9fafb; }
+
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="topbar">
+  <h1>All Users</h1>
+</div>
+
+<div class="table-container">
+  
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Joined</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+</div>
+{% endblock %}
