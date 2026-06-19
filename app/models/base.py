@@ -124,3 +124,11 @@ class BaseModel(ABC):
         db.close()
         return results
 
+    def count_all(self):
+        """Count total records in the table."""
+        db = Database()
+        result = db.fetch_one(f"SELECT COUNT(*) AS total FROM {self.table}")
+        db.close()
+        return result["total"]
+
+
