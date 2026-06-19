@@ -37,3 +37,22 @@ class Notification(BaseModel):
 
         db.close()
 
+    def get_user_notifications(self, user_id):
+
+        db = Database()
+
+        notifications = db.fetch_all(
+            """
+            SELECT *
+            FROM notifications
+            WHERE user_id=%s
+            ORDER BY reported_on DESC
+            """,
+            (user_id,)
+        )
+
+        db.close()
+
+        return notifications
+
+
