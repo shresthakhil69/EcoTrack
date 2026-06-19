@@ -12,6 +12,13 @@ def create_app():
     from app.routes.admin_auth_route import auth_admin
     app.register_blueprint(auth_admin)
 
+    from app.routes.admindashboardroute import admin_dashboardBP
+    app.register_blueprint(admin_dashboardBP)
+
+    from app.routes.notificationroute import notificationBP
+    app.register_blueprint(notificationBP)
+
+
     # Register User Auth Blueprint
     from app.routes.auth_route import auth_user
     app.register_blueprint(auth_user)
