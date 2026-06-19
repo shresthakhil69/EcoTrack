@@ -55,4 +55,17 @@ class Notification(BaseModel):
 
         return notifications
 
+    def mark_as_read(self, notification_id):
 
+        db = Database()
+
+        db.execute(
+            """
+            UPDATE notifications
+            SET is_read=1
+            WHERE id=%s
+            """,
+            (notification_id,)
+        )
+
+        db.close()
