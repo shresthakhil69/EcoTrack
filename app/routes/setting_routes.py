@@ -3,15 +3,17 @@ from app.models.user import User
 
 settingBP = Blueprint("setting", __name__)
 
+
 @settingBP.route("/setting", methods=['GET', 'POST'])
 def setting():
     if 'user_id' not in session:
         return redirect(url_for('user_auth.login'))
 
+    user_id = session['user_id']
+    user = User()
+
     if request.method == 'POST':
         form_type = request.form.get('form_type')
-        user_id = session['user_id']
-        user = User()
 
         # ── Profile Update ──────────────────────────
         if form_type == 'profile':
@@ -22,20 +24,15 @@ def setting():
                 flash('Name and email are required.', 'error')
                 return redirect(url_for('setting.setting'))
 
-            # Check email not taken by another user
             existing = user.get_by_email(email)
             if existing and existing['id'] != user_id:
                 flash('That email is already in use by another account.', 'error')
                 return redirect(url_for('setting.setting'))
 
             user.update_profile(user_id, name, email)
-
-            # Update session so navbar shows new name immediately
             session['user_name'] = name
             session['user_email'] = email
-
             flash('Profile updated successfully.', 'success')
-            return redirect(url_for('setting.setting'))
 
         # ── Password Change ─────────────────────────
         elif form_type == 'password':
@@ -55,7 +52,6 @@ def setting():
                 flash('New password must be at least 6 characters.', 'error')
                 return redirect(url_for('setting.setting'))
 
-            # Verify current password
             user_data = user.get_by_id(user_id)
             if not user.check_password(user_data['password'], current_password):
                 flash('Current password is incorrect.', 'error')
@@ -63,8 +59,23 @@ def setting():
 
             user.update_password(user_id, new_password)
             flash('Password updated successfully.', 'success')
-            return redirect(url_for('setting.setting'))
 
-    # ── Handle GET Request ───────────────────────
-    # This renders the settings page when you just visit the URL
-    return render_template("user/setting.html")
+        # ── Appearance ──────────────────────────────
+        # elif form_type == 'appearance':
+        #     dark_mode = 1 if request.form.get('dark_mode') == 'on' else 0
+        #     user.update_dark_mode(user_id, dark_mode)
+        #     session['dark_mode'] = dark_mode
+        #     flash('Appearance saved.', 'success')
+        elif form_type == 'appearance':
+            dark_mode = 1 if request.form.get('dark_mode') == 'on' else 0
+            session['dark_mode'] = dark_mode
+            flash('Appearance saved.', 'success')
+
+        return redirect(url_for('setting.setting'))
+
+    # On GET — load user data but don't overwrite dark_mode session
+    user_data = user.get_by_id(user_id)
+    if 'dark_mode' not in session:
+        session['dark_mode'] = 0
+
+    return render_template("user/setting.html", user_data=user_data)

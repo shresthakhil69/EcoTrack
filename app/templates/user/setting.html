@@ -294,15 +294,22 @@ input:checked + .slider::before{ transform:translateX(22px); }
         <div class="panel" id="panel-appearance">
             <h1>Appearance</h1>
             <p class="subtitle">Customize how EcoTrack looks for you.</p>
-            <div class="toggle-row">
-                <div class="toggle-info">
-                    <div class="t-label">Dark Mode</div>
-                    <div class="t-desc">Switch to dark theme.</div>
+            <form method="POST" action="{{ url_for('setting.setting') }}">
+                <input type="hidden" name="form_type" value="appearance">
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <div class="t-label">Dark Mode</div>
+                        <div class="t-desc">Switch to dark theme.</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" name="dark_mode" value="on"
+                            {% if session.get('dark_mode') == 1 %}checked{% endif %}>
+                        <span class="slider"></span>
+                    </label>
                 </div>
-                <label class="switch"><input type="checkbox"><span class="slider"></span></label>
-            </div>
-            <br>
-            <button class="save-btn">Save Appearance</button>
+                <br>
+                <button class="save-btn" type="submit">Save Appearance</button>
+            </form>
         </div>
 
         <!-- DANGER ZONE PANEL -->
