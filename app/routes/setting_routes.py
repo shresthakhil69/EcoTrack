@@ -2,8 +2,8 @@ from flask import Blueprint, render_template, request, session, redirect, url_fo
 from app.models.user import User
 
 settingBP = Blueprint("setting", __name__)
-@settingBP.route("/setting", methods=['GET', 'POST'])
 
+@settingBP.route("/setting", methods=['GET', 'POST'])
 def setting():
     if 'user_id' not in session:
         return redirect(url_for('user_auth.login'))
@@ -35,9 +35,9 @@ def setting():
             session['user_email'] = email
 
             flash('Profile updated successfully.', 'success')
+            return redirect(url_for('setting.setting'))
 
-
-         # ── Password Change ─────────────────────────
+        # ── Password Change ─────────────────────────
         elif form_type == 'password':
             current_password = request.form.get('current_password', '')
             new_password = request.form.get('new_password', '')
@@ -63,5 +63,8 @@ def setting():
 
             user.update_password(user_id, new_password)
             flash('Password updated successfully.', 'success')
+            return redirect(url_for('setting.setting'))
 
-            
+    # ── Handle GET Request ───────────────────────
+    # This renders the settings page when you just visit the URL
+    return render_template("user/setting.html")
