@@ -70,3 +70,14 @@ def update_status():
 
     return redirect(url_for('admin_dashboard.dashboard'))
 
+@admin_dashboardBP.route('/admin/delete_report', methods=['POST'])
+def delete_report():
+    if admin_required():
+        return redirect(url_for('admin_auth.admin_login'))
+
+    report_id = request.form.get('report_id')
+    report = Report()
+    report.delete_by_id(report_id)
+
+    flash(f'Report #{report_id} deleted.', 'success')
+    return redirect(url_for('admin_dashboard.dashboard'))
