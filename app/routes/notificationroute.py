@@ -17,5 +17,4 @@ def notifications():
         if not n['is_read']:
             notif.mark_as_read(n['id'])
 
-    return render_template("userpage/notification.html",
-                           notifications=user_notifications)
+    return render_template("user/notification.html", notifications=user_notifications)

@@ -82,22 +82,60 @@
       min-height: 100vh;
       padding: 30px;
     }
+
+    /* Dark Mode */
+    body.dark { background: #1a1a2e; color: #e0e0e0; }
+    body.dark .main-content { background: #1a1a2e; }
+    body.dark .sidebar { background: linear-gradient(to bottom, #0a0a1a, #0d2137); }
+
+    /* Cards and containers */
+    body.dark .card,
+    body.dark .report-card,
+    body.dark .table-container,
+    body.dark .main-box,
+    body.dark .settings-menu,
+    body.dark .notif-card { background: #16213e; color: #e0e0e0; }
+
+    /* Tables */
+    body.dark table th { background: #0f3460; color: #e0e0e0; }
+    body.dark table td { color: #e0e0e0; border-bottom-color: #2a2a4a; }
+
+    /* Inputs */
+    body.dark input,
+    body.dark select,
+    body.dark textarea {
+        background: #0f3460;
+        color: #e0e0e0;
+        border-color: #2a2a4a;
+    }
+
+    /* Text */
+    body.dark h1, body.dark h2, body.dark h3 { color: #e0e0e0; }
+    body.dark p, body.dark label { color: #aaaaaa; }
+
+    /* Badges and highlights */
+    body.dark .notif-card.unread { background: #1a2a1a; }
+    body.dark .menu-item { color: #cccccc; }
+    body.dark .menu-item:hover { background: #1a2a3a; }
+
+
+
   </style>
 
   {% block extra_styles %}{% endblock %}
 </head>
 
-<body>
+<body class="{{ 'dark' if session.get('dark_mode') == 1 else '' }}">
 
   <aside class="sidebar">
     <div>
       <div class="logo">EcoTrack</div>
 
       <ul class="menu">
-        <li><a href="{{ url_for('home.home') }}">Dashboard</a></li>
+        <li><a href="{{ url_for('dashboard.dashboard') }}">Dashboard</a></li>
         <li><a href="{{ url_for('report.reports') }}">Submit Report</a></li>
         <li><a href="{{ url_for('my_report.reports') }}">My Reports</a></li>
-        <li><a href="#">Notifications</a></li>
+        <li><a href="{{ url_for('notification.notifications') }}">Notifications</a></li>
         <li><a href="{{ url_for('setting.setting') }}">Settings</a></li>
         <li><a href="#">Help & Support</a></li>
       </ul>

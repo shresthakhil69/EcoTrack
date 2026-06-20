@@ -62,7 +62,7 @@ def login_controller():
     session['user_email'] = user_data['email']
     session['user_role'] = user_data['role']
 
-    return redirect(url_for('setting.setting'))
+    return redirect(url_for('dashboard.dashboard'))
 
 
 def logout_controller():

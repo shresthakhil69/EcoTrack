@@ -63,7 +63,6 @@ def setting():
 
             user.update_password(user_id, new_password)
             flash('Password updated successfully.', 'success')
-            return redirect(url_for('setting.setting'))
 
     # ── Handle GET Request ───────────────────────
     # This renders the settings page when you just visit the URL
