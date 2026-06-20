@@ -43,3 +43,21 @@ class Report(BaseModel):
         )
 
         db.close()
+
+    def get_user_reports(self, user_id):
+
+        db = Database()
+
+        reports = db.fetch_all(
+            """
+            SELECT *
+            FROM reports
+            WHERE user_id=%s
+            ORDER BY reported_on  DESC
+            """,
+            (user_id,)
+        )
+
+        db.close()
+
+        return reports
