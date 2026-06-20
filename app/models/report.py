@@ -94,3 +94,11 @@ class Report(BaseModel):
         )
     
         db.close()
+
+    def delete_by_id(self, report_id):
+        db = Database()
+        # Delete notifications linked to this report first
+        db.execute("DELETE FROM notifications WHERE report_id=%s", (report_id,))
+        # Then delete the report
+        db.execute("DELETE FROM reports WHERE id=%s", (report_id,))
+        db.close()
