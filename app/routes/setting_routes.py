@@ -85,6 +85,19 @@ def setting():
                 report.delete_by_id(r['id'])
             flash('All your reports have been deleted.', 'success')
 
+        # ── Delete Account ──────────────────────────
+        elif form_type == 'delete_account':
+            report = Report()
+            user_reports = report.get_user_reports(user_id)
+            for r in user_reports:
+                report.delete_by_id(r['id'])
+            user.delete_account(user_id)
+            session.clear()
+            flash('Your account has been deleted.', 'success')
+            return redirect(url_for('user_auth.login'))
+
+        return redirect(url_for('setting.setting'))
+
     # ── Handle GET Request ───────────────────────
     # This renders the settings page when you just visit the URL
     return render_template("user/setting.html")
