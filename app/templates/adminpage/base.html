@@ -55,11 +55,11 @@
       <div class="logo">EcoTrack</div>
       <div class="logo-sub">Admin Panel</div>
       <ul class="menu">
-        <li><a href="#">Dashboard</a></li>
-        <li><a href="#">Users</a></li>
+        <li><a href="{{ url_for('admin_dashboard.dashboard') }}">Dashboard</a></li>
+        <li><a href="{{ url_for('admin_dashboard.users') }}">Users</a></li>
       </ul>
     </div>
-    <a href="#" class="logout-btn">Logout</a>
+    <a href="{{ url_for('home.home') }}" class="logout-btn">Logout</a>
   </aside>
 
   <main class="main-content">
