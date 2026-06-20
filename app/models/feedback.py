@@ -51,4 +51,16 @@ class Feedback(BaseModel):
         db.close()
         return results
 
-    
+    def get_all_feedback(self):
+        db = Database()
+        results = db.fetch_all(
+            """
+            SELECT feedback.*, users.name AS user_name, users.email AS user_email
+            FROM feedback
+            JOIN users ON feedback.user_id = users.id
+            ORDER BY feedback.submitted_on DESC
+            """
+        )
+        db.close()
+        return results
+
