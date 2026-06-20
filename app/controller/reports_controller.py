@@ -1,7 +1,7 @@
 import os
 from flask import request, session, redirect, url_for, flash
 from werkzeug.utils import secure_filename
-from app.model.reports import Report
+from app.models.report import Report
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp'}
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), '..', 'static', 'uploads')

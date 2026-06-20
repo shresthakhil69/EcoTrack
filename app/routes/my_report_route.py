@@ -1,53 +1,53 @@
-from flask import Blueprint, render_template, request, jsonify, session, redirect, url_for
+import os
+from flask import Blueprint, render_template, request, session, redirect, url_for, flash
 from app.models.report import Report
 
-my_report = Blueprint("my_report", __name__)
-report_model = Report()
+my_reportBP = Blueprint("my_report", __name__)
+
+@my_reportBP.route("/my_report")
+def my_report():
+    if 'user_id' not in session:
+        return redirect(url_for('user_auth.login'))
+
+    report = Report()
+    reports = report.get_user_reports(session['user_id'])
+    return render_template("user/my_report.html", reports=reports)
 
 
-@my_report.route("/my-reports")
-def my_reports():
-    user_id = session.get("user_id")
-    if not user_id:
-        return redirect(url_for("auth_user.login"))
-    
-    user_reports = report_model.get_user_reports(user_id)
-    return render_template("user/my_report.html", reports=user_reports)
-
-
-@my_report.route("/delete_report", methods=["POST"])
+@my_reportBP.route("/my_report/delete", methods=['POST'])
 def delete_report():
-    user_id = session.get("user_id")
-    report_id = request.form.get("report_id")
-    report_data = report_model.find_by_id(report_id)
+    if 'user_id' not in session:
+        return redirect(url_for('user_auth.login'))
 
-    if report_data and report_data['user_id'] == user_id:
-        report_model.delete_by_id(report_id)
+    report_id = request.form.get('report_id')
+    report = Report()
 
-    return redirect(url_for('my_report.my_reports'))
+    # Get the report first to find the image path
+    existing = report.find_by_id(report_id)
 
-@my_report.route("/update_report_status/<int:report_id>", methods=["POST"])
-def update_report_status(report_id):
-    if session.get("user_role") != 'admin':
-        return jsonify({"success": False, "error": "Only admins can update status"}), 403
-    
-    status = request.form.get("status")
-    
-    if report_model.update_status(report_id, status):
-        return jsonify({"success": True}), 200
-    
-    return jsonify({"success": False}), 500
+    # Delete image file if it exists
+    if existing and existing['image_path']:
+        image_full_path = os.path.join(
+            os.path.dirname(__file__), '..', 'static', 'uploads', existing['image_path']
+        )
+        if os.path.exists(image_full_path):
+            os.remove(image_full_path)
 
-@my_report.route("/edit_report/<int:report_id>", methods=["GET", "POST"])
+    report.delete_by_id(report_id)
+
+    flash('Report deleted successfully.', 'success')
+    return redirect(url_for('my_report.my_report'))
+
+@my_reportBP.route("/my_report/edit/<int:report_id>", methods=["GET", "POST"])
 def edit_report(report_id):
-    user_id = session.get("user_id")
-    if not user_id:
-        return redirect(url_for("user_auth.login"))
+    if 'user_id' not in session:
+        return redirect(url_for('user_auth.login'))
 
-    report_data = report_model.find_by_id(report_id)
+    report = Report()
+    report_data = report.find_by_id(report_id)
 
-    if not report_data or report_data['user_id'] != user_id:
-        return redirect(url_for('my_report.my_reports'))
+    if not report_data or report_data['user_id'] != session['user_id']:
+        return redirect(url_for('my_report.my_report'))
 
     if request.method == "POST":
         location = request.form.get("location")
@@ -55,7 +55,8 @@ def edit_report(report_id):
         description = request.form.get("description")
         image_file = request.files.get("image")
 
-        report_model.update_report(report_id, location, waste_type, description, image_file)
-        return redirect(url_for('my_report.my_reports'))
+        report.update_report(report_id, location, waste_type, description, image_file)
+        flash('Report updated successfully.', 'success')
+        return redirect(url_for('my_report.my_report'))
 
     return render_template("user/edit_report.html", report=report_data)
