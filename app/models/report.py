@@ -61,3 +61,21 @@ class Report(BaseModel):
         db.close()
 
         return reports
+    
+    def get_reports_by_status(self, user_id, status):
+
+        db = Database()
+
+        reports = db.fetch_all(
+            """
+            SELECT *
+            FROM reports
+            WHERE user_id=%s
+            AND status=%s
+            """,
+            (user_id, status)
+        )
+
+        db.close()
+
+        return reports
