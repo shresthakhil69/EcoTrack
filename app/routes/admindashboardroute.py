@@ -115,3 +115,10 @@ def delete_user():
     user_reports = report.get_user_reports(user_id)
     for r in user_reports:
         report.delete_by_id(r['id'])
+
+    db = Database()
+    db.execute("DELETE FROM users WHERE id=%s", (user_id,))
+    db.close()
+
+    flash('User deleted successfully.', 'success')
+    return redirect(url_for('admin_dashboard.users'))
