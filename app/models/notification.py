@@ -12,11 +12,13 @@ class Notification(BaseModel):
         self,
         user_id=None,
         report_id=None,
-        message=None
+        message=None,
+        type="status_update"
     ):
         self.user_id = user_id
         self.report_id = report_id
         self.message = message
+        self.type = type
 
     def save(self):
 
@@ -25,13 +27,14 @@ class Notification(BaseModel):
         db.execute(
             """
             INSERT INTO notifications
-            (user_id, report_id, message)
-            VALUES (%s,%s,%s)
+            (user_id, report_id, message, type)
+            VALUES (%s,%s,%s,%s)
             """,
             (
                 self.user_id,
                 self.report_id,
-                self.message
+                self.message,
+                self.type
             )
         )
 
