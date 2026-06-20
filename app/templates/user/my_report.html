@@ -178,6 +178,21 @@
       align-items: flex-start;
     }
   }
+
+  .status.pending {
+      background: #fef3c7;
+      color: #b45309;
+  }
+
+  .status.in_progress {
+      background: #dbeafe;
+      color: #1e40af;
+  }
+
+  .status.resolved {
+      background: #dcfce7;
+      color: #166534;
+  }
 </style>
 {% endblock %}
 
@@ -210,7 +225,7 @@
       <div class="details">
         <div class="top">
           <div class="title">{{ rep.waste_type or 'Report' }}</div>
-          <div class="status {{ 'resolved' if rep.status == 'Resolved' else '' }}">{{ rep.status or 'Pending' }}</div>
+          <div class="status {{ rep.status }}">{{ rep.status|replace('_', ' ')|title or 'Pending' }}</div>
         </div>
 
         <div class="info-item">
