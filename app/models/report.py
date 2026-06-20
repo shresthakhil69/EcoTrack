@@ -79,3 +79,18 @@ class Report(BaseModel):
         db.close()
 
         return reports
+    
+    def update_status(self, report_id, status):
+
+        db = Database()
+
+        db.execute(
+            """
+            UPDATE reports
+            SET status=%s
+            WHERE id=%s
+            """,
+            (status, report_id)
+        )
+    
+        db.close()
