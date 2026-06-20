@@ -26,6 +26,6 @@ def dashboard():
 
     recent_reports = user_reports[:5]
 
-    return render_template("userpage/dashboard.html",
+    return render_template("user/dashboard.html",
                            summary=summary,
                            recent_reports=recent_reports)
