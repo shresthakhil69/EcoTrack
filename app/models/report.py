@@ -35,3 +35,42 @@ class Report(BaseModel):
         
         # Return relative path for database
         return f"uploads/{filename}"
+    
+    def create(self, user_id, location, waste_type, description, image_file):
+        """
+        Create a new report with image file.
+        
+        Args:
+            user_id (int): User who submitted the report
+            location (str): Report location
+            waste_type (str): Type of waste
+            description (str): Report description
+            image_file: Flask FileStorage object
+        
+        Returns:
+            int: ID of created report or None if failed
+        """
+        from .database import Database
+        
+        # Save image to filesystem
+        image_path = self._save_image(image_file)
+        
+        # Insert report into database
+        db = Database()
+        query = f"""
+            INSERT INTO {self.table} (user_id, location, waste_type, description, image_path, status, reported_on)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+        """
+        
+        report_id = db.execute(query, (
+            user_id,
+            location,
+            waste_type,
+            description,
+            image_path,
+            "pending",
+            datetime.utcnow()
+        ))
+        
+        db.close()
+        return report_id
