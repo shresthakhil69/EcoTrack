@@ -30,13 +30,20 @@ def create_app():
     from app.routes.home_route import homeBP
     app.register_blueprint(homeBP)
 
-    from app.routes.my_report_route import my_report
-    app.register_blueprint(my_report)
-
-    from app.routes.report_route import report
-    app.register_blueprint(report)
-
+    # Register Setting Blueprint
     from app.routes.setting_routes import settingBP
     app.register_blueprint(settingBP)
 
+    # Register Report Blueprint
+    from app.routes.report_route import report
+    app.register_blueprint(report)
+
+    # Register My Report Blueprint (FIXED NAME HERE)
+    from app.routes.my_report_route import my_reportBP
+    app.register_blueprint(my_reportBP)
+
+    # Register Report Success Blueprint
+    from app.routes.report_success import report_successBP
+    app.register_blueprint(report_successBP)
+    
     return app

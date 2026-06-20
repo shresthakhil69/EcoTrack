@@ -193,14 +193,14 @@
     <div class="report-card">
       <div class="image-section">
         {% if rep.image_path %}
-        <img src="{{ url_for('static', filename=rep.image_path) }}" class="main-image" alt="Report image">
+        <img src="{{ url_for('static', filename='uploads/' ~ rep.image_path) }}" class="main-image" alt="Report image">
         {% else %}
           <div class="no-image-box">No Image</div>
         {% endif %}
 
         <div class="thumb-row">
           {% if rep.image_path %}
-          <img src="{{ url_for('static', filename=rep.image_path) }}" class="thumb" alt="Thumbnail">
+          <img src="{{ url_for('static', filename='uploads/' ~ rep.image_path) }}" class="thumb" alt="Thumbnail">
           {% else %}
             <div class="thumb-placeholder">No Image</div>
           {% endif %}

@@ -102,3 +102,38 @@ class Report(BaseModel):
         # Then delete the report
         db.execute("DELETE FROM reports WHERE id=%s", (report_id,))
         db.close()
+
+    def _save_image(self, image_file):
+        import os
+        from flask import current_app
+        if not image_file or not image_file.filename:
+            return None
+        upload_folder = os.path.join(current_app.root_path, "static", "uploads")
+        os.makedirs(upload_folder, exist_ok=True)
+        filename = image_file.filename
+        filepath = os.path.join(upload_folder, filename)
+        image_file.save(filepath)
+        return filename
+
+    def update_report(self, report_id, location, waste_type, description, image_file):
+        image_path = self._save_image(image_file)
+        db = Database()
+        if image_path:
+            db.execute(
+                """
+                UPDATE reports
+                SET location=%s, waste_type=%s, description=%s, image_path=%s
+                WHERE id=%s
+                """,
+                (location, waste_type, description, image_path, report_id)
+            )
+        else:
+            db.execute(
+                """
+                UPDATE reports
+                SET location=%s, waste_type=%s, description=%s
+                WHERE id=%s
+                """,
+                (location, waste_type, description, report_id)
+            )
+        db.close()
