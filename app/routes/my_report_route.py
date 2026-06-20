@@ -1,79 +1,73 @@
-from flask import Blueprint, render_template, current_app, url_for, request, redirect, jsonify
 import os
-import json
+from flask import Blueprint, render_template, request, session, redirect, url_for, flash
+from app.auth import login_required
+from app.models.report import Report
 
-my_report = Blueprint("my_report", __name__)
+my_reportBP = Blueprint("my_report", __name__)
+
+@my_reportBP.route("/my_report")
+@login_required
+def my_report():
+    report = Report()
+    
+    status = request.args.get('status', '')
+    waste_type = request.args.get('waste_type', '')
+    date_order = request.args.get('date', 'newest')
+
+    reports = report.get_user_reports(session['user_id'])
+
+    if status:
+        reports = [r for r in reports if r['status'] == status]
+    
+    if waste_type:
+        reports = [r for r in reports if r['waste_type'] == waste_type]
+
+    if date_order == 'oldest':
+        reports = list(reversed(reports))
+
+    return render_template("user/my_report.html", reports=reports, 
+                           selected_status=status, 
+                           selected_type=waste_type, 
+                           selected_date=date_order)
 
 
-def _reports_data_path():
-    data_dir = os.path.join(current_app.root_path, "data")
-    return os.path.join(data_dir, "reports.json")
-
-
-def _load_reports():
-    path = _reports_data_path()
-    try:
-        with open(path, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
-        return []
-
-
-def _save_reports(reports):
-    path = _reports_data_path()
-    # ensure data dir exists
-    data_dir = os.path.dirname(path)
-    os.makedirs(data_dir, exist_ok=True)
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(reports, f, ensure_ascii=False, indent=2)
-
-
-@my_report.route('/delete_report', methods=['POST'])
+@my_reportBP.route("/my_report/delete", methods=['POST'])
+@login_required
 def delete_report():
-    """Delete a report by index and return JSON for AJAX or redirect back."""
-    idx_val = request.form.get('index')
-    try:
-        idx = int(idx_val)
-    except (TypeError, ValueError):
-        return redirect(url_for('my_report.reports'))
+    report_id = request.form.get('report_id')
+    report = Report()
 
-    reports_list = _load_reports()
-    if idx < 0 or idx >= len(reports_list):
-        return redirect(url_for('my_report.reports'))
+    existing = report.find_by_id(report_id)
 
-    report = reports_list.pop(idx)
+    if existing and existing['image_path']:
+        image_full_path = os.path.join(
+            os.path.dirname(__file__), '..', 'static', 'uploads', existing['image_path']
+        )
+        if os.path.exists(image_full_path):
+            os.remove(image_full_path)
 
-    # delete image file if present
-    img = report.get('image')
-    if img:
-        img_path = os.path.join(current_app.root_path, 'static', 'uploads', img)
-        try:
-            if os.path.exists(img_path):
-                os.remove(img_path)
-        except OSError:
-            pass
+    report.delete_by_id(report_id)
 
-    _save_reports(reports_list)
+    flash('Report deleted successfully.', 'success')
+    return redirect(url_for('my_report.my_report'))
 
-    # If AJAX request return JSON; otherwise redirect back
-    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        return jsonify({"success": True})
+@my_reportBP.route("/my_report/edit/<int:report_id>", methods=["GET", "POST"])
+@login_required
+def edit_report(report_id):
+    report = Report()
+    report_data = report.find_by_id(report_id)
 
-    return redirect(url_for('my_report.reports'))
+    if not report_data or report_data['user_id'] != session['user_id']:
+        return redirect(url_for('my_report.my_report'))
 
+    if request.method == "POST":
+        location = request.form.get("location")
+        waste_type = request.form.get("waste_type")
+        description = request.form.get("description")
+        image_file = request.files.get("image")
 
-@my_report.route("/my-reports")
-def reports():
-    """Render the my_report page and pass saved reports.
+        report.update_report(report_id, location, waste_type, description, image_file)
+        flash('Report updated successfully.', 'success')
+        return redirect(url_for('my_report.my_report'))
 
-    Each report is a dict with keys: location, waste_type, description, image,
-    reported_on. The template will iterate over the list and render each
-    report's image (if provided) using url_for('static', filename='uploads/<name>').
-    """
-    reports_list = _load_reports()
-
-    # For compatibility with previous template logic that expected an `uploads`
-    # variable, build an uploads list with the images from reports (if any).
-    uploads = [r.get('image') for r in reports_list if r.get('image')]
-
-    return render_template("user/my_report.html", uploads=uploads, reports=reports_list)
+    return render_template("user/edit_report.html", report=report_data)

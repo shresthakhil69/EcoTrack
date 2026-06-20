@@ -65,14 +65,25 @@ class User:
     # -------------------------
     # UPDATE PROFILE
     # -------------------------
-    def update_profile(self, user_id, name, email):
+    def update_profile(self, user_id, name, email, phone=None):
         db = Database()
         db.execute(
             """
-            UPDATE users SET name=%s, email=%s
+            UPDATE users SET name=%s, email=%s, phone=%s
             WHERE id=%s
             """,
-            (name, email, user_id)
+            (name, email, phone, user_id)
+        )
+        db.close()
+
+    # -------------------------
+    # UPDATE PROFILE PICTURE
+    # -------------------------
+    def update_profile_picture(self, user_id, filename):
+        db = Database()
+        db.execute(
+            "UPDATE users SET profile_photo=%s WHERE id=%s",
+            (filename, user_id)
         )
         db.close()
 
@@ -98,3 +109,5 @@ class User:
         db = Database()
         db.execute("DELETE FROM users WHERE id=%s", (user_id,))
         db.close()
+
+    # -------------------------

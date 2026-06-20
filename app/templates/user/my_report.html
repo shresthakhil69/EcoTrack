@@ -178,29 +178,115 @@
       align-items: flex-start;
     }
   }
+
+  .status.pending {
+      background: #fef3c7;
+      color: #b45309;
+  }
+
+  .status.in_progress {
+      background: #dbeafe;
+      color: #1e40af;
+  }
+
+  .status.resolved {
+      background: #dcfce7;
+      color: #166534;
+  }
+  
+  .filter-bar {
+      background: white;
+      border-radius: 12px;
+      padding: 20px 25px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+      display: flex;
+      gap: 15px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+      align-items: flex-end;
+  }
+
+  .filter-bar select {
+      padding: 12px 16px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 15px;
+      outline: none;
+      background: white;
+      cursor: pointer;
+      flex: 1 1 180px;
+      color: #111;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+  }
+  
+  .filter-bar select:focus {
+      border-color: #15803d;
+  }
+
+  .filter-bar button {
+      padding: 12px 28px;
+      background: #15803d;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      cursor: pointer;
+      white-space: nowrap;
+  }
+
+  .filter-bar button:hover {
+      background: #166534;
+  }
+
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="page-header">
   <h1>My Reports</h1>
-  <a href="{{ url_for('report.reports') }}" class="add-report-link">Submit New Report</a>
+  <a href="{{ url_for('report.submit') }}" class="add-report-link">Submit New Report</a>
 </div>
+
+<form method="GET" action="{{ url_for('my_report.my_report') }}" class="filter-bar">
+    <select name="status">
+        <option value="">All Statuses</option>
+        <option value="pending" {{ 'selected' if selected_status == 'pending' }}>Pending</option>
+        <option value="in_progress" {{ 'selected' if selected_status == 'in_progress' }}>In Progress</option>
+        <option value="resolved" {{ 'selected' if selected_status == 'resolved' }}>Resolved</option>
+    </select>
+
+    <select name="waste_type">
+        <option value="">All Types</option>
+        <option value="Organic" {{ 'selected' if selected_type == 'Organic' }}>Organic</option>
+        <option value="Recyclable waste" {{ 'selected' if selected_type == 'Recyclable waste' }}>Recyclable waste</option>
+        <option value="Non-recyclable waste" {{ 'selected' if selected_type == 'Non-recyclable waste' }}>Non-recyclable waste</option>
+        <option value="Mixed waste" {{ 'selected' if selected_type == 'Mixed waste' }}>Mixed waste</option>
+    </select>
+
+    <select name="date">
+        <option value="newest" {{ 'selected' if selected_date == 'newest' }}>Newest First</option>
+        <option value="oldest" {{ 'selected' if selected_date == 'oldest' }}>Oldest First</option>
+    </select>
+
+    <button type="submit" class="btn edit">Apply</button>
+</form>
 
 <div class="report-layout">
   {% if reports and reports|length > 0 %}
     {% for rep in reports %}
     <div class="report-card">
       <div class="image-section">
-        {% if rep.image %}
-          <img src="{{ url_for('static', filename='uploads/' ~ rep.image) }}" class="main-image" alt="Report image">
+        {% if rep.image_path %}
+        <img src="{{ url_for('static', filename='uploads/' ~ rep.image_path) }}" class="main-image" alt="Report image">
         {% else %}
           <div class="no-image-box">No Image</div>
         {% endif %}
 
         <div class="thumb-row">
-          {% if rep.image %}
-            <img src="{{ url_for('static', filename='uploads/' ~ rep.image) }}" class="thumb" alt="Thumbnail">
+          {% if rep.image_path %}
+          <img src="{{ url_for('static', filename='uploads/' ~ rep.image_path) }}" class="thumb" alt="Thumbnail">
           {% else %}
             <div class="thumb-placeholder">No Image</div>
           {% endif %}
@@ -210,7 +296,7 @@
       <div class="details">
         <div class="top">
           <div class="title">{{ rep.waste_type or 'Report' }}</div>
-          <div class="status {{ 'resolved' if rep.status == 'Resolved' else '' }}">{{ rep.status or 'Pending' }}</div>
+          <div class="status {{ rep.status }}">{{ rep.status|replace('_', ' ')|title or 'Pending' }}</div>
         </div>
 
         <div class="info-item">
@@ -234,10 +320,10 @@
         </div>
 
         <div class="buttons">
-          <button class="btn edit" type="button">Edit Report</button>
-          <form method="post" action="{{ url_for('my_report.delete_report') }}" style="display:inline; margin:0;">
+          <a href="{{ url_for('my_report.edit_report', report_id=rep.id) }}" class="btn edit">Edit Report</a>
+          <form method="POST" action="{{ url_for('my_report.delete_report') }}" style="display:inline; margin:0;">
             <input type="hidden" name="report_id" value="{{ rep.id }}">
-            <button class="btn delete" type="submit">Delete Report</button>
+            <button class="btn delete" type="submit" onclick="return confirm('Are you sure you want to delete this report?')">Delete Report</button>
           </form>
         </div>
       </div>
@@ -252,52 +338,3 @@
 </div>
 {% endblock %}
 
-{% block extra_scripts %}
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.report-card').forEach((card) => {
-      const form = card.querySelector('form');
-      if (!form) return;
-
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        if (!confirm('Are you sure you want to delete this report?')) {
-          return;
-        }
-
-        const reportId = form.querySelector('input[name="report_id"]').value;
-
-        fetch(form.action, {
-          method: 'POST',
-          headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-            'Content-Type': 'application/x-www-form-urlencoded'
-          },
-          body: `report_id=${encodeURIComponent(reportId)}`
-        })
-        .then(response => response.json())
-        .then(data => {
-          if (data && data.success) {
-            card.remove();
-
-            const remaining = document.querySelectorAll('.report-card');
-            if (remaining.length === 0) {
-              const layout = document.querySelector('.report-layout');
-              layout.innerHTML = `
-                <div class="empty-state">
-                  <h2>No reports submitted yet.</h2>
-                  <p>You can submit your first waste report from the Submit Report page.</p>
-                </div>
-              `;
-            }
-          } else {
-            window.location.reload();
-          }
-        })
-        .catch(() => window.location.reload());
-      });
-    });
-  });
-</script>
-{% endblock %}

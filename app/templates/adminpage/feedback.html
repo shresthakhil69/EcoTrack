@@ -1,0 +1,78 @@
+{% extends "adminpage/base.html" %}
+
+{% block title %}Feedback | EcoTrack Admin{% endblock %}
+
+{% block extra_styles %}
+<style>
+  .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
+  .topbar h1 { font-size: 30px; color: #111; }
+
+  .feedback-grid { display: flex; flex-direction: column; gap: 14px; }
+
+  .fb-card {
+    background: white; border-radius: 14px;
+    padding: 20px 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    border-left: 5px solid #f59e0b;
+  }
+  .fb-card.reviewed { border-left-color: #2563eb; }
+  .fb-card.resolved { border-left-color: #16a34a; }
+
+  .fb-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+  .fb-subject { font-size: 16px; font-weight: 700; color: #173b2e; }
+  .fb-user { font-size: 12px; color: #888; margin-top: 2px; }
+  .fb-message { font-size: 14px; color: #444; margin-top: 10px; line-height: 1.5; }
+  .fb-time { font-size: 11px; color: #aaa; margin-top: 10px; }
+
+  .status-form { display: flex; gap: 8px; align-items: center; }
+  .status-form select {
+    padding: 7px 10px; border: 1px solid #ddd;
+    border-radius: 8px; font-size: 13px; outline: none;
+  }
+  .btn-update {
+    padding: 7px 14px; background: #0F6E56;
+    color: white; border: none; border-radius: 8px;
+    font-size: 13px; cursor: pointer;
+  }
+  .btn-update:hover { background: #04342C; }
+
+  .empty-state { text-align: center; padding: 60px 20px; color: #888; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="topbar">
+  <h1>User Feedback</h1>
+</div>
+
+<div class="feedback-grid">
+  {% if feedback_list %}
+    {% for fb in feedback_list %}
+    <div class="fb-card {{ fb.status }}">
+      <div class="fb-top">
+        <div>
+          <div class="fb-subject">{{ fb.subject }}</div>
+          <div class="fb-user">{{ fb.user_name }} ({{ fb.user_email }})</div>
+        </div>
+        <form method="POST" action="{{ url_for('admin_dashboard.update_feedback_status') }}" class="status-form">
+          <input type="hidden" name="feedback_id" value="{{ fb.id }}">
+          <select name="status">
+            <option value="new" {% if fb.status == 'new' %}selected{% endif %}>New</option>
+            <option value="reviewed" {% if fb.status == 'reviewed' %}selected{% endif %}>Reviewed</option>
+            <option value="resolved" {% if fb.status == 'resolved' %}selected{% endif %}>Resolved</option>
+          </select>
+          <button class="btn-update" type="submit">Update</button>
+        </form>
+      </div>
+      <div class="fb-message">{{ fb.message }}</div>
+      <div class="fb-time">{{ fb.submitted_on }}</div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <div class="empty-state">
+      <h2>No feedback yet.</h2>
+      <p>User feedback submitted from Help & Support will appear here.</p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

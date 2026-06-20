@@ -1,67 +1,9 @@
-<<<<<<< HEAD:app/templates/admin/user.html
-{% extends "admin/base.html" %}
-=======
 {% extends "adminpage/base.html" %}
->>>>>>> 0cf396a83f7fa17a6f48e8fd45cb1bbb1a8be41c:app/templates/adminpage/user.html
 
 {% block title %}Users | EcoTrack Admin{% endblock %}
 
 {% block extra_styles %}
 <style>
-<<<<<<< HEAD:app/templates/admin/user.html
-  .topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 28px;
-  }
-
-  .topbar h1 {
-    color: #111;
-    font-size: 30px;
-  }
-
-  .table-container {
-    background: white;
-    border-radius: 14px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    overflow-x: auto;
-    padding: 24px;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  th,
-  td {
-    padding: 14px 12px;
-    text-align: left;
-    border-bottom: 1px solid #e5e7eb;
-    font-size: 14px;
-  }
-
-  th {
-    background: #f9fafb;
-    color: #374151;
-    font-weight: 600;
-  }
-
-  .role {
-    display: inline-block;
-    border-radius: 20px;
-    background: #dcfce7;
-    color: #166534;
-    font-size: 12px;
-    font-weight: bold;
-    padding: 5px 12px;
-  }
-
-  .role.admin {
-    background: #dbeafe;
-    color: #1e40af;
-=======
   .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
   .topbar h1 { font-size: 30px; color: #111; }
 
@@ -93,25 +35,17 @@
 
   .total-count {
     font-size: 14px; color: #888; margin-bottom: 16px;
->>>>>>> 0cf396a83f7fa17a6f48e8fd45cb1bbb1a8be41c:app/templates/adminpage/user.html
   }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="topbar">
-<<<<<<< HEAD:app/templates/admin/user.html
-  <h1>Users</h1>
-</div>
-
-<div class="table-container">
-=======
   <h1>All Users</h1>
 </div>
 
 <div class="table-container">
   <div class="total-count">Total users: {{ users|length }}</div>
->>>>>>> 0cf396a83f7fa17a6f48e8fd45cb1bbb1a8be41c:app/templates/adminpage/user.html
   <table>
     <thead>
       <tr>
@@ -120,22 +54,6 @@
         <th>Email</th>
         <th>Role</th>
         <th>Joined</th>
-<<<<<<< HEAD:app/templates/admin/user.html
-      </tr>
-    </thead>
-    <tbody>
-      {% for user in users %}
-      <tr>
-        <td>{{ user.id }}</td>
-        <td>{{ user.name }}</td>
-        <td>{{ user.email }}</td>
-        <td><span class="role {{ user.role }}">{{ user.role }}</span></td>
-        <td>{{ user.reported_on }}</td>
-      </tr>
-      {% else %}
-      <tr>
-        <td colspan="5" style="text-align:center; color:#888;">No users found.</td>
-=======
         <th>Delete</th>
       </tr>
     </thead>
@@ -163,14 +81,9 @@
       {% else %}
       <tr>
         <td colspan="6" style="text-align:center; color:#888;">No users found.</td>
->>>>>>> 0cf396a83f7fa17a6f48e8fd45cb1bbb1a8be41c:app/templates/adminpage/user.html
       </tr>
       {% endfor %}
     </tbody>
   </table>
 </div>
-<<<<<<< HEAD:app/templates/admin/user.html
 {% endblock %}
-=======
-{% endblock %}
->>>>>>> 0cf396a83f7fa17a6f48e8fd45cb1bbb1a8be41c:app/templates/adminpage/user.html

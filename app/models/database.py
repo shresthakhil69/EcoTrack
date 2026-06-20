@@ -63,6 +63,8 @@ class Database:
                 email VARCHAR(100) NOT NULL UNIQUE,
                 password VARCHAR(255) NOT NULL,
                 role VARCHAR(20) NOT NULL DEFAULT 'user',
+                phone VARCHAR(20),
+                profile_picture VARCHAR(255),
                 reported_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
@@ -101,6 +103,8 @@ class Database:
 
                 message TEXT,
 
+                type VARCHAR(20) DEFAULT 'status_update',
+
                 is_read BOOLEAN DEFAULT FALSE,
 
                 reported_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -110,6 +114,24 @@ class Database:
 
                 FOREIGN KEY (report_id)
                 REFERENCES reports(id)
+            )
+        """)
+        db.execute("""
+            CREATE TABLE IF NOT EXISTS feedback (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+
+                user_id INT NOT NULL,
+
+                subject VARCHAR(150),
+
+                message TEXT,
+
+                status VARCHAR(20) DEFAULT 'new',
+
+                submitted_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+                FOREIGN KEY (user_id)
+                REFERENCES users(id)
             )
         """)
  
