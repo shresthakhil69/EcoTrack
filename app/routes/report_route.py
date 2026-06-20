@@ -5,7 +5,6 @@ from app.models.report import Report
 report = Blueprint("report", __name__)
 report_model = Report()
 
-
 @report.route("/submit_report", methods=["POST"])
 @login_required
 def submit_report():
