@@ -94,3 +94,15 @@ def users():
     db.close()
 
     return render_template("adminpage/users.html", users=all_users)
+
+@admin_dashboardBP.route('/admin/delete_user', methods=['POST'])
+def delete_user():
+    if admin_required():
+        return redirect(url_for('admin_auth.admin_login'))
+
+    user_id = request.form.get('user_id')
+
+    # Don't allow deleting your own admin account
+    if int(user_id) == session['admin_id']:
+        flash('You cannot delete your own admin account.', 'error')
+        return redirect(url_for('admin_dashboard.users'))
