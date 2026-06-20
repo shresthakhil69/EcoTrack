@@ -1,25 +1,22 @@
-from flask import Blueprint, render_template, request, jsonify
-from flask_login import login_required, current_user
+from flask import Blueprint, render_template, request, session, redirect, url_for
 from app.models.report import Report
 
 report = Blueprint("report", __name__)
 report_model = Report()
 
 @report.route("/submit_report", methods=["POST"])
-@login_required
 def submit_report():
-    """
-    Handle report submission with image upload.
-    Only authenticated users can submit reports.
-    """
+    user_id = session.get("user_id")
+    if not user_id:
+        return redirect(url_for("user_auth.login"))
+
     location = request.form.get("location")
     waste_type = request.form.get("waste_type")
     description = request.form.get("description")
     image = request.files.get("image")
 
-    # Create report linked to current user
     report_id = report_model.create(
-        user_id=current_user.id,
+        user_id=user_id,
         location=location,
         waste_type=waste_type,
         description=description,
@@ -32,10 +29,9 @@ def submit_report():
         return "Error saving report", 500
 
 @report.route("/submit")
-@login_required
 def submit():
-    """
-    Display the submit report form.
-    Only authenticated users can access this page.
-    """
+    user_id = session.get("user_id")
+    if not user_id:
+        return redirect(url_for("user_auth.login"))
+    
     return render_template("user/reports.html")
