@@ -68,4 +68,4 @@ def login_controller():
 def logout_controller():
     session.clear()
     flash('You have been logged out.', 'success')
-    return redirect(url_for('user_auth.login'))
+    return redirect(url_for('home.home'))
