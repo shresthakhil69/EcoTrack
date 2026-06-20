@@ -106,3 +106,7 @@ def delete_user():
     if int(user_id) == session['admin_id']:
         flash('You cannot delete your own admin account.', 'error')
         return redirect(url_for('admin_dashboard.users'))
+    
+    db = Database()
+    db.execute("DELETE FROM notifications WHERE user_id=%s", (user_id,))
+    db.close()
