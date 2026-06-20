@@ -47,7 +47,7 @@
 <div class="notif-list">
   {% if notifications %}
     {% for n in notifications %}
-    <div class="notif-card {% if not n.is_read %}unread{% endif %}">
+    <div class="notif-card {% if n.type == 'warning' %}warning{% elif not n.is_read %}unread{% endif %}">
       <div>
         <div class="notif-message">{{ n.message }}</div>
         <div class="notif-time">{{ n.reported_on }}</div>

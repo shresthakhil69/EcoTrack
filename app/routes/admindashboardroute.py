@@ -1,19 +1,13 @@
 from flask import Blueprint, render_template, request, session, redirect, url_for, flash
+from app.auth import admin_required
 from app.models.report import Report
 from app.models.database import Database
 
 admin_dashboardBP = Blueprint("admin_dashboard", __name__)
 
-
-def admin_required():
-    return 'admin_id' not in session
-
-
 @admin_dashboardBP.route('/admin/dashboard')
+@admin_required
 def dashboard():
-    if admin_required():
-        return redirect(url_for('admin_auth.admin_login'))
-
     report = Report()
     all_reports = report.find_all(order_by="id DESC")
 
@@ -41,10 +35,8 @@ def dashboard():
 
 
 @admin_dashboardBP.route('/admin/update_status', methods=['POST'])
+@admin_required
 def update_status():
-    if admin_required():
-        return redirect(url_for('admin_auth.admin_login'))
-
     report_id = request.form.get('report_id')
     new_status = request.form.get('status')
 
@@ -53,14 +45,12 @@ def update_status():
         flash('Invalid status.', 'error')
         return redirect(url_for('admin_dashboard.dashboard'))
 
-    # Get report to find the user_id before updating
     report = Report()
     existing = report.find_by_id(report_id)
 
     if existing:
         report.update_status(report_id, new_status)
 
-        # Trigger notification to the report owner
         from app.controller.notification_controller import create_notification
         create_notification(existing['user_id'], report_id, new_status)
 
@@ -72,10 +62,8 @@ def update_status():
 
 
 @admin_dashboardBP.route('/admin/delete_report', methods=['POST'])
+@admin_required
 def delete_report():
-    if admin_required():
-        return redirect(url_for('admin_auth.admin_login'))
-
     report_id = request.form.get('report_id')
     report = Report()
     report.delete_by_id(report_id)
@@ -85,13 +73,11 @@ def delete_report():
 
 
 @admin_dashboardBP.route('/admin/users')
+@admin_required
 def users():
-    if admin_required():
-        return redirect(url_for('admin_auth.admin_login'))
-
     db = Database()
     all_users = db.fetch_all(
-        "SELECT id, name, email, role, reported_on   FROM users ORDER BY reported_on   DESC"
+        "SELECT id, name, email, role, reported_on FROM users ORDER BY reported_on DESC"
     )
     db.close()
 
@@ -99,29 +85,23 @@ def users():
 
 
 @admin_dashboardBP.route('/admin/delete_user', methods=['POST'])
+@admin_required
 def delete_user():
-    if admin_required():
-        return redirect(url_for('admin_auth.admin_login'))
-
     user_id = request.form.get('user_id')
 
-    # Don't allow deleting your own admin account
-    if int(user_id) == session['admin_id']:
+    if int(user_id) == session.get('admin_id'):
         flash('You cannot delete your own admin account.', 'error')
         return redirect(url_for('admin_dashboard.users'))
 
-    # Delete notifications first
     db = Database()
     db.execute("DELETE FROM notifications WHERE user_id=%s", (user_id,))
     db.close()
 
-    # Delete reports (notifications inside already handled by override)
     report = Report()
     user_reports = report.get_user_reports(user_id)
     for r in user_reports:
         report.delete_by_id(r['id'])
 
-    # Delete user
     db = Database()
     db.execute("DELETE FROM users WHERE id=%s", (user_id,))
     db.close()
@@ -131,10 +111,8 @@ def delete_user():
 
 
 @admin_dashboardBP.route('/admin/warn_user', methods=['POST'])
+@admin_required
 def warn_user():
-    if admin_required():
-        return redirect(url_for('admin_auth.admin_login'))
-
     report_id = request.form.get('report_id')
     warning_message = request.form.get('warning_message', '').strip()
 
@@ -156,10 +134,8 @@ def warn_user():
 
 
 @admin_dashboardBP.route('/admin/feedback')
+@admin_required
 def feedback():
-    if admin_required():
-        return redirect(url_for('admin_auth.admin_login'))
-
     from app.models.feedback import Feedback
     feedback_model = Feedback()
     all_feedback = feedback_model.get_all_feedback()
@@ -168,10 +144,8 @@ def feedback():
 
 
 @admin_dashboardBP.route('/admin/feedback/update_status', methods=['POST'])
+@admin_required
 def update_feedback_status():
-    if admin_required():
-        return redirect(url_for('admin_auth.admin_login'))
-
     feedback_id = request.form.get('feedback_id')
     new_status = request.form.get('status')
 

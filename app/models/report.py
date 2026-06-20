@@ -79,6 +79,27 @@ class Report(BaseModel):
         db.close()
 
         return reports
+
+    def search_user_reports(self, user_id, search_term):
+
+        db = Database()
+
+        like_term = f"%{search_term}%"
+
+        reports = db.fetch_all(
+            """
+            SELECT *
+            FROM reports
+            WHERE user_id=%s
+            AND (waste_type LIKE %s OR location LIKE %s OR description LIKE %s)
+            ORDER BY reported_on DESC
+            """,
+            (user_id, like_term, like_term, like_term)
+        )
+
+        db.close()
+
+        return reports
     
     def update_status(self, report_id, status):
 

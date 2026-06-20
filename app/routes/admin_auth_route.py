@@ -20,4 +20,4 @@ def admin_logout():
     session.pop('admin_id', None)
     session.pop('admin_name', None)
     session.pop('admin_email', None)
-    return redirect(url_for('admin_auth.admin_login'))
+    return redirect(url_for('home.home'))

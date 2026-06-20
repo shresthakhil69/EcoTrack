@@ -64,7 +64,7 @@ class Database:
                 password VARCHAR(255) NOT NULL,
                 role VARCHAR(20) NOT NULL DEFAULT 'user',
                 phone VARCHAR(20),
-                profile_picture VARCHAR(255),
+                profile_photo VARCHAR(255),
                 reported_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)

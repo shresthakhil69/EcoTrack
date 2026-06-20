@@ -59,6 +59,44 @@
     font-size: 13px; cursor: pointer;
   }
   .btn-delete:hover { background: #b91c1c; }
+
+  .btn-warn {
+    padding: 7px 14px; background: #f59e0b;
+    color: white; border: none; border-radius: 8px;
+    font-size: 13px; cursor: pointer;
+  }
+  .btn-warn:hover { background: #d97706; }
+
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5);
+    align-items: center; justify-content: center;
+    z-index: 1000;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal-box {
+    background: white; border-radius: 14px;
+    padding: 28px; width: 100%; max-width: 420px;
+  }
+  .modal-box h3 { margin-bottom: 6px; color: #92400e; font-size: 18px; }
+  .modal-box p { color: #888; font-size: 13px; margin-bottom: 18px; }
+  .modal-box textarea {
+    width: 100%; min-height: 100px;
+    padding: 12px; border: 1.5px solid #ddd;
+    border-radius: 10px; font-size: 14px;
+    resize: vertical; outline: none; margin-bottom: 18px;
+    font-family: Arial, sans-serif;
+  }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+  .modal-cancel {
+    padding: 9px 18px; background: #f3f4f6; color: #333;
+    border: none; border-radius: 8px; cursor: pointer; font-size: 13px;
+  }
+  .modal-send {
+    padding: 9px 18px; background: #f59e0b; color: white;
+    border: none; border-radius: 8px; cursor: pointer; font-size: 13px;
+  }
+  .modal-send:hover { background: #d97706; }
 </style>
 {% endblock %}
 
@@ -99,6 +137,7 @@
         <th>Description</th>
         <th>Status</th>
         <th>Update Status</th>
+        <th>Warn</th>
         <th>Delete</th>
       </tr>
     </thead>
@@ -125,6 +164,9 @@
           </form>
         </td>
         <td>
+          <button class="btn-warn" type="button" onclick="openWarnModal('{{ rep.id }}')">Warn</button>
+        </td>
+        <td>
           <form method="POST" action="{{ url_for('admin_dashboard.delete_report') }}">
             <input type="hidden" name="report_id" value="{{ rep.id }}">
             <button class="btn-delete" type="submit">Delete</button>
@@ -133,10 +175,38 @@
       </tr>
       {% else %}
       <tr>
-        <td colspan="8" style="text-align:center; color:#888;">No reports yet.</td>
+        <td colspan="9" style="text-align:center; color:#888;">No reports yet.</td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 </div>
+
+<!-- Warn User Modal -->
+<div class="modal-overlay" id="warnModal">
+  <div class="modal-box">
+    <h3>⚠ Warn User</h3>
+    <p>Send a warning notification about this report. The user will see this message.</p>
+    <form method="POST" action="{{ url_for('admin_dashboard.warn_user') }}">
+      <input type="hidden" name="report_id" id="warnReportId" value="">
+      <textarea name="warning_message" placeholder="Example: This report appears to be spam or contains inappropriate content. Please submit genuine waste reports only." required></textarea>
+      <div class="modal-actions">
+        <button type="button" class="modal-cancel" onclick="closeWarnModal()">Cancel</button>
+        <button type="submit" class="modal-send">Send Warning</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  function openWarnModal(reportId) {
+    document.getElementById('warnReportId').value = reportId;
+    document.getElementById('warnModal').classList.add('show');
+  }
+  function closeWarnModal() {
+    document.getElementById('warnModal').classList.remove('show');
+  }
+</script>
 {% endblock %}

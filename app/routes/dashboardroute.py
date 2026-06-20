@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, session, redirect, url_for
+from flask import Blueprint, render_template, session, redirect, url_for, request
 from app.models.report import Report
 from app.auth import login_required
 
@@ -22,9 +22,14 @@ def dashboard():
         'in_progress': in_progress,
         'resolved': resolved
     }
+    search_query = request.args.get('search', '').strip()
 
-    recent_reports = user_reports[:5]
+    if search_query:
+        recent_reports = report.search_user_reports(user_id, search_query)
+    else:
+        recent_reports = user_reports[:5]
 
     return render_template("user/dashboard.html",
                            summary=summary,
-                           recent_reports=recent_reports)
+                           recent_reports=recent_reports,
+                           search_query=search_query)

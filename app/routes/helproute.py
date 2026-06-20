@@ -1,14 +1,13 @@
 from flask import Blueprint, render_template, request, session, redirect, url_for, flash
 from app.models.feedback import Feedback
+from app.auth import login_required
 
 helpBP = Blueprint("help_support", __name__)
 
 
 @helpBP.route('/help_support', methods=['GET', 'POST'])
+@login_required
 def help_support():
-    if 'user_id' not in session:
-        return redirect(url_for('user_auth.login'))
-
     user_id = session['user_id']
 
     if request.method == 'POST':

@@ -18,3 +18,16 @@ def create_notification(user_id, report_id, new_status):
         message=message
     )
     notification.save()
+    
+def create_warning(user_id, report_id, warning_message):
+    """Called when admin warns a user about an inappropriate report."""
+
+    full_message = f"⚠ Warning regarding your report #{report_id}: {warning_message}"
+
+    notification = Notification(
+        user_id=user_id,
+        report_id=report_id,
+        message=full_message,
+        type='warning'
+    )
+    notification.save()
