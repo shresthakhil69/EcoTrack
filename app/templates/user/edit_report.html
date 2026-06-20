@@ -116,7 +116,7 @@
     
     <div class="upload-box">
       {% if report.image_path %}
-        <img id="previewImage" src="{{ url_for('static', filename=report.image_path) }}" alt="Current image">
+        <img id="previewImage" src="{{ url_for('static', filename='uploads/' ~ report.image_path) }}" alt="Current image">
       {% else %}
         <div id="uploadContent">
           <h2>☁</h2>
