@@ -193,6 +193,53 @@
       background: #dcfce7;
       color: #166534;
   }
+  
+  .filter-bar {
+      background: white;
+      border-radius: 12px;
+      padding: 20px 25px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+      display: flex;
+      gap: 15px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+      align-items: flex-end;
+  }
+
+  .filter-bar select {
+      padding: 12px 16px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 15px;
+      outline: none;
+      background: white;
+      cursor: pointer;
+      flex: 1 1 180px;
+      color: #111;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+  }
+  
+  .filter-bar select:focus {
+      border-color: #15803d;
+  }
+
+  .filter-bar button {
+      padding: 12px 28px;
+      background: #15803d;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      cursor: pointer;
+      white-space: nowrap;
+  }
+
+  .filter-bar button:hover {
+      background: #166534;
+  }
+
 </style>
 {% endblock %}
 
@@ -201,6 +248,30 @@
   <h1>My Reports</h1>
   <a href="{{ url_for('report.submit') }}" class="add-report-link">Submit New Report</a>
 </div>
+
+<form method="GET" action="{{ url_for('my_report.my_report') }}" class="filter-bar">
+    <select name="status">
+        <option value="">All Statuses</option>
+        <option value="pending" {{ 'selected' if selected_status == 'pending' }}>Pending</option>
+        <option value="in_progress" {{ 'selected' if selected_status == 'in_progress' }}>In Progress</option>
+        <option value="resolved" {{ 'selected' if selected_status == 'resolved' }}>Resolved</option>
+    </select>
+
+    <select name="waste_type">
+        <option value="">All Types</option>
+        <option value="Organic" {{ 'selected' if selected_type == 'Organic' }}>Organic</option>
+        <option value="Recyclable waste" {{ 'selected' if selected_type == 'Recyclable waste' }}>Recyclable waste</option>
+        <option value="Non-recyclable waste" {{ 'selected' if selected_type == 'Non-recyclable waste' }}>Non-recyclable waste</option>
+        <option value="Mixed waste" {{ 'selected' if selected_type == 'Mixed waste' }}>Mixed waste</option>
+    </select>
+
+    <select name="date">
+        <option value="newest" {{ 'selected' if selected_date == 'newest' }}>Newest First</option>
+        <option value="oldest" {{ 'selected' if selected_date == 'oldest' }}>Oldest First</option>
+    </select>
+
+    <button type="submit" class="btn edit">Apply</button>
+</form>
 
 <div class="report-layout">
   {% if reports and reports|length > 0 %}
