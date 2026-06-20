@@ -117,3 +117,22 @@ class Report(BaseModel):
         results = db.fetch_all(query)
         db.close()
         return results
+
+    def update_status(self, report_id, status):
+        """
+        Update the status of a report.
+        
+        Args:
+            report_id (int): ID of the report
+            status (str): New status ('pending', 'in_progress', 'resolved')
+        
+        Returns:
+            bool: True if updated successfully, False otherwise
+        """
+        from .database import Database
+        
+        db = Database()
+        query = f"UPDATE {self.table} SET status = %s WHERE id = %s"
+        result = db.execute(query, (status, report_id))
+        db.close()
+        return result is not None
