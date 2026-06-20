@@ -32,4 +32,4 @@ def help_support():
     feedback = Feedback()
     my_feedback = feedback.get_user_feedback(user_id)
 
-    return render_template("userpage/help_support.html", my_feedback=my_feedback)
+    return render_template("user/help_support.html", my_feedback=my_feedback)

@@ -45,8 +45,8 @@
       padding: 30px;
     }
 
-    {% block extra_styles %}{% endblock %}
   </style>
+  {% block extra_styles %}{% endblock %}
 </head>
 <body>
 
@@ -57,9 +57,10 @@
       <ul class="menu">
         <li><a href="{{ url_for('admin_dashboard.dashboard') }}">Dashboard</a></li>
         <li><a href="{{ url_for('admin_dashboard.users') }}">Users</a></li>
+        <li><a href="{{ url_for('admin_dashboard.feedback') }}">Feedback</a></li>
       </ul>
     </div>
-    <a href="{{ url_for('home.home') }}" class="logout-btn">Logout</a>
+    <a href="{{ url_for('admin_auth.admin_logout') }}" class="logout-btn">Logout</a>
   </aside>
 
   <main class="main-content">
