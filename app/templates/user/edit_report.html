@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Report | EcoTrack{% endblock %}
+
+{% block extra_styles %}
+<style>
+  .page-header h1 {
+    font-size: 35px;
+    margin-bottom: 10px;
+    color: #111;
+  }
+
+  .subtitle {
+    color: gray;
+    margin-bottom: 35px;
+  }
+
+  .form-card {
+    background: white;
+    border-radius: 15px;
+    padding: 35px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .form-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+  }
+
+  .upload-box {
+    flex: 1 1 300px;
+    min-height: 320px;
+    border: 2px dashed #d4d4d4;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    overflow: hidden;
+    background: #fafafa;
+  }
+
+  #previewImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+
+  .upload-box h2 {
+    font-size: 60px;
+    color: #16a34a;
+    margin-bottom: 10px;
+  }
+
+  .form {
+    flex: 2 1 400px;
+  }
+
+  .input-group {
+    margin-bottom: 20px;
+  }
+
+  .input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .input-group input,
+  .input-group select,
+  .input-group textarea {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
+  }
+
+  .input-group textarea {
+    resize: none;
+    min-height: 130px;
+  }
+
+  .submit-btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    background: #16a34a;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .submit-btn:hover {
+    background: #15803d;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Edit Report</h1>
+  <p class="subtitle">Update your waste report details.</p>
+</div>
+
+<div class="form-card">
+  <form class="form-container" method="POST" action="{{ url_for('my_report.edit_report', report_id=report.id) }}" enctype="multipart/form-data">
+    
+    <div class="upload-box">
+      {% if report.image_path %}
+        <img id="previewImage" src="{{ url_for('static', filename='uploads/' ~ report.image_path) }}" alt="Current image">
+      {% else %}
+        <div id="uploadContent">
+          <h2>☁</h2>
+          <p id="fileName">No file selected</p>
+          <br>
+          <input type="file" name="image" id="imageInput" accept="image/png, image/jpeg, image/jpg, image/webp">
+          <br><br>
+          <small>PNG, JPG, JPEG or WEBP up to 5MB</small>
+        </div>
+        <img id="previewImage" style="display:none;" alt="Preview">
+      {% endif %}
+    </div>
+
+    <div class="form">
+      <div class="input-group">
+        <label for="location">Location</label>
+        <input type="text" id="location" name="location" value="{{ report.location }}" required>
+      </div>
+
+      <div class="input-group">
+        <label for="waste_type">Waste Type</label>
+        <select name="waste_type" id="waste_type" required>
+          <option value="">Select waste type</option>
+          <option value="Organic" {{ 'selected' if report.waste_type == 'Organic' }}>Organic</option>
+          <option value="Recyclable waste" {{ 'selected' if report.waste_type == 'Recyclable waste' }}>Recyclable waste</option>
+          <option value="Non-recyclable waste" {{ 'selected' if report.waste_type == 'Non-recyclable waste' }}>Non-recyclable waste</option>
+          <option value="Mixed waste" {{ 'selected' if report.waste_type == 'Mixed waste' }}>Mixed waste</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label for="description">Description</label>
+        <textarea name="description" id="description">{{ report.description }}</textarea>
+      </div>
+
+      <button class="submit-btn" type="submit">Save Changes</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

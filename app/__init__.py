@@ -8,22 +8,25 @@ def create_app():
 
     Database.create_tables()
 
-    # Register Admin Auth Blueprint
     from app.routes.admin_auth_route import auth_admin
     app.register_blueprint(auth_admin)
 
     from app.routes.admindashboardroute import admin_dashboardBP
     app.register_blueprint(admin_dashboardBP)
 
+
+
     from app.routes.notificationroute import notificationBP
     app.register_blueprint(notificationBP)
 
+    
 
-    # Register User Auth Blueprint
     from app.routes.auth_route import auth_user
     app.register_blueprint(auth_user)
 
-    # Register Home Blueprint
+    from app.routes.dashboardroute import dashboardBP
+    app.register_blueprint(dashboardBP)
+
     from app.routes.home_route import homeBP
     app.register_blueprint(homeBP)
 
@@ -36,7 +39,11 @@ def create_app():
     app.register_blueprint(report)
 
     # Register My Report Blueprint (FIXED NAME HERE)
-    from app.routes.my_report_route import my_report
-    app.register_blueprint(my_report)
+    from app.routes.my_report_route import my_reportBP
+    app.register_blueprint(my_reportBP)
 
+    # Register Report Success Blueprint
+    from app.routes.report_success import report_successBP
+    app.register_blueprint(report_successBP)
+    
     return app
