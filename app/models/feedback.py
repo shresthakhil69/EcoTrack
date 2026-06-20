@@ -37,6 +37,18 @@ class Feedback(BaseModel):
         )
         db.close()
 
-    
+    def get_user_feedback(self, user_id):
+        db = Database()
+        results = db.fetch_all(
+            """
+            SELECT *
+            FROM feedback
+            WHERE user_id=%s
+            ORDER BY submitted_on DESC
+            """,
+            (user_id,)
+        )
+        db.close()
+        return results
 
     
