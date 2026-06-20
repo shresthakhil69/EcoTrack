@@ -97,3 +97,23 @@ class Report(BaseModel):
         results = db.fetch_all(query, (user_id,))
         db.close()
         return results
+
+    def get_all_reports(self):
+        """
+        Get all reports from all users with user information.
+        
+        Returns:
+            list: List of all reports ordered by most recent first
+        """
+        from .database import Database
+        
+        db = Database()
+        query = f"""
+            SELECT r.id, r.waste_type, r.location, r.description, r.image_path, r.status, r.reported_on, u.name as user_name
+            FROM {self.table} r
+            JOIN users u ON r.user_id = u.id
+            ORDER BY r.reported_on DESC
+        """
+        results = db.fetch_all(query)
+        db.close()
+        return results
