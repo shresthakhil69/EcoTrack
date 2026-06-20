@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "location": "kathmandu",
+    "waste_type": "Non-recyclable waste",
+    "description": "its all fill with platics",
+    "image": null,
+    "reported_on": "2026-06-16T13:25:57.967954Z"
+  },
+  {
+    "location": "kathmandu",
+    "waste_type": "Recyclable waste",
+    "description": "paper and glass bottles",
+    "image": null,
+    "reported_on": "2026-06-16T15:49:13.669318Z"
+  },
+  {
+    "location": "solteemode",
+    "waste_type": "Recyclable waste",
+    "description": "ooo",
+    "image": "waste_management-img1.jpg",
+    "reported_on": "2026-06-18T05:49:26.176777Z"
+  }
+]

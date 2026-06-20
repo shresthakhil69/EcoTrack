@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoTrack - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --green-deep: #1a3d2b;
+            --green-mid: #2d6a4f;
+            --green-bright: #40916c;
+            --green-light: #74c69d;
+            --green-pale: #d8f3dc;
+            --green-accent: #52b788;
+            --leaf-gold: #b7e4c7;
+            --text-dark: #1b2d23;
+            --text-muted: #5a7a65;
+            --white: #ffffff;
+            --input-border: #cde8d4;
+            --input-focus: #40916c;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            background: #f0faf3;
+            overflow: hidden;
+        }
+
+        /* ── LEFT PANEL ── */
+        .left-panel {
+            width: 45%;
+            background: var(--green-deep);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 60px 50px;
+            overflow: hidden;
+        }
+
+        /* Large decorative circles */
+        .left-panel::before {
+            content: '';
+            position: absolute;
+            width: 400px; height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(64,145,108,0.35) 0%, transparent 70%);
+            top: -100px; right: -100px;
+        }
+        .left-panel::after {
+            content: '';
+            position: absolute;
+            width: 300px; height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(82,183,136,0.2) 0%, transparent 70%);
+            bottom: -60px; left: -60px;
+        }
+
+        /* SVG leaf decorations */
+        .leaf-bg {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .leaf-bg svg {
+            position: absolute;
+        }
+
+        .brand {
+            position: relative;
+            z-index: 2;
+            margin-bottom: 36px;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .brand-name {
+            font-family: 'Fraunces', serif;
+            font-size: 32px;
+            font-weight: 600;
+            color: var(--white);
+            letter-spacing: -0.5px;
+        }
+
+        .tagline {
+            font-size: 13px;
+            color: var(--green-light);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .hero-text {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-text h2 {
+            font-family: 'Fraunces', serif;
+            font-size: 42px;
+            font-weight: 300;
+            color: var(--white);
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .hero-text h2 em {
+            font-style: italic;
+            color: var(--green-light);
+        }
+
+        .hero-text p {
+            font-size: 15px;
+            color: rgba(255,255,255,0.65);
+            line-height: 1.7;
+            max-width: 300px;
+        }
+
+        /* Floating nature illustration */
+        .nature-scene {
+            position: absolute;
+            bottom: 0;
+            right: -20px;
+            z-index: 1;
+            opacity: 0.9;
+        }
+
+        /* Stats chips */
+        .stats-row {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            gap: 16px;
+            margin-top: 40px;
+        }
+
+        .stat-chip {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            backdrop-filter: blur(8px);
+            border-radius: 12px;
+            padding: 12px 18px;
+        }
+
+        .stat-chip .num {
+            font-family: 'Fraunces', serif;
+            font-size: 22px;
+            color: var(--green-light);
+            display: block;
+            line-height: 1;
+        }
+
+        .stat-chip .label {
+            font-size: 11px;
+            color: rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-top: 4px;
+            display: block;
+        }
+
+        /* ── RIGHT PANEL ── */
+        .right-panel {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 50px 60px;
+            background: #f0faf3;
+            position: relative;
+        }
+
+        /* Subtle dot pattern */
+        .right-panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle, #c8e6c9 1px, transparent 1px);
+            background-size: 28px 28px;
+            opacity: 0.4;
+        }
+
+        .form-card {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 380px;
+        }
+
+        .form-header {
+            margin-bottom: 36px;
+        }
+
+        .form-header h1 {
+            font-family: 'Fraunces', serif;
+            font-size: 30px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+
+        .form-header p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 7px;
+            letter-spacing: 0.02em;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input-wrap svg {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ec5ad;
+            pointer-events: none;
+        }
+
+        .input-wrap input {
+            width: 100%;
+            padding: 12px 14px 12px 42px;
+            border: 1.5px solid var(--input-border);
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text-dark);
+            background: white;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+
+        .input-wrap input:focus {
+            border-color: var(--input-focus);
+            box-shadow: 0 0 0 3px rgba(64,145,108,0.12);
+        }
+
+        .input-wrap input::placeholder {
+            color: #b0c9b8;
+        }
+
+        .eye-btn {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #9ec5ad;
+            padding: 0;
+            width: auto;
+            display: flex;
+        }
+
+        .row-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .remember input[type="checkbox"] {
+            width: 16px; height: 16px;
+            accent-color: var(--green-mid);
+            cursor: pointer;
+        }
+
+        .forgot {
+            font-size: 13px;
+            color: var(--green-mid);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .forgot:hover { text-decoration: underline; }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--green-mid) 0%, var(--green-bright) 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+            box-shadow: 0 4px 16px rgba(45,106,79,0.35);
+            letter-spacing: 0.02em;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 22px rgba(45,106,79,0.45);
+        }
+
+        .btn-login:active { transform: translateY(0); }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 20px 0;
+            color: #b0c9b8;
+            font-size: 13px;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--input-border);
+        }
+
+
+
+        .register-link {
+            text-align: center;
+            margin-top: 22px;
+            font-size: 13.5px;
+            color: var(--text-muted);
+        }
+
+        .register-link a {
+            color: var(--green-mid);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .register-link a:hover { text-decoration: underline; }
+
+        /* Message */
+        .message {
+            padding: 11px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 18px;
+            display: none;
+        }
+        .success { background: #d8f3dc; color: #1a3d2b; border: 1px solid #b7e4c7; display: block; }
+        .error   { background: #fde8e8; color: #7b1c1c; border: 1px solid #f5c0c0; display: block; }
+
+        /* Floating leaf animations */
+        @keyframes float1 { 0%,100%{ transform: translateY(0) rotate(0deg); } 50%{ transform: translateY(-18px) rotate(6deg); } }
+        @keyframes float2 { 0%,100%{ transform: translateY(0) rotate(0deg); } 50%{ transform: translateY(-12px) rotate(-5deg); } }
+        @keyframes float3 { 0%,100%{ transform: translateY(0) rotate(0deg); } 50%{ transform: translateY(-22px) rotate(8deg); } }
+        @keyframes fadeSlideIn { from{ opacity:0; transform: translateY(24px); } to{ opacity:1; transform: translateY(0); } }
+
+        .fl1 { animation: float1 5s ease-in-out infinite; }
+        .fl2 { animation: float2 6.5s ease-in-out infinite; }
+        .fl3 { animation: float3 4.5s ease-in-out infinite; }
+
+        .form-card { animation: fadeSlideIn 0.6s ease both; }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; overflow: auto; }
+            .left-panel { width: 100%; padding: 40px 30px 30px; min-height: auto; }
+            .nature-scene { display: none; }
+            .right-panel { padding: 40px 24px; }
+            .stats-row { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── LEFT PANEL ── -->
+<div class="left-panel">
+    <div class="leaf-bg">
+    </div>
+
+    <!-- Brand -->
+<div class="brand">
+    <a href="/" class="brand-logo-link" style="text-decoration: none; color: inherit;">
+        <div class="brand-logo">
+            <img src="/static/images/logo.png" alt="Logo" width="36" height="36" class="logo-img">
+            <span class="brand-name" style="color: white; font-family: sans-serif; font-size: 24px;">EcoTrack</span>
+        </div>
+    </a>
+    <span class="tagline">Keep your city green & clean</span>
+</div>
+    <!-- Hero copy -->
+    <div class="hero-text">
+        <h2>Welcome<br><em>back.</em></h2>
+        <p>Login to continue tracking your eco-impact and help build a cleaner, greener city together.</p>
+    </div>
+    
+    <!-- Nature scene SVG (person + plants) -->
+    <div class="nature-scene">
+        <svg width="220" height="240" viewBox="0 0 220 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Ground -->
+            <ellipse cx="110" cy="230" rx="100" ry="10" fill="rgba(82,183,136,0.2)"/>
+            <!-- Bin -->
+            <rect x="70" y="170" width="36" height="46" rx="4" fill="#2d6a4f"/>
+            <rect x="68" y="165" width="40" height="10" rx="3" fill="#40916c"/>
+            <circle cx="88" cy="192" r="6" fill="#52b788" opacity="0.6"/>
+            <!-- recycle symbol simplified -->
+            <path d="M85 192 L88 186 L91 192Z" fill="rgba(255,255,255,0.4)" stroke="none"/>
+            <!-- Stem + leaf on bin right -->
+            <path d="M114 215 Q114 180 130 160" stroke="#52b788" stroke-width="3" fill="none"/>
+            <path d="M130 160 C140 145,160 148,158 163 C156 178,130 160,130 160Z" fill="#40916c"/>
+            <!-- Big plant left -->
+            <path d="M50 220 Q50 185 40 160" stroke="#52b788" stroke-width="3" fill="none"/>
+            <path d="M40 160 C28 140,10 148,14 162 C18 176,40 160,40 160Z" fill="#2d6a4f"/>
+            <path d="M40 178 C28 162,10 168,15 180 C20 192,40 178,40 178Z" fill="#40916c"/>
+            <!-- Person -->
+            <!-- Head -->
+            <circle cx="140" cy="148" r="12" fill="#f4a261"/>
+            <!-- Body -->
+            <rect x="130" y="160" width="22" height="34" rx="6" fill="#2d6a4f"/>
+            <!-- Arm throwing -->
+            <path d="M130 168 Q112 160,108 172" stroke="#2d6a4f" stroke-width="7" stroke-linecap="round" fill="none"/>
+            <!-- Arm down -->
+            <path d="M152 168 L158 188" stroke="#2d6a4f" stroke-width="7" stroke-linecap="round" fill="none"/>
+            <!-- Legs -->
+            <path d="M136 194 L134 216" stroke="#1a3d2b" stroke-width="6" stroke-linecap="round"/>
+            <path d="M146 194 L148 216" stroke="#1a3d2b" stroke-width="6" stroke-linecap="round"/>
+            <!-- Small particles / leaves flying -->
+            <circle cx="112" cy="166" r="3" fill="#74c69d" opacity="0.8"/>
+            <circle cx="107" cy="160" r="2" fill="#b7e4c7" opacity="0.7"/>
+            <path d="M118 158 C120 153,126 155,124 160 C122 165,118 158,118 158Z" fill="#52b788" opacity="0.7"/>
+        </svg>
+    </div>
+</div>
+
+<!-- ── RIGHT PANEL ── -->
+<div class="right-panel">
+    <div class="form-card">
+        <div class="form-header">
+            <h1>Sign in</h1>
+            <p>Login to continue and keep your city clean.</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% for category, message in messages %}
+            <div class="message {{ category }}">{{ message }}</div>
+          {% endfor %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('user_auth.login') }}">
+        <div class="form-group">
+    <label for="email">Email</label>
+    <div class="input-wrap">
+        <svg class="field-icon" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+</svg>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+    </div>
+</div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <div class="input-wrap">
+                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                </svg>
+                <input type="password" id="password" name="password" placeholder="••••••••" required>
+            </div>
+        </div>
+
+        <div class="row-options">
+            <label class="remember">
+                <input type="checkbox"> Remember me
+            </label>
+            <a href="#" class="forgot">Forgot Password?</a>
+        </div>
+
+        <button class="btn-login" type="submit">Login</button>
+        </form>
+
+        <div class="divider">or</div>
+
+        <div class="register-link">
+            Don't have an account? <a href="{{ url_for('user_auth.register') }}">Register here</a>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

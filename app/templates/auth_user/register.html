@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoTrack - Register</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --green-deep: #1a3d2b;
+            --green-mid: #2d6a4f;
+            --green-bright: #40916c;
+            --green-light: #74c69d;
+            --green-pale: #d8f3dc;
+            --green-accent: #52b788;
+            --leaf-gold: #b7e4c7;
+            --text-dark: #1b2d23;
+            --text-muted: #5a7a65;
+            --white: #ffffff;
+            --input-border: #cde8d4;
+            --input-focus: #40916c;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            background: #f0faf3;
+            overflow: hidden;
+        }
+
+        /* ── LEFT PANEL ── */
+        .left-panel {
+            width: 45%;
+            background: var(--green-deep);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 60px 50px;
+            overflow: hidden;
+        }
+
+        .left-panel::before {
+            content: '';
+            position: absolute;
+            width: 400px; height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(64,145,108,0.35) 0%, transparent 70%);
+            top: -100px; right: -100px;
+        }
+        .left-panel::after {
+            content: '';
+            position: absolute;
+            width: 300px; height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(82,183,136,0.2) 0%, transparent 70%);
+            bottom: -60px; left: -60px;
+        }
+
+
+        .leaf-bg svg { position: absolute; }
+
+        .brand {
+            position: relative;
+            z-index: 2;
+            margin-bottom: 36px;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .brand-name {
+            font-family: 'Fraunces', serif;
+            font-size: 32px;
+            font-weight: 600;
+            color: var(--white);
+            letter-spacing: -0.5px;
+        }
+
+        .tagline {
+            font-size: 13px;
+            color: var(--green-light);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .hero-text {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-text h2 {
+            font-family: 'Fraunces', serif;
+            font-size: 42px;
+            font-weight: 300;
+            color: var(--white);
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .hero-text h2 em {
+            font-style: italic;
+            color: var(--green-light);
+        }
+
+        .hero-text p {
+            font-size: 15px;
+            color: rgba(255,255,255,0.65);
+            line-height: 1.7;
+            max-width: 300px;
+        }
+
+        .nature-scene {
+            position: absolute;
+            bottom: 0;
+            right: -20px;
+            z-index: 1;
+            opacity: 0.9;
+        }
+
+        .stats-row {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            gap: 16px;
+            margin-top: 40px;
+        }
+
+        .stat-chip {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            backdrop-filter: blur(8px);
+            border-radius: 12px;
+            padding: 12px 18px;
+        }
+
+        .stat-chip .num {
+            font-family: 'Fraunces', serif;
+            font-size: 22px;
+            color: var(--green-light);
+            display: block;
+            line-height: 1;
+        }
+
+        .stat-chip .label {
+            font-size: 11px;
+            color: rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-top: 4px;
+            display: block;
+        }
+
+        /* ── RIGHT PANEL ── */
+        .right-panel {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 60px;
+            background: #f0faf3;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .right-panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle, #c8e6c9 1px, transparent 1px);
+            background-size: 28px 28px;
+            opacity: 0.4;
+        }
+
+        .form-card {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 380px;
+            padding: 10px 0;
+        }
+
+        .form-header {
+            margin-bottom: 28px;
+        }
+
+        .form-header h1 {
+            font-family: 'Fraunces', serif;
+            font-size: 30px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+
+        .form-header p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 7px;
+            letter-spacing: 0.02em;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input-wrap svg.field-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ec5ad;
+            pointer-events: none;
+        }
+
+        .input-wrap input {
+            width: 100%;
+            padding: 12px 14px 12px 42px;
+            border: 1.5px solid var(--input-border);
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text-dark);
+            background: white;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+
+        .input-wrap input:focus {
+            border-color: var(--input-focus);
+            box-shadow: 0 0 0 3px rgba(64,145,108,0.12);
+        }
+
+        .input-wrap input::placeholder { color: #b0c9b8; }
+
+        .eye-btn {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #9ec5ad;
+            padding: 0;
+            width: auto;
+            display: flex;
+        }
+
+        /* Two-column name row */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .btn-register {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--green-mid) 0%, var(--green-bright) 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+            box-shadow: 0 4px 16px rgba(45,106,79,0.35);
+            letter-spacing: 0.02em;
+            margin-top: 6px;
+        }
+
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 22px rgba(45,106,79,0.45);
+        }
+
+        .btn-register:active { transform: translateY(0); }
+        .btn-register:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 18px 0;
+            color: #b0c9b8;
+            font-size: 13px;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--input-border);
+        }
+
+
+
+
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13.5px;
+            color: var(--text-muted);
+        }
+
+        .login-link a {
+            color: var(--green-mid);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .login-link a:hover { text-decoration: underline; }
+
+        /* Message */
+        .message {
+            padding: 11px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 16px;
+            display: none;
+        }
+        .success { background: #d8f3dc; color: #1a3d2b; border: 1px solid #b7e4c7; display: block; }
+        .error   { background: #fde8e8; color: #7b1c1c; border: 1px solid #f5c0c0; display: block; }
+
+        /* Animations */
+        @keyframes float1 { 0%,100%{ transform: translateY(0) rotate(0deg); } 50%{ transform: translateY(-18px) rotate(6deg); } }
+        @keyframes float2 { 0%,100%{ transform: translateY(0) rotate(0deg); } 50%{ transform: translateY(-12px) rotate(-5deg); } }
+        @keyframes float3 { 0%,100%{ transform: translateY(0) rotate(0deg); } 50%{ transform: translateY(-22px) rotate(8deg); } }
+        @keyframes fadeSlideIn { from{ opacity:0; transform: translateY(24px); } to{ opacity:1; transform: translateY(0); } }
+
+        .fl1 { animation: float1 5s ease-in-out infinite; }
+        .fl2 { animation: float2 6.5s ease-in-out infinite; }
+        .fl3 { animation: float3 4.5s ease-in-out infinite; }
+        .form-card { animation: fadeSlideIn 0.6s ease both; }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; overflow: auto; }
+            .left-panel { width: 100%; padding: 40px 30px 30px; min-height: auto; }
+            .nature-scene { display: none; }
+            .right-panel { padding: 40px 24px; overflow-y: visible; }
+            .stats-row { display: none; }
+            .two-col { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── LEFT PANEL ── -->
+<div class="left-panel">
+    <div class="leaf-bg">
+    </div>
+<div class="brand">
+    <a href="/" class="brand-logo-link" style="text-decoration: none; color: inherit;">
+        <div class="brand-logo">
+            <img src="/static/images/logo.png" alt="Logo" width="36" height="36" class="logo-img">
+            <span class="brand-name" style="color: white; font-family: sans-serif; font-size: 24px;">EcoTrack</span>
+        </div>
+    </a>
+</div>
+
+<div class="hero-text">
+    <h2>Join the<br><em>movement.</em></h2>
+    <p>Create your account and start making a real difference — track your eco-impact and help build a greener city.</p>
+</div>
+
+    <div class="nature-scene">
+        <svg width="220" height="240" viewBox="0 0 220 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="110" cy="230" rx="100" ry="10" fill="rgba(82,183,136,0.2)"/>
+            <rect x="70" y="170" width="36" height="46" rx="4" fill="#2d6a4f"/>
+            <rect x="68" y="165" width="40" height="10" rx="3" fill="#40916c"/>
+            <circle cx="88" cy="192" r="6" fill="#52b788" opacity="0.6"/>
+            <path d="M85 192 L88 186 L91 192Z" fill="rgba(255,255,255,0.4)" stroke="none"/>
+            <path d="M114 215 Q114 180 130 160" stroke="#52b788" stroke-width="3" fill="none"/>
+            <path d="M130 160 C140 145,160 148,158 163 C156 178,130 160,130 160Z" fill="#40916c"/>
+            <path d="M50 220 Q50 185 40 160" stroke="#52b788" stroke-width="3" fill="none"/>
+            <path d="M40 160 C28 140,10 148,14 162 C18 176,40 160,40 160Z" fill="#2d6a4f"/>
+            <path d="M40 178 C28 162,10 168,15 180 C20 192,40 178,40 178Z" fill="#40916c"/>
+            <circle cx="140" cy="148" r="12" fill="#f4a261"/>
+            <rect x="130" y="160" width="22" height="34" rx="6" fill="#2d6a4f"/>
+            <path d="M130 168 Q112 160,108 172" stroke="#2d6a4f" stroke-width="7" stroke-linecap="round" fill="none"/>
+            <path d="M152 168 L158 188" stroke="#2d6a4f" stroke-width="7" stroke-linecap="round" fill="none"/>
+            <path d="M136 194 L134 216" stroke="#1a3d2b" stroke-width="6" stroke-linecap="round"/>
+            <path d="M146 194 L148 216" stroke="#1a3d2b" stroke-width="6" stroke-linecap="round"/>
+            <circle cx="112" cy="166" r="3" fill="#74c69d" opacity="0.8"/>
+            <circle cx="107" cy="160" r="2" fill="#b7e4c7" opacity="0.7"/>
+            <path d="M118 158 C120 153,126 155,124 160 C122 165,118 158,118 158Z" fill="#52b788" opacity="0.7"/>
+        </svg>
+    </div>
+</div>
+
+<!-- ── RIGHT PANEL ── -->
+<div class="right-panel">
+    <div class="form-card">
+        <div class="form-header">
+            <h1>Create account</h1>
+            <p>Join EcoTrack and start making an impact today.</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% for category, message in messages %}
+            <div class="message {{ category }}">{{ message }}</div>
+          {% endfor %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('user_auth.register') }}">
+        <!-- Full name + Email side by side -->
+        <div class="two-col">
+            <div class="form-group">
+                <label for="fullname">Full Name</label>
+                <div class="input-wrap">
+                    <svg class="field-icon" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                    <input type="text" id="fullname" name="name" placeholder="John Doe" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <div class="input-wrap">
+                    <svg class="field-icon" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/>
+                    </svg>
+                    <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <div class="input-wrap">
+                <svg class="field-icon" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                </svg>
+                <input type="password" id="password" name="password" placeholder="••••••••" required minlength="6">
+                <button class="eye-btn" type="button" onclick="togglePw('password','eye1')">
+                    <svg id="eye1" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <div class="input-wrap">
+                <svg class="field-icon" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                </svg>
+                <input type="password" id="confirmPassword" name="confirm_password" placeholder="••••••••" required minlength="6">
+                <button class="eye-btn" type="button" onclick="togglePw('confirmPassword','eye2')">
+                    <svg id="eye2" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <button class="btn-register" type="submit">Create Account</button>
+        </form>
+
+        <div class="divider">or</div>
+
+        <div class="login-link">
+            Already have an account? <a href="{{ url_for('user_auth.login') }}">Login here</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    const eyeHide = `<path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>`;
+    const eyeShow = `<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>`;
+
+    function togglePw(inputId, iconId) {
+        const pw = document.getElementById(inputId);
+        const icon = document.getElementById(iconId);
+        if (pw.type === 'password') { pw.type = 'text'; icon.innerHTML = eyeHide; }
+        else { pw.type = 'password'; icon.innerHTML = eyeShow; }
+    }
+</script>
+</body>
+</html>
