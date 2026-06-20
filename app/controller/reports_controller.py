@@ -18,7 +18,7 @@ def submit_report_controller():
 
     if not waste_type or not location:
         flash('Waste type and location are required.', 'error')
-        return redirect(url_for('reports.reports'))
+        return redirect(url_for('report.submit'))
 
     # Handle image upload
     image_path = None
