@@ -2,4 +2,3 @@ flask
 pymysql
 flask-bcrypt
 flask-login
-# python-dotenv
