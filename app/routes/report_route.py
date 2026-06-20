@@ -31,3 +31,12 @@ def submit_report():
         return render_template("user/report_success.html", report_id=report_id)
     else:
         return "Error saving report", 500
+
+@report.route("/submit")
+@login_required
+def submit():
+    """
+    Display the submit report form.
+    Only authenticated users can access this page.
+    """
+    return render_template("user/reports.html")
