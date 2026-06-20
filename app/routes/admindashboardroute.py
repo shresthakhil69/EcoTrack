@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, session, redirect, url_for, flash
-from app.model.reports import Report
-from app.model.database import Database
+from app.models.report import Report
+from app.models.database import Database
 
 admin_dashboardBP = Blueprint("admin_dashboard", __name__)
 
@@ -110,3 +110,8 @@ def delete_user():
     db = Database()
     db.execute("DELETE FROM notifications WHERE user_id=%s", (user_id,))
     db.close()
+
+    report = Report()
+    user_reports = report.get_user_reports(user_id)
+    for r in user_reports:
+        report.delete_by_id(r['id'])
