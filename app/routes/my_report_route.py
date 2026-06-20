@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request
 from flask_login import login_required, current_user
 from app.models.report import Report
 
@@ -31,3 +31,20 @@ def delete_report(report_id):
             return {"success": True}, 200
     
     return {"success": False}, 403
+
+@my_report.route("/update_report_status/<int:report_id>", methods=["POST"])
+@login_required
+def update_report_status(report_id):
+    """
+    Update the status of a report.
+    Only admin users can update report status.
+    """
+    if current_user.role != 'admin':
+        return {"success": False, "error": "Only admins can update status"}, 403
+    
+    status = request.form.get("status")
+    
+    if report_model.update_status(report_id, status):
+        return {"success": True}, 200
+    
+    return {"success": False}, 500
