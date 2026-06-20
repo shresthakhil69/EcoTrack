@@ -74,3 +74,26 @@ class Report(BaseModel):
         
         db.close()
         return report_id
+
+    def get_user_reports(self, user_id):
+        """
+        Get all reports submitted by a specific user.
+        
+        Args:
+            user_id (int): ID of the user
+        
+        Returns:
+            list: List of reports or empty list if none found
+        """
+        from .database import Database
+        
+        db = Database()
+        query = f"""
+            SELECT id, waste_type, location, description, image_path, status, reported_on
+            FROM {self.table}
+            WHERE user_id = %s
+            ORDER BY reported_on DESC
+        """
+        results = db.fetch_all(query, (user_id,))
+        db.close()
+        return results
