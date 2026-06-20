@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, session, redirect, url_for, flash
-from app.models.report import Report
-from app.models.database import Database
+from app.model.reports import Report
+from app.model.database import Database
 
 admin_dashboardBP = Blueprint("admin_dashboard", __name__)
 
@@ -40,8 +40,33 @@ def dashboard():
                            reports=all_reports)
 
 
+@admin_dashboardBP.route('/admin/update_status', methods=['POST'])
+def update_status():
+    if admin_required():
+        return redirect(url_for('admin_auth.admin_login'))
 
+    report_id = request.form.get('report_id')
+    new_status = request.form.get('status')
 
+    allowed = ['pending', 'in_progress', 'resolved']
+    if new_status not in allowed:
+        flash('Invalid status.', 'error')
+        return redirect(url_for('admin_dashboard.dashboard'))
 
+    # Get report to find the user_id before updating
+    report = Report()
+    existing = report.find_by_id(report_id)
 
+    if existing:
+        report.update_status(report_id, new_status)
+
+        # Trigger notification to the report owner
+        from app.controller.notification_controller import create_notification
+        create_notification(existing['user_id'], report_id, new_status)
+
+        flash(f'Report #{report_id} status updated to {new_status}.', 'success')
+    else:
+        flash('Report not found.', 'error')
+
+    return redirect(url_for('admin_dashboard.dashboard'))
 
