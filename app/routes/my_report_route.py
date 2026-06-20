@@ -9,8 +9,26 @@ my_reportBP = Blueprint("my_report", __name__)
 @login_required
 def my_report():
     report = Report()
+    
+    status = request.args.get('status', '')
+    waste_type = request.args.get('waste_type', '')
+    date_order = request.args.get('date', 'newest')
+
     reports = report.get_user_reports(session['user_id'])
-    return render_template("user/my_report.html", reports=reports)
+
+    if status:
+        reports = [r for r in reports if r['status'] == status]
+    
+    if waste_type:
+        reports = [r for r in reports if r['waste_type'] == waste_type]
+
+    if date_order == 'oldest':
+        reports = list(reversed(reports))
+
+    return render_template("user/my_report.html", reports=reports, 
+                           selected_status=status, 
+                           selected_type=waste_type, 
+                           selected_date=date_order)
 
 
 @my_reportBP.route("/my_report/delete", methods=['POST'])
