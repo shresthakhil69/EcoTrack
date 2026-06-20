@@ -81,3 +81,16 @@ def delete_report():
 
     flash(f'Report #{report_id} deleted.', 'success')
     return redirect(url_for('admin_dashboard.dashboard'))
+
+@admin_dashboardBP.route('/admin/users')
+def users():
+    if admin_required():
+        return redirect(url_for('admin_auth.admin_login'))
+
+    db = Database()
+    all_users = db.fetch_all(
+        "SELECT id, name, email, role, reported_on   FROM users ORDER BY reported_on   DESC"
+    )
+    db.close()
+
+    return render_template("adminpage/users.html", users=all_users)
