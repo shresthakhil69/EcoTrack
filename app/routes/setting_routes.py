@@ -43,8 +43,8 @@ def setting():
             flash('Profile updated successfully.', 'success')
 
         # ── Profile Picture Upload ──────────────────
-        elif form_type == 'profile_picture':
-            file = request.files.get('profile_picture')
+        elif form_type == 'profile_photo':
+            file = request.files.get('profile_photo')
 
             if not file or file.filename == '':
                 flash('Please choose an image to upload.', 'error')
@@ -65,13 +65,13 @@ def setting():
 
             # Remove old picture if it exists
             old_data = user.get_by_id(user_id)
-            if old_data and old_data.get('profile_picture'):
-                old_path = os.path.join(upload_folder, old_data['profile_picture'])
+            if old_data and old_data.get('profile_photo'):
+                old_path = os.path.join(upload_folder, old_data['profile_photo'])
                 if os.path.exists(old_path):
                     os.remove(old_path)
 
             user.update_profile_picture(user_id, filename)
-            session['profile_picture'] = filename
+            session['profile_photo'] = filename
             flash('Profile picture updated successfully.', 'success')
 
         # ── Password Change ─────────────────────────
@@ -136,7 +136,7 @@ def setting():
     user_data = user.get_by_id(user_id)
     if 'dark_mode' not in session:
         session['dark_mode'] = 0
-    if user_data and user_data.get('profile_picture'):
-        session['profile_picture'] = user_data['profile_picture']
+    if user_data and user_data.get('profile_photo'):
+        session['profile_photo'] = user_data['profile_photo']
 
     return render_template("user/setting.html", user_data=user_data)
