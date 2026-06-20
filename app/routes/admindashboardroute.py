@@ -1,12 +1,9 @@
 from flask import Blueprint, render_template, request, session,redirect,url_for,flash
+from app.auth import admin_required
 
 admin_dashboardBP = Blueprint("admin_dashboard", __name__)
 
-def admin_required():
-    return 'admin_id' not in session
-
-
 @admin_dashboardBP.route('/admin/dashboard')
+@admin_required
 def dashboard():
-    if admin_required():
-        return redirect(url_for('admin_auth.admin_login'))
+    return render_template('admin/dashboard.html')

@@ -1,31 +1,26 @@
 import os
 from flask import Blueprint, render_template, request, session, redirect, url_for, flash
+from app.auth import login_required
 from app.models.report import Report
 
 my_reportBP = Blueprint("my_report", __name__)
 
 @my_reportBP.route("/my_report")
+@login_required
 def my_report():
-    if 'user_id' not in session:
-        return redirect(url_for('user_auth.login'))
-
     report = Report()
     reports = report.get_user_reports(session['user_id'])
     return render_template("user/my_report.html", reports=reports)
 
 
 @my_reportBP.route("/my_report/delete", methods=['POST'])
+@login_required
 def delete_report():
-    if 'user_id' not in session:
-        return redirect(url_for('user_auth.login'))
-
     report_id = request.form.get('report_id')
     report = Report()
 
-    # Get the report first to find the image path
     existing = report.find_by_id(report_id)
 
-    # Delete image file if it exists
     if existing and existing['image_path']:
         image_full_path = os.path.join(
             os.path.dirname(__file__), '..', 'static', 'uploads', existing['image_path']
@@ -39,10 +34,8 @@ def delete_report():
     return redirect(url_for('my_report.my_report'))
 
 @my_reportBP.route("/my_report/edit/<int:report_id>", methods=["GET", "POST"])
+@login_required
 def edit_report(report_id):
-    if 'user_id' not in session:
-        return redirect(url_for('user_auth.login'))
-
     report = Report()
     report_data = report.find_by_id(report_id)
 

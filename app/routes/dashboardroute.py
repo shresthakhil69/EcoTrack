@@ -1,13 +1,12 @@
 from flask import Blueprint, render_template, session, redirect, url_for
 from app.models.report import Report
+from app.auth import login_required
 
 dashboardBP = Blueprint("dashboard", __name__)
 
 @dashboardBP.route("/dashboard")
+@login_required
 def dashboard():
-    if 'user_id' not in session:
-        return redirect(url_for('user_auth.login'))
-
     user_id = session['user_id']
     report = Report()
     user_reports = report.get_user_reports(user_id)
