@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, session, redirect, url_for
-from app.models.reports import Report
+from app.models.database import Database
 
 dashboardBP = Blueprint("dashboard", __name__)
 
@@ -9,8 +9,10 @@ def dashboard():
         return redirect(url_for('user_auth.login'))
 
     user_id = session['user_id']
-    report = Report()
-    user_reports = report.get_user_reports(user_id)
+    
+    db = Database()
+    user_reports = db.fetch_all("SELECT * FROM reports WHERE user_id = %s", (user_id,))
+    db.close()
 
     total = len(user_reports)
     pending = len([r for r in user_reports if r['status'] == 'pending'])

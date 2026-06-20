@@ -117,7 +117,7 @@
 {% block content %}
 <div class="topbar">
   <h1>Dashboard</h1>
-  <input type="text" class="search" placeholder="Search reports...">
+  <input type="text" id="dashboardSearch" class="search" placeholder="Search reports...">
 </div>
 
 <div class="cards">
@@ -144,31 +144,55 @@
 
 <div class="table-container">
   <h2>Recent Reports</h2>
-  <table>
-    <tr>
-      <th>Title</th>
-      <th>Location</th>
-      <th>Type</th>
-      <th>Status</th>
-      <th>Date</th>
-    </tr>
-    {% for rep in recent_reports %}
-    <tr>
-      <td>{{ rep.waste_type }}</td>
-      <td>{{ rep.location }}</td>
-      <td>{{ rep.waste_type }}</td>
-      <td>
-        <span class="status-badge {{ 'resolved' if rep.status == 'resolved' else 'pending' }}">
-          {{ rep.status }}
-        </span>
-      </td>
-      <td>{{ rep.reported_on }}</td>
-    </tr>
-    {% else %}
-    <tr>
-      <td colspan="5">No reports submitted yet.</td>
-    </tr>
-    {% endfor %}
+  <table id="reportsTable">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Location</th>
+        <th>Type</th>
+        <th>Status</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for rep in recent_reports %}
+      <tr>
+        <td>{{ rep.waste_type }}</td>
+        <td>{{ rep.location }}</td>
+        <td>{{ rep.waste_type }}</td>
+        <td>
+          <span class="status-badge {{ 'resolved' if rep.status == 'resolved' else 'pending' }}">
+            {{ rep.status }}
+          </span>
+        </td>
+        <td>{{ rep.reported_on }}</td>
+      </tr>
+      {% else %}
+      <tr class="no-data">
+        <td colspan="5">No reports submitted yet.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
   </table>
 </div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  document.getElementById('dashboardSearch').addEventListener('keyup', function() {
+    const searchQuery = this.value.toLowerCase();
+    const tableRows = document.querySelectorAll('#reportsTable tbody tr');
+
+    tableRows.forEach(row => {
+      if (row.classList.contains('no-data')) return;
+      
+      const textContent = row.textContent.toLowerCase();
+      if (textContent.includes(searchQuery)) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  });
+</script>
 {% endblock %}

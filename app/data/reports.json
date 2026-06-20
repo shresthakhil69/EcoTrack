@@ -19,5 +19,12 @@
     "description": "ooo",
     "image": "waste_management-img1.jpg",
     "reported_on": "2026-06-18T05:49:26.176777Z"
+  },
+  {
+    "location": "pokhara",
+    "waste_type": "Mixed waste",
+    "description": "mixed waste",
+    "image": null,
+    "reported_on": "2026-06-20T16:52:44.860325Z"
   }
 ]
