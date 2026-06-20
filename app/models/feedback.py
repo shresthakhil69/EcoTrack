@@ -64,3 +64,10 @@ class Feedback(BaseModel):
         db.close()
         return results
 
+    def update_status(self, feedback_id, status):
+        db = Database()
+        db.execute(
+            "UPDATE feedback SET status=%s WHERE id=%s",
+            (status, feedback_id)
+        )
+        db.close()
