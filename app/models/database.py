@@ -63,6 +63,8 @@ class Database:
                 email VARCHAR(100) NOT NULL UNIQUE,
                 password VARCHAR(255) NOT NULL,
                 role VARCHAR(20) NOT NULL DEFAULT 'user',
+                phone VARCHAR(20),
+                profile_photo VARCHAR(255),
                 reported_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
