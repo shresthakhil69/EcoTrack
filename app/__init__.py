@@ -1,8 +1,6 @@
 from flask import Flask
 import config
 from .models.database import Database
-from flask_login import LoginManager
-from datetime import datetime
 
 def create_app():
     app = Flask(__name__)
@@ -10,31 +8,25 @@ def create_app():
 
     Database.create_tables()
 
-    def strftime_filter(value, format):
-        if value is None:
-            return ""
-        if isinstance(value, str):
-            value = datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
-        return value.strftime(format)
-
-    app.jinja_env.filters['strftime'] = strftime_filter
-
-    # Register Admin Auth Blueprint
     from app.routes.admin_auth_route import auth_admin
     app.register_blueprint(auth_admin)
 
     from app.routes.admindashboardroute import admin_dashboardBP
     app.register_blueprint(admin_dashboardBP)
 
+
+
     from app.routes.notificationroute import notificationBP
     app.register_blueprint(notificationBP)
 
+    
 
-    # Register User Auth Blueprint
     from app.routes.auth_route import auth_user
     app.register_blueprint(auth_user)
 
-    # Register Home Blueprint
+    from app.routes.dashboardroute import dashboardBP
+    app.register_blueprint(dashboardBP)
+
     from app.routes.home_route import homeBP
     app.register_blueprint(homeBP)
 
@@ -53,5 +45,5 @@ def create_app():
     # Register Report Success Blueprint
     from app.routes.report_success import report_successBP
     app.register_blueprint(report_successBP)
-
+    
     return app

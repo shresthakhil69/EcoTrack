@@ -112,19 +112,7 @@ class Database:
                 REFERENCES reports(id)
             )
         """)
-        db.execute("""
-            CREATE TABLE IF NOT EXISTS reports (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                user_id INT NOT NULL,
-                waste_type VARCHAR(255),
-                description TEXT,
-                location VARCHAR(255),
-                image_path VARCHAR(255),
-                status ENUM('pending', 'in_progress', 'resolved') DEFAULT 'pending',
-                reported_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (user_id) REFERENCES users(id)
-            )
-        """)
+ 
         
         # Create default admin if not exists
         admin = db.fetch_one(

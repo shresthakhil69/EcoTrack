@@ -1,19 +1,17 @@
 from flask import Blueprint, render_template, request, session, redirect, url_for, flash
 from app.models.user import User
+from app.auth import login_required
 
 settingBP = Blueprint("setting", __name__)
 
 @settingBP.route("/setting", methods=['GET', 'POST'])
+@login_required
 def setting():
-    if 'user_id' not in session:
-        return redirect(url_for('user_auth.login'))
-
     if request.method == 'POST':
         form_type = request.form.get('form_type')
         user_id = session['user_id']
         user = User()
 
-        # ── Profile Update ──────────────────────────
         if form_type == 'profile':
             name = request.form.get('name', '').strip()
             email = request.form.get('email', '').strip()
@@ -22,7 +20,6 @@ def setting():
                 flash('Name and email are required.', 'error')
                 return redirect(url_for('setting.setting'))
 
-            # Check email not taken by another user
             existing = user.get_by_email(email)
             if existing and existing['id'] != user_id:
                 flash('That email is already in use by another account.', 'error')
@@ -30,14 +27,12 @@ def setting():
 
             user.update_profile(user_id, name, email)
 
-            # Update session so navbar shows new name immediately
             session['user_name'] = name
             session['user_email'] = email
 
             flash('Profile updated successfully.', 'success')
             return redirect(url_for('setting.setting'))
 
-        # ── Password Change ─────────────────────────
         elif form_type == 'password':
             current_password = request.form.get('current_password', '')
             new_password = request.form.get('new_password', '')
@@ -55,7 +50,6 @@ def setting():
                 flash('New password must be at least 6 characters.', 'error')
                 return redirect(url_for('setting.setting'))
 
-            # Verify current password
             user_data = user.get_by_id(user_id)
             if not user.check_password(user_data['password'], current_password):
                 flash('Current password is incorrect.', 'error')
@@ -63,8 +57,5 @@ def setting():
 
             user.update_password(user_id, new_password)
             flash('Password updated successfully.', 'success')
-            return redirect(url_for('setting.setting'))
 
-    # ── Handle GET Request ───────────────────────
-    # This renders the settings page when you just visit the URL
     return render_template("user/setting.html")
