@@ -1,4 +1,5 @@
 from app.models.base import BaseModel
+from app.models.database import Database
 
 class Report(BaseModel):
 
@@ -22,3 +23,23 @@ class Report(BaseModel):
         self.image_path = image_path
         self.status = status
 
+    def save(self):
+        db = Database()
+
+        db.execute(
+            """
+            INSERT INTO reports
+            (user_id, waste_type , description, location, image_path, status)
+            VALUES (%s,%s,%s,%s,%s,%s)
+            """,
+            (
+                self.user_id,
+                self.waste_type ,
+                self.description,
+                self.location,
+                self.image_path,
+                self.status
+            )
+        )
+
+        db.close()
