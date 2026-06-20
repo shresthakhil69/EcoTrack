@@ -45,5 +45,10 @@ def create_app():
     # Register Report Success Blueprint
     from app.routes.report_success import report_successBP
     app.register_blueprint(report_successBP)
+
+
+    from app.routes.helproute import helpBP
+    app.register_blueprint(helpBP)
+
     
     return app
